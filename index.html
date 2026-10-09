@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Media projects — Daniil Perkin</title>
+<link rel="icon" href="data:,">
+<script>(function(){try{var t=localStorage.getItem('mp-theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}else if(window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.dataset.theme='light'}}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="sections/gta6-clipper/style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Daniil Perkin · Media projects</p>
+    <h1>Five media projects, one interactive site.</h1>
+    <p class="lede">A tour through my media workspace — clip pipelines, converters, posters and translation tools — with real captures of what each tool produces, the verification behind it, and the story of each build. Every section is contributed by that project's own build agent.</p>
+  </div>
+</header>
+<nav class="topnav"><div class="wrap" id="topnav">
+<a href="#gta6-clipper">GTA 6 Clipper</a>
+<a class="dim" href="#openshorts">OpenShorts</a>
+<a class="dim" href="#daily-fact-poster">Daily Fact Poster</a>
+<a class="dim" href="#gothic-character-project">Gothic Character Project</a>
+<a class="dim" href="#novel-translation">Novel Translation</a>
+<button id="theme-toggle" type="button">Light theme</button>
+</div></nav>
+<main class="wrap">
+<section class="project" id="gta6-clipper">
+  <header class="p-head">
+    <p class="p-owner">@gta6-clipper · section live</p>
+    <h2>GTA 6 Clipper</h2>
+    <p class="p-lede">A hands-off pipeline that turns a Twitch GTA VI clip into a ready-to-post vertical export: watch the category, download a rising clip, transcribe it on the RTX 4060, let an LLM chain pick the hook, then burn the whole 1080&times;1920 facecam-over-gameplay render with per-word yellow subtitles in a single NVENC pass &mdash; delivered to <code>ready_to_post/</code> and Telegram. Posting stays manual, forever.</p>
+    <p class="chips"><span class="chip">Python 3.12 · uv</span><span class="chip">faster-whisper turbo · CUDA</span><span class="chip">MediaPipe 0.10.21</span><span class="chip">FFmpeg NVENC</span><span class="chip">Gemini → OpenRouter → heuristic</span><span class="chip">SQLite</span><span class="chip">pytest CI on push</span></p>
+  </header>
+
+  <h3>The subtitle engine, replayed</h3>
+  <div class="mount" id="subs-mount"></div>
+  <p class="caption">Interactive replay of the renderer's per-word subtitles — the five <code>Dialogue</code> events are verbatim from <code>incoming/_black_render.ass</code>, the script the pixel gate renders over a black source. One event per word window; the active word is recoloured <code>{\c&H0000EEFF&}</code> (= #FFEE00). Stage scaled down from the real 1080&times;1920 canvas, divider at the facecam strip's 38%.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b>56</b><span>offline tests — no network, no CUDA, no keys; the same suite runs in CI on push</span></div>
+    <div class="kpi"><b>1</b><span>NVENC pass per clip — compose, burn subtitles, encode in one go</span></div>
+    <div class="kpi"><b>1080×1920</b><span>H.264 High · yuv420p · bt709 pinned — ffprobe-verified, never by eye</span></div>
+    <div class="kpi"><b>5</b><span>exports in <code>ready_to_post/</code> — five sessions, 2026-09-20 → 2026-10-08</span></div>
+  </div>
+
+  <div class="strip">
+    <figure class="shot">
+      <img src="sections/gta6-clipper/assets/render-frame.png" alt="Frame of the vertical render: test gradient as facecam strip over a gameplay slice, subtitle 'THIS IS INSANE!' with IS in yellow">
+      <figcaption>A frame from a real render through the production filtergraph: facecam strip (top 38%) over the centred gameplay slice, subtitles burned into the same encode. Synthetic gradient source — captures use probes while the Twitch monitor is unarmed.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="sections/gta6-clipper/assets/subtitle-check.png" alt="Black-frame verification render: 'THIS IS INSANE!' with IS in yellow on solid black">
+      <figcaption>The pixel gate: the same .ass rendered over a solid black source. A script measures yellow-pixel x-ranges per timestamp — the highlight must move word-by-word. Never eyeballed: patterned sources contain a yellow stripe that fakes a highlight.</figcaption>
+    </figure>
+  </div>
+
+  <h3>What it does</h3>
+  <ul>
+    <li><b>Monitors the category</b> — Helix <code>/clips</code> for “Grand Theft Auto VI” with a view floor and a velocity window; sampled clips are scored and promoted in SQLite.</li>
+    <li><b>Transcribes on the local GPU</b> — faster-whisper <code>turbo</code> with word timestamps on CUDA (RTX 4060), CPU fallback; the selftest loads it in 3.3 s.</li>
+    <li><b>Scores virality in a 3-step chain</b> — Gemini 2.5 Flash → OpenRouter <code>gpt-4o-mini</code> → heuristic; the pipeline still produces output with zero API keys.</li>
+    <li><b>Renders once</b> — NVENC: facecam (preset or MediaPipe-detected) stacked over a gameplay slice, per-word ASS subtitles burned in, High profile + bt709/tv pinned so players never mis-render it.</li>
+    <li><b>Delivers, then stops</b> — <code>ready_to_post/YYYY-MM-DD/</code> gets mp4 + caption + cover; Telegram takes the file when it fits the Bot API caps (≤45 MB video). Posting is manual, by design.</li>
+  </ul>
+
+  <h3>Gates, not vibes</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Every change must pass</h3>
+      <ul>
+        <li><code>pytest</code> — 56 offline tests, CI-safe (no network, no CUDA)</li>
+        <li><code>--selftest</code> — h264_nvenc, mediapipe import, CUDA whisper load, key-arming report</li>
+        <li>black-frame pixel check — the highlight must move (this section replays it)</li>
+        <li>e2e on a real mp4 — 1080×1920 + caption + cover + a <code>processed</code> row in <code>clips.db</code></li>
+      </ul>
+    </div>
+    <div class="card code">
+      <h3>The delivery-format pin</h3>
+      <pre>[stack]setparams=colorspace=bt709:color_primaries=bt709:
+        color_trc=bt709:range=tv</pre>
+      <p class="muted">Frames carry the tags; codec-level flags alone left primaries/transfer “unknown” in this ffmpeg build. Untagged or non-4:2:0 H.264 is the green-cast class — decodes fine, mis-renders in players.</p>
+    </div>
+  </div>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/gta6-clipper">github.com/daniilperkin-media/gta6-clipper</a> (private) · rules in <code>AGENTS.md</code>, knobs in <code>config.yaml</code>.</p>
+</section>
+<section class="project placeholder" id="openshorts"><div class="ph-card">
+  <p class="chips"><span class="chip">Python · FastAPI · faster-whisper · React 18 / Vite</span><span class="chip">owner @openshorts</span></p>
+  <h2>OpenShorts</h2>
+  <p>Long-to-short video converter: transcription, highlight selection and face-aware vertical framing, with a React dashboard on the side.</p>
+  <p class="ph-note">Section in progress — @openshorts is preparing the captures. It appears here once
+  <code>sections/openshorts/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
+</div></section>
+<section class="project placeholder" id="daily-fact-poster"><div class="ph-card">
+  <p class="chips"><span class="chip">Python · OpenRouter · PIL · FFmpeg</span><span class="chip">owner @daily-fact-poster</span></p>
+  <h2>Daily Fact Poster</h2>
+  <p>Automated daily fact generator: GPT-4o-mini copy plus Flux 2 Pro imagery assembled into carousels and videos, posted via the TikTok Content Posting API.</p>
+  <p class="ph-note">Section in progress — @daily-fact-poster is preparing the captures. It appears here once
+  <code>sections/daily-fact-poster/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
+</div></section>
+<section class="project placeholder" id="gothic-character-project"><div class="ph-card">
+  <p class="chips"><span class="chip">Python (stdlib) · asset pipeline</span><span class="chip">owner @gothic-characters</span></p>
+  <h2>Gothic Character Project</h2>
+  <p>AI-generated gothic character reference sheets, scene compositions and pose experiments — manifests, sidecars and a stdlib CI pipeline keep the asset library verifiable.</p>
+  <p class="ph-note">Section in progress — @gothic-characters is preparing the captures. It appears here once
+  <code>sections/gothic-character-project/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
+</div></section>
+<section class="project placeholder" id="novel-translation"><div class="ph-card">
+  <p class="chips"><span class="chip">Python · Gemini · EPUB pipeline</span><span class="chip">owner @novel-translation</span></p>
+  <h2>Novel Translation</h2>
+  <p>Prepare any novel EPUB for LLM translation — extract, clean, batch, verify, assemble; optional OpenAI-compatible API mode.</p>
+  <p class="ph-note">Section in progress — @novel-translation is preparing the captures. It appears here once
+  <code>sections/novel-translation/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
+</div></section>
+</main>
+<footer class="footer"><div class="wrap">
+  Local build — regenerate with <code>node build.mjs</code>, serve with <code>node serve.mjs</code>. Sections © their project agents, <span id="year">2026</span>.
+</div></footer>
+<script src="assets/js/site.js"></script>
+<script defer src="sections/gta6-clipper/script.js"></script>
+</body>
+</html>

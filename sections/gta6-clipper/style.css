@@ -1,0 +1,23 @@
+/* GTA 6 Clipper — section styles */
+#gta6-clipper .p-owner{color:var(--accent-2);font-size:13px;margin:0 0 2px;font-weight:600;letter-spacing:.04em}
+#gta6-clipper .shot img{display:block;width:auto;max-width:100%;max-height:520px;margin:0 auto}
+
+/* subtitle replay — intentionally dark in both themes, like the render itself */
+#subs-mount .subs-wrap{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:20px;align-items:start;margin:18px 0 6px}
+@media(max-width:840px){#subs-mount .subs-wrap{grid-template-columns:1fr}}
+.subs-stage{position:relative;aspect-ratio:9/16;background:#05070c;border:1px solid #242e44;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.subs-strip{height:38%;background:#0b0f16;border-bottom:3px solid #1a2133;display:flex;align-items:center;justify-content:center}
+.subs-strip span{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#5b6a85}
+.subs-area{position:absolute;left:0;right:0;bottom:25%;text-align:center;padding:0 14px}
+.subs-line{margin:0;font-family:"Arial Black","Segoe UI",sans-serif;font-weight:900;font-size:19px;letter-spacing:.02em;color:#fff;white-space:nowrap;opacity:0;transition:opacity .05s linear;text-shadow:-1.5px -1.5px 0 #000,1.5px -1.5px 0 #000,-1.5px 1.5px 0 #000,1.5px 1.5px 0 #000,0 1.5px 0 #000,1.5px 0 0 #000,0 -1.5px 0 #000,-1.5px 0 0 #000}
+.subs-line.show{opacity:1}
+.subs-line .w.on{color:#FFEE00}
+.subs-events{font-family:var(--mono);font-size:12.5px;line-height:1.45;border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:12px 14px;box-shadow:var(--shadow)}
+.subs-events .ev-title{margin:0 0 10px;color:var(--muted);font-size:12px}
+.subs-events .ev{display:flex;gap:10px;align-items:baseline;padding:7px 10px;border:1px solid transparent;border-radius:8px;color:var(--muted)}
+.subs-events .ev .t{color:var(--accent-2);white-space:nowrap}
+.subs-events .ev .w{color:var(--text);font-weight:600}
+.subs-events .ev.on{border-color:#e8c400;background:rgba(255,238,0,.08)}
+.subs-events .ev.on .w{color:#FFEE00}
+html[data-theme="light"] .subs-events .ev.on{border-color:#d9bc00;background:rgba(255,238,0,.22)}
+html[data-theme="light"] .subs-events .ev.on .w{color:#7a6700}
