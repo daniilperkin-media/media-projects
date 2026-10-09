@@ -5,7 +5,10 @@ the GTA 6 clip pipeline, OpenShorts, the daily fact poster, the gothic
 character project and the novel translation pipeline.
 
 Built as the media sibling of `daniilperkin-uni/uni-old-projects` — same
-section contract, same build, same shared components. Deploys to GitHub
+section contract and build — but with its own studio identity: bundled Space
+Grotesk + JetBrains Mono (OFL), per-project accent hues, scroll-reveal
+animations, KPI count-ups, a broadcast ticker, a section rail and a scroll
+progress bar. Deploys to GitHub
 Pages via Actions (`https://daniilperkin-media.github.io/media-projects/`
 once the repo is pushed and Pages is enabled).
 
@@ -17,7 +20,7 @@ once the repo is pushed and Pages is enabled).
 ## Layout
 
 - `shell/template.html` — page shell with `@NAV@` / `@SECTIONS@` / `@SECTION_STYLES@` / `@SECTION_SCRIPTS@` slots
-- `assets/` — shared tokens, base styles, components, site.js (theme toggle, lightbox, before/after)
+- `assets/` — shared tokens, base styles, components, fonts (OFL), site.js (theme toggle, lightbox, before/after, reveals, rail, progress)
 - `sections/<id>/` — one folder per project: `section.html` (required), optional `style.css` / `script.js`, `assets/` for images
 - `sections/sections.json` — section order + placeholder metadata
 - `index.html` — generated; never edit by hand

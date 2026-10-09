@@ -1,15 +1,33 @@
-/* Shared design tokens - light & dark. Sections must use these variables. */
+/* Shared design tokens v2 - light & dark. Sections must use these variables. */
 :root{
-  --bg:#0b0e14;--surface:#131826;--surface2:#1a2133;--text:#e8ecf4;--muted:#9aa4ba;
-  --border:#252d42;--accent:#7c9cff;--accent-2:#4ecdc4;--warn:#ffb454;--ok:#5cd68a;
-  --code:#0d1117;--shadow:0 12px 32px rgba(0,0,0,.4);
+  --bg:#08090d;--surface:#0f1118;--surface2:#161a24;--text:#eef1f8;--muted:#98a2b8;
+  --border:#222838;--accent:#8f7bff;--accent-2:#3ddbd9;--warn:#ffb454;--ok:#5cd68a;
+  --code:#0b0d13;--shadow:0 16px 40px rgba(0,0,0,.5);
   --radius:14px;
-  --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
-  --mono:"Cascadia Code",Consolas,"SF Mono",Menlo,monospace;
+  --font:"Space Grotesk","Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  --mono:"JetBrains Mono","Cascadia Code",Consolas,"SF Mono",Menlo,monospace;
+  --grad:linear-gradient(120deg,var(--accent),var(--accent-2));
+  --hero-1:color-mix(in srgb,var(--accent) 26%,transparent);
+  --hero-2:color-mix(in srgb,var(--accent-2) 20%,transparent);
+  /* per-section accent hues - used by the engine chrome (ghost numbers, hairlines,
+     rail dots, KPI gradient); sections keep the global --accent for links/chips */
+  --c-gta6-clipper:#8f7bff;--c-openshorts:#3ddbd9;--c-daily-fact-poster:#ffb454;
+  --c-gothic-character-project:#ff7ab8;--c-novel-translation:#5cd68a;
+  --sec:var(--accent);
 }
 html[data-theme="light"]{
-  --bg:#f6f7fb;--surface:#ffffff;--surface2:#eef1f8;--text:#171b26;--muted:#5a6474;
-  --border:#e2e6f0;--accent:#3a5bd9;--accent-2:#0b7970;--warn:#a15c00;--ok:#1b7b44;
-  /* light accents are WCAG-AA tuned: accent-2/ok/warn >=4.59:1 (AA threshold 4.5) on white, #f6f7fb and #eef1f8 */
-  --code:#f3f4f8;--shadow:0 12px 32px rgba(23,32,64,.10);
+  --bg:#f7f7fb;--surface:#ffffff;--surface2:#eef0f7;--text:#14161f;--muted:#5b6374;
+  --border:#e3e6f0;--accent:#5b46d9;--accent-2:#0b7970;--warn:#a15c00;--ok:#1b7b44;
+  /* light accents + section hues are WCAG-AA tuned (>=4.59:1 on white, #f7f7fb and #eef0f7,
+     computed 2026-10-09; dark hues >=5.79:1 on #08090d) */
+  --code:#f3f4f8;--shadow:0 16px 40px rgba(23,32,64,.10);
+  --hero-1:color-mix(in srgb,var(--accent) 15%,transparent);
+  --hero-2:color-mix(in srgb,var(--accent-2) 12%,transparent);
+  --c-gta6-clipper:#5b46d9;--c-openshorts:#0b7970;--c-daily-fact-poster:#a15c00;
+  --c-gothic-character-project:#b83a74;--c-novel-translation:#1b7b44;
 }
+#gta6-clipper, .rail [data-id="gta6-clipper"]{--sec:var(--c-gta6-clipper)}
+#openshorts, .rail [data-id="openshorts"]{--sec:var(--c-openshorts)}
+#daily-fact-poster, .rail [data-id="daily-fact-poster"]{--sec:var(--c-daily-fact-poster)}
+#gothic-character-project, .rail [data-id="gothic-character-project"]{--sec:var(--c-gothic-character-project)}
+#novel-translation, .rail [data-id="novel-translation"]{--sec:var(--c-novel-translation)}

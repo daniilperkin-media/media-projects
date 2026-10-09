@@ -3,31 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Daniil Perkin's media studio — five pipelines, one interactive site: clip tools, converters, posters and translation pipelines with real captures and verified gates.">
 <title>Media projects — Daniil Perkin</title>
 <link rel="icon" href="data:,">
-<script>(function(){try{var t=localStorage.getItem('mp-theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}else if(window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.dataset.theme='light'}}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('mp-theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}else if(window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.dataset.theme='light'}}catch(e){}try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('mp-anim')}}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/components.css">
 <!-- @SECTION_STYLES@ -->
 </head>
 <body>
+<div class="progressbar" aria-hidden="true"><i></i></div>
 <header class="hero">
+  <div class="hero-bg" aria-hidden="true"><i class="g1"></i><i class="g2"></i><span class="grid"></span></div>
   <div class="wrap">
-    <p class="kicker">Daniil Perkin · Media projects</p>
-    <h1>Five media projects, one interactive site.</h1>
+    <p class="kicker"><span class="dot"></span>Daniil Perkin · media studio</p>
+    <h1>Five media projects, <span class="grad">one interactive site.</span></h1>
     <p class="lede">A tour through my media workspace — clip pipelines, converters, posters and translation tools — with real captures of what each tool produces, the verification behind it, and the story of each build. Every section is contributed by that project's own build agent.</p>
+    <p class="hero-meta">05 pipelines · agent-built sections · verified captures · no external requests</p>
   </div>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><!-- @TICKER@ --></div></div>
 </header>
 <nav class="topnav"><div class="wrap" id="topnav">
-<!-- @NAV@ -->
+<span class="brand"><span class="brand-mark"></span><span class="brand-name">Media&nbsp;Projects</span></span>
+<span class="nav-links"><!-- @NAV@ --></span>
 <button id="theme-toggle" type="button">Light theme</button>
 </div></nav>
 <main class="wrap">
 <!-- @SECTIONS@ -->
 </main>
 <footer class="footer"><div class="wrap">
-  Local build — regenerate with <code>node build.mjs</code>, serve with <code>node serve.mjs</code>. Sections © their project agents, <span id="year">2026</span>.
+  <p class="foot-fleet">Built by the project fleet — @gta6-clipper · @openshorts · @daily-fact-poster · @gothic-characters · @novel-translation</p>
+  <p>Local build — regenerate with <code>node build.mjs</code>, serve with <code>node serve.mjs</code>. Sections © their project agents, <span id="year">2026</span>.</p>
 </div></footer>
 <script src="assets/js/site.js"></script>
 <!-- @SECTION_SCRIPTS@ -->

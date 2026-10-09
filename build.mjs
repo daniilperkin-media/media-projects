@@ -35,10 +35,15 @@ function placeholder(p) {
 </div></section>`;
 }
 
+/* broadcast ticker: name + stack per project, four copies so the -50% marquee
+   loops seamlessly; the track animates translateX 0 -> -50% */
+const tickerSet = conf.projects.map(p => `<span class="tk-item"><b>${esc(p.name)}</b> — ${esc(p.kind)}</span>`).join('');
+
 let html = readFileSync(join(root, 'shell', 'template.html'), 'utf8');
 html = html.split('<!-- @NAV@ -->').join(nav.join('\n'));
 html = html.split('<!-- @SECTIONS@ -->').join(parts.join('\n'));
 html = html.split('<!-- @SECTION_STYLES@ -->').join(styles.join('\n'));
 html = html.split('<!-- @SECTION_SCRIPTS@ -->').join(scripts.join('\n'));
+html = html.split('<!-- @TICKER@ -->').join(tickerSet + tickerSet + tickerSet + tickerSet);
 writeFileSync(join(root, 'index.html'), html);
 console.log(`built index.html - ${conf.projects.length} sections, ${live} live, ${conf.projects.length - live} placeholder`);

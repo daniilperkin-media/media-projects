@@ -33,6 +33,28 @@ Use the repo folder name as `<id>` (e.g. `gta6-clipper`). Edit only your own fol
 - Code/console block: `<div class="card code"><h3>Title</h3><pre>...</pre></div>` — long lines scroll inside the card (grid children are `min-width:0`, so wide content never blows out the page).
 - Interactive widget mount: `<div class="mount" id="..."></div>` — put markup + JS in your own files.
 
+## Engine v2 — motion & identity (2026-10-09)
+
+The contract above is unchanged; these are automatic and additive:
+
+- **Reveal-on-scroll** — every top-level block of a section fades/slides in, staggered.
+  Scripted captures must scroll the page (or call `window.__mpRevealAll()` first);
+  `prefers-reduced-motion` disables the whole motion layer.
+- **KPI count-ups** — a `<b>` starting with a plain integer (>1) counts up when
+  scrolled into view; the final text is byte-identical. Suffixes starting with
+  `-`, `/`, `.` or `,` (dates, ratios, decimals) stay static, as does anything
+  non-numeric; opt out per value with `<b data-static>`. `1080×1920` animates the
+  leading number only; `215 → 43` is untouched.
+- **Per-section hue** — the engine chrome (ghost chapter number, section hairline,
+  KPI gradient, rail dot) uses `--sec`, mapped per section id in `tokens.css`;
+  `--accent` stays the global brand accent. Use tokens, never hardcoded hexes.
+- **Studio chrome** — scroll progress bar, section rail (>=1400px), scrollspy nav,
+  `--grad` gradient token, bundled Space Grotesk + JetBrains Mono
+  (`assets/css/fonts.css`, OFL licenses in `assets/fonts/`). Sections may still
+  bundle their own fonts.
+- **Before/after sliders** carry BEFORE/AFTER pill labels via CSS; the shared `.ba`
+  markup and behaviour are unchanged.
+
 ## Rules
 
 - UTF-8, no BOM; self-contained; no external requests (works offline on localhost).
