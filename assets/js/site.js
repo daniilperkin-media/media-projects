@@ -160,6 +160,7 @@
   document.querySelectorAll('.kpi b').forEach(function (b) {
     var txt = b.textContent;
     if (b.hasAttribute('data-static') || !animate) { return; }
+    if (txt.indexOf('→') !== -1) { return; } /* arrow pairs like 215 → 43 stay static */
     var m = /^(\d+)([^0-9.,\/-]|$)/.exec(txt);
     if (!m) { return; }
     var n = parseInt(m[1], 10);

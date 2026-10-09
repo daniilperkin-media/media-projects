@@ -43,8 +43,8 @@ The contract above is unchanged; these are automatic and additive:
 - **KPI count-ups** — a `<b>` starting with a plain integer (>1) counts up when
   scrolled into view; the final text is byte-identical. Suffixes starting with
   `-`, `/`, `.` or `,` (dates, ratios, decimals) stay static, as does anything
-  non-numeric; opt out per value with `<b data-static>`. `1080×1920` animates the
-  leading number only; `215 → 43` is untouched.
+  non-numeric or containing an arrow pair (`215 → 43`); opt out per value with
+  `<b data-static>`. `1080×1920` animates the leading number only.
 - **Per-section hue** — the engine chrome (ghost chapter number, section hairline,
   KPI gradient, rail dot) uses `--sec`, mapped per section id in `tokens.css`;
   `--accent` stays the global brand accent. Use tokens, never hardcoded hexes.
