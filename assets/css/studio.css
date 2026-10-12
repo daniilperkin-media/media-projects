@@ -1,0 +1,37 @@
+/* studio.css — scroll choreography v2 for the media showcase.
+   Language: broadcast / studio — kinetic hero layers, pinned chapter cards with ghost
+   numbers, clip-wipe captures, velocity-reactive ticker, pinned horizontal strips,
+   film grain. Gated on html.mp-anim (already set by the shell's head script when the
+   visitor does not prefer reduced motion); without it the page stays fully static. */
+
+/* ---------- film grain ---------- */
+html.mp-anim body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='0.6'/></svg>")}
+
+/* ---------- pinned chapter cards ---------- */
+html.mp-anim .chap{position:sticky;top:48px;height:0;z-index:7;pointer-events:none}
+html.mp-anim .chap .card{display:inline-flex;align-items:baseline;gap:12px;padding:7px 14px;border:1px solid var(--border);border-radius:12px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(10px) saturate(1.1);box-shadow:var(--shadow);transform:translateY(2px)}
+html.mp-anim .chap b{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--sec)}
+html.mp-anim .chap span{font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--text)}
+html.mp-anim .chap i{display:block;width:64px;height:2px;border-radius:2px;background:var(--sec);transform:scaleX(var(--sp,0));transform-origin:left;transition:transform .12s linear}
+
+/* ---------- captures: clip wipe + parallax ---------- */
+html.mp-anim figure.shot{position:relative;overflow:hidden}
+html.mp-anim figure.shot.wipe{clip-path:inset(0 0 97% 0)}
+html.mp-anim figure.shot.wipe.in{clip-path:inset(0 0 0 0);transition:clip-path .9s cubic-bezier(.22,.61,.36,1)}
+html.mp-anim figure.shot img.px{will-change:transform;transform:translate3d(0,var(--px,0px),0) scale(1.07)}
+
+/* ---------- kinetic hero layers ---------- */
+html.mp-anim .hero h1 .hl{display:inline-block;will-change:transform}
+html.mp-anim .hero .lede,html.mp-anim .hero .hero-meta,html.mp-anim .hero .kicker{will-change:transform}
+html.mp-anim .hero-bg i,html.mp-anim .hero-bg .grid{will-change:transform}
+
+/* ---------- pinned horizontal strips ---------- */
+html.mp-anim .strip.hscroll{position:relative;display:block;padding:0;margin:22px 0}
+html.mp-anim .strip.hscroll .hs-track{position:sticky;display:flex;gap:18px;width:max-content;will-change:transform}
+html.mp-anim .strip.hscroll .hs-track > *{flex:0 0 min(460px,84vw);min-width:0}
+html.mp-anim .strip.hscroll .hs-track .shot img{height:auto}
+
+/* ---------- guards ---------- */
+@media (prefers-reduced-motion: reduce){
+  html.mp-anim body::after{display:none}
+}
