@@ -26,8 +26,8 @@ html[data-theme="light"]{
   --c-gta6-clipper:#5b46d9;--c-openshorts:#0b7970;--c-daily-fact-poster:#a15c00;
   --c-gothic-character-project:#b83a74;--c-novel-translation:#1b7b44;
 }
-#gta6-clipper, .rail [data-id="gta6-clipper"]{--sec:var(--c-gta6-clipper)}
-#openshorts, .rail [data-id="openshorts"]{--sec:var(--c-openshorts)}
-#daily-fact-poster, .rail [data-id="daily-fact-poster"]{--sec:var(--c-daily-fact-poster)}
-#gothic-character-project, .rail [data-id="gothic-character-project"]{--sec:var(--c-gothic-character-project)}
-#novel-translation, .rail [data-id="novel-translation"]{--sec:var(--c-novel-translation)}
+#gta6-clipper, .rail [data-id="gta6-clipper"], .pal [data-id="gta6-clipper"]{--sec:var(--c-gta6-clipper)}
+#openshorts, .rail [data-id="openshorts"], .pal [data-id="openshorts"]{--sec:var(--c-openshorts)}
+#daily-fact-poster, .rail [data-id="daily-fact-poster"], .pal [data-id="daily-fact-poster"]{--sec:var(--c-daily-fact-poster)}
+#gothic-character-project, .rail [data-id="gothic-character-project"], .pal [data-id="gothic-character-project"]{--sec:var(--c-gothic-character-project)}
+#novel-translation, .rail [data-id="novel-translation"], .pal [data-id="novel-translation"]{--sec:var(--c-novel-translation)}

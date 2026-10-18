@@ -47,6 +47,17 @@
     card.appendChild(b); card.appendChild(sp); card.appendChild(bar);
     chap.appendChild(card);
     head.parentNode.insertBefore(chap, head.nextSibling);
+    /* the card is zero-height and floats over the section while scrolling; at rest it
+       would cover the first block. Insert a spacer unless the section already spaced
+       its first block (e.g. daily-fact-poster's .p-head + .chap + h3 rule). */
+    var nextEl = chap.nextElementSibling;
+    var mt = nextEl ? (parseFloat(getComputedStyle(nextEl).marginTop) || 0) : 0;
+    if (mt < 40) {
+      var gap = document.createElement('div');
+      gap.className = 'chap-gap';
+      gap.setAttribute('aria-hidden', 'true');
+      chap.parentNode.insertBefore(gap, chap.nextSibling);
+    }
     chaps.push({ sec: sec, bar: bar });
   });
 
@@ -55,7 +66,9 @@
   [].slice.call(main.querySelectorAll('figure.shot')).forEach(function (fig) {
     fig.classList.add('wipe');
     var img = fig.querySelector('img');
-    if (img) { img.classList.add('px'); }
+    /* .nopx opts a pixel-critical capture out of the parallax transform (the
+       transform scales the image, so it crops a small edge band). */
+    if (img && !fig.classList.contains('nopx')) { img.classList.add('px'); }
     shots.push(fig);
   });
   var io = new IntersectionObserver(function (entries) {
@@ -147,7 +160,7 @@
       var fr = shots[m].getBoundingClientRect();
       if (fr.bottom < -140 || fr.top > vh + 140) { continue; }
       var dlt = (fr.top + fr.height / 2 - vh / 2) / vh;
-      img.style.setProperty('--px', (dlt * -16).toFixed(2) + 'px');
+      img.style.setProperty('--px', (dlt * -6).toFixed(2) + 'px');
     }
 
     for (var s = 0; s < strips.length; s++) {

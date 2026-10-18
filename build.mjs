@@ -9,19 +9,20 @@ const conf = JSON.parse(readFileSync(join(root, 'sections', 'sections.json'), 'u
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const nav = [], parts = [], styles = [], scripts = [];
-let live = 0;
+let live = 0, num = 0;
 
 for (const p of conf.projects) {
+  const n = String(++num).padStart(2, '0');
   const dir = join(root, 'sections', p.id);
   if (existsSync(join(dir, 'section.html'))) {
     live++;
     parts.push(readFileSync(join(dir, 'section.html'), 'utf8').trim());
-    nav.push(`<a href="#${p.id}">${esc(p.name)}</a>`);
+    nav.push(`<a href="#${p.id}" data-num="${n}" data-kind="${esc(p.kind)}">${esc(p.name)}</a>`);
     if (existsSync(join(dir, 'style.css'))) styles.push(`<link rel="stylesheet" href="sections/${p.id}/style.css">`);
     if (existsSync(join(dir, 'script.js'))) scripts.push(`<script defer src="sections/${p.id}/script.js"></script>`);
   } else {
     parts.push(placeholder(p));
-    nav.push(`<a class="dim" href="#${p.id}">${esc(p.name)}</a>`);
+    nav.push(`<a class="dim" href="#${p.id}" data-num="${n}" data-kind="${esc(p.kind)}">${esc(p.name)}</a>`);
   }
 }
 

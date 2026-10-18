@@ -1,5 +1,5 @@
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scrollbar-color:var(--border) transparent}
+html{scroll-behavior:smooth;scrollbar-color:var(--border) transparent;scrollbar-gutter:stable}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 a{color:var(--accent);text-decoration:none}

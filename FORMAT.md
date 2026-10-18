@@ -55,6 +55,43 @@ The contract above is unchanged; these are automatic and additive:
 - **Before/after sliders** carry BEFORE/AFTER pill labels via CSS; the shared `.ba`
   markup and behaviour are unchanged.
 
+## Engine v3 — studio UX (2026-10-18)
+
+Additive; the section contract is unchanged.
+
+- **Command palette** — `Ctrl/Cmd+K` (or `/`) opens a section jump list with the
+  project's stack line; `↑/↓` move, `Enter` jumps, `Shift+Enter` copies a deep
+  link, `Esc` closes. The nav's `Ctrl K` button opens it on touch.
+- **Gallery lightbox** — every `.shot img` opens the section's images as a
+  gallery: `←/→` step, `Home/End` jump, `Esc` closes, the counter and the
+  figure's caption are shown; swipe on touch. Inner classes are `lb-*`; the
+  overlay keeps a direct reference (no `.lb` querySelector).
+- **Copy affordances** — every `.card pre` gets a Copy button; every section
+  header gets a `#` permalink button. Both use the shared toast.
+- **Skip link + `aria-current`** — keyboard users can skip the hero; the
+  scrollspy marks the active nav/rail item.
+- **Filmstrip containment** — `.strip.hscroll` now clips its `width:max-content`
+  track (`overflow-x:clip`) so a 3+ image strip cannot widen the document. The
+  sticky travel is unchanged.
+- **Chapter-card gap** — `studio.js` inserts a 46 px spacer after the sticky
+  chapter card unless the section already spaces its first block (e.g.
+  daily-fact-poster's `.p-head + .chap + h3` rule). The card no longer covers
+  the first heading at rest.
+- **Parallax** — the capture parallax is now ±6 px at `scale(1.035)` (was
+  ±16 px at `scale(1.07)`), so it no longer crops a visible edge band.
+  Pixel-critical captures can opt out with `class="shot nopx"`.
+- **Build metadata** — nav links carry `data-num` / `data-kind` for the palette;
+  no section file needs an edit.
+- **Theme** — the toggle crossfades through the View Transitions API where
+  available; the `data-theme` attribute is still set synchronously.
+- **Overlay state classes** — the body state classes are `pal-open` and
+  `lb-open`; `.palette-open` is the nav button. Never reuse a component class
+  on `body`: a shared name once turned the body into a flex container and
+  widened the page to 11,679 px while every scripted check stayed green.
+
+All new motion is gated by `prefers-reduced-motion`; the page remains
+self-contained with zero external requests.
+
 ## Rules
 
 - UTF-8, no BOM; self-contained; no external requests (works offline on localhost).

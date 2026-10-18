@@ -8,21 +8,22 @@
 
   <h3>The subtitle engine, replayed</h3>
   <div class="mount" id="subs-mount"></div>
-  <p class="caption">Interactive replay of the renderer's per-word subtitles — the five <code>Dialogue</code> events are verbatim from <code>incoming/_black_render.ass</code>, the script the pixel gate renders over a black source. One event per word window; the active word is recoloured <code>{\c&H0000EEFF&}</code> (= #FFEE00). Stage scaled down from the real 1080&times;1920 canvas, divider at the facecam strip's 38%.</p>
+  <p class="caption">Interactive replay of the renderer's per-word subtitles &mdash; the five <code>Dialogue</code> events are verbatim from <code>incoming/_black_render.ass</code>, the script the pixel gate renders over a black source. The stage mirrors the real 1080&times;1920 canvas: facecam strip at 38%, gameplay slice below, subtitle baseline at 25% from the bottom. Toggle <b>safe area</b> to see the guide the renderer keeps clear.</p>
 
   <div class="kpis">
     <div class="kpi"><b>56</b><span>offline tests — no network, no CUDA, no keys; the same suite runs in CI on push</span></div>
     <div class="kpi"><b>1</b><span>NVENC pass per clip — compose, burn subtitles, encode in one go</span></div>
     <div class="kpi"><b>1080×1920</b><span>H.264 High · yuv420p · bt709 pinned — ffprobe-verified, never by eye</span></div>
     <div class="kpi"><b>5</b><span>exports in <code>ready_to_post/</code> — five sessions, <span class="nw">2026-09-20 → 2026-10-08</span></span></div>
+    <div class="kpi"><b>0</b><span>API keys required — the judge chain falls back to a local heuristic and still ships</span></div>
   </div>
 
   <div class="strip">
-    <figure class="shot">
+    <figure class="shot nopx">
       <img src="sections/gta6-clipper/assets/render-frame.png" alt="Frame of the vertical render: test gradient as facecam strip over a gameplay slice, subtitle 'THIS IS INSANE!' with IS in yellow">
       <figcaption>A frame from a real render through the production filtergraph: facecam strip (top 38%) over the centred gameplay slice, subtitles burned into the same encode. Synthetic gradient source — captures use probes while the Twitch monitor is unarmed.</figcaption>
     </figure>
-    <figure class="shot">
+    <figure class="shot nopx">
       <img src="sections/gta6-clipper/assets/subtitle-check.png" alt="Black-frame verification render: 'THIS IS INSANE!' with IS in yellow on solid black">
       <figcaption>The pixel gate: the same .ass rendered over a solid black source. A script measures yellow-pixel x-ranges per timestamp — the highlight must move word-by-word. Never eyeballed: patterned sources contain a yellow stripe that fakes a highlight.</figcaption>
     </figure>
@@ -31,11 +32,15 @@
   <h3>What it does</h3>
   <ul>
     <li><b>Monitors the category</b> — Helix <code>/clips</code> for “Grand Theft Auto VI” with a view floor and a velocity window; sampled clips are scored and promoted in SQLite.</li>
-    <li><b>Transcribes on the local GPU</b> — faster-whisper <code>turbo</code> with word timestamps on CUDA (RTX 4060), CPU fallback; the selftest loads it in 3.3 s.</li>
+    <li><b>Transcribes on the local GPU</b> — faster-whisper <code>turbo</code> with word timestamps on CUDA (RTX 4060), CPU fallback; the selftest loads it in ~3 s.</li>
     <li><b>Scores virality in a 3-step chain</b> — Gemini 2.5 Flash → OpenRouter <code>gpt-4o-mini</code> → heuristic; the pipeline still produces output with zero API keys.</li>
     <li><b>Renders once</b> — NVENC: facecam (preset or MediaPipe-detected) stacked over a gameplay slice, per-word ASS subtitles burned in, High profile + bt709/tv pinned so players never mis-render it.</li>
     <li><b>Delivers, then stops</b> — <code>ready_to_post/YYYY-MM-DD/</code> gets mp4 + caption + cover; Telegram takes the file when it fits the Bot API caps (≤45 MB video). Posting is manual, by design.</li>
   </ul>
+
+  <h3>The judge chain, under pressure</h3>
+  <div class="mount" id="judge-mount"></div>
+  <p class="caption">Sample scores through the real three-step chain — Gemini 2.5 Flash, then OpenRouter <code>gpt-4o-mini</code>, then the local heuristic. Switch a key off and the chain degrades without blocking; the export still lands.</p>
 
   <h3>Gates, not vibes</h3>
   <div class="grid-2">
@@ -54,6 +59,19 @@
         color_trc=bt709:range=tv</pre>
       <p class="muted">Frames carry the tags; codec-level flags alone left primaries/transfer “unknown” in this ffmpeg build. Untagged or non-4:2:0 H.264 is the green-cast class — decodes fine, mis-renders in players.</p>
     </div>
+  </div>
+
+  <h3>One command, one pass</h3>
+  <div class="card code receipt">
+    <h3>The run, end to end</h3>
+    <pre>$ .venv/Scripts/python.exe main.py --input incoming/clip.mp4
+[whisper] large-v3-turbo · CUDA · word timestamps
+[judge]   Gemini 2.5 Flash → OpenRouter → heuristic
+[render]  h264_nvenc · 1080×1920 · bt709/tv · 1 pass
+[gate]    ffprobe: h264 · yuv420p · 1080×1920
+[deliver] ready_to_post/2026-10-08/clip.mp4
+          _caption.txt · _cover.jpg · clips.db → processed</pre>
+    <p class="muted">The shape of a run: one command, one encode, one delivery row. A missing key or a missing facecam changes the path, not the deliverable.</p>
   </div>
 
   <p class="muted">Source: <a href="https://github.com/daniilperkin-media/gta6-clipper">github.com/daniilperkin-media/gta6-clipper</a> (private) · rules in <code>AGENTS.md</code>, knobs in <code>config.yaml</code>.</p>

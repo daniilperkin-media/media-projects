@@ -12,15 +12,17 @@
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/studio.css">
+<link rel="stylesheet" href="assets/css/ui.css">
 <!-- @SECTION_STYLES@ -->
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="progressbar" aria-hidden="true"><i></i></div>
 <header class="hero">
   <div class="hero-bg" aria-hidden="true"><i class="g1"></i><i class="g2"></i><span class="grid"></span></div>
   <div class="wrap">
     <p class="kicker"><span class="dot"></span>Daniil Perkin · media studio</p>
-    <h1>Five media projects, <span class="grad">one interactive site.</span></h1>
+    <h1>Five media projects,&nbsp;<span class="grad">one interactive site.</span></h1>
     <p class="lede">A tour through my media workspace — clip pipelines, converters, posters and translation tools — with real captures of what each tool produces, the verification behind it, and the story of each build. Every section is contributed by that project's own build agent.</p>
     <p class="hero-meta">05 pipelines · agent-built sections · verified captures · no external requests</p>
   </div>
@@ -29,9 +31,12 @@
 <nav class="topnav"><div class="wrap" id="topnav">
 <span class="brand"><span class="brand-mark"></span><span class="brand-name">Media&nbsp;Projects</span></span>
 <span class="nav-links"><!-- @NAV@ --></span>
+<span class="nav-actions">
+<button id="palette-open" class="palette-open" type="button" aria-label="Jump to a project (Ctrl+K)" aria-haspopup="dialog" aria-expanded="false"><span class="po-ico" aria-hidden="true">⌕</span><span class="po-kbd">Ctrl K</span></button>
 <button id="theme-toggle" type="button">Light theme</button>
+</span>
 </div></nav>
-<main class="wrap">
+<main class="wrap" id="main">
 <!-- @SECTIONS@ -->
 </main>
 <footer class="footer"><div class="wrap">
