@@ -1,0 +1,152 @@
+/* Daily Fact Poster — section styles (tokens only, both themes) */
+#daily-fact-poster .p-owner{color:var(--accent-2);font-size:13px;margin:0 0 2px;font-weight:600;letter-spacing:.04em}
+/* the engine inserts a zero-height sticky chapter card after .p-head; give the
+   first heading flow space so the card rests in the gap instead of on the text */
+#daily-fact-poster .p-head + .chap + h3{margin-top:46px}
+/* the composite figure opts out of the engine parallax with .nopx (engine v3):
+   a capture of a 1080x1920 card must stay pixel-true at its edges */
+
+/* ── the rundown: a broadcast console replaying the verified run ─────────── */
+#daily-fact-poster .dfp-desk{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--code) 70%,var(--surface)));box-shadow:var(--shadow)}
+#daily-fact-poster .dfp-desk-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+#daily-fact-poster .dfp-rec{display:inline-flex;align-items:center;gap:8px;color:var(--text)}
+#daily-fact-poster .dfp-rec i{width:7px;height:7px;border-radius:50%;background:var(--warn);box-shadow:0 0 10px var(--warn);animation:dfp-pulse 2.2s ease-in-out infinite}
+#daily-fact-poster .dfp-mode{border:1px solid color-mix(in srgb,var(--sec) 45%,var(--border));color:var(--sec);border-radius:999px;padding:2px 9px;font-size:9.5px}
+#daily-fact-poster .dfp-clock{margin-left:auto;color:var(--sec);font-size:12px;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+#daily-fact-poster .dfp-desk-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+#daily-fact-poster .dfp-steps{display:flex;flex-direction:column;padding:10px;gap:4px;min-width:0;border-right:1px solid var(--border)}
+#daily-fact-poster .dfp-step{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:9px;padding:8px 10px;cursor:pointer;transition:border-color .18s ease,background .18s ease,color .18s ease}
+#daily-fact-poster .dfp-step:hover{border-color:var(--border);color:var(--text);background:color-mix(in srgb,var(--surface2) 55%,transparent)}
+#daily-fact-poster .dfp-step.on{border-color:color-mix(in srgb,var(--sec) 55%,var(--border));color:var(--text);background:color-mix(in srgb,var(--sec) 8%,var(--surface))}
+#daily-fact-poster .dfp-n{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted)}
+#daily-fact-poster .dfp-step.on .dfp-n,#daily-fact-poster .dfp-step.done .dfp-n{color:var(--sec)}
+#daily-fact-poster .dfp-lbl{font-size:13.5px;line-height:1.3;min-width:0}
+#daily-fact-poster .dfp-dur{font-family:var(--mono);font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+#daily-fact-poster .dfp-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .18s ease,box-shadow .18s ease}
+#daily-fact-poster .dfp-step.done .dfp-dot{background:var(--ok)}
+#daily-fact-poster .dfp-step.on .dfp-dot{background:var(--sec);box-shadow:0 0 8px var(--sec)}
+#daily-fact-poster .dfp-steps-foot{display:flex;justify-content:space-between;gap:10px;margin:auto 0 0;padding:9px 10px 2px;border-top:1px dashed color-mix(in srgb,var(--border) 75%,transparent);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+#daily-fact-poster .dfp-steps-foot span:first-child{color:var(--sec)}
+#daily-fact-poster .dfp-monitor{min-width:0;padding:12px 14px;background:color-mix(in srgb,var(--code) 82%,transparent);display:flex;flex-direction:column}
+#daily-fact-poster .dfp-mon-head{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px}
+#daily-fact-poster .dfp-mon-head span:first-child{color:var(--sec)}
+#daily-fact-poster .dfp-panels{flex:1;min-height:238px}
+#daily-fact-poster .dfp-panel{display:none;height:100%}
+#daily-fact-poster .dfp-panel.on{display:block;animation:dfp-in .22s ease}
+#daily-fact-poster .dfp-big{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}
+#daily-fact-poster .dfp-big b{font-size:30px;letter-spacing:-.02em;color:var(--sec)}
+#daily-fact-poster .dfp-big span{color:var(--muted);font-size:12.5px}
+#daily-fact-poster .dfp-bar{height:4px;border-radius:4px;background:var(--surface2);overflow:hidden;margin:0 0 10px}
+#daily-fact-poster .dfp-bar i{display:block;height:100%;width:.5%;background:var(--sec);border-radius:4px}
+#daily-fact-poster .dfp-small{color:var(--muted);font-size:12px;line-height:1.5;margin:10px 0 0}
+#daily-fact-poster .dfp-topics{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+#daily-fact-poster .dfp-topics li{font-family:var(--mono);font-size:9.5px;letter-spacing:.02em;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:3px 8px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+#daily-fact-poster .dfp-topics li.on{color:var(--text);border-color:color-mix(in srgb,var(--sec) 60%,var(--border))}
+#daily-fact-poster .dfp-tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--code);background:var(--accent-2);border-radius:4px;padding:2px 7px;margin:0 0 8px}
+#daily-fact-poster .dfp-tag-alt{background:var(--sec);color:var(--code)}
+#daily-fact-poster .dfp-script-title{font-size:19px;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;line-height:1.2}
+#daily-fact-poster .dfp-scenes{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+#daily-fact-poster .dfp-scenes li{display:flex;gap:9px;font-size:12px;line-height:1.45;color:var(--text);border-left:2px solid color-mix(in srgb,var(--sec) 45%,var(--border));padding:2px 0 2px 9px}
+#daily-fact-poster .dfp-scenes span{font-family:var(--mono);font-size:9.5px;color:var(--muted);flex:none;padding-top:2px}
+#daily-fact-poster .dfp-imgrow{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:start}
+#daily-fact-poster .dfp-imgrow img{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:8px}
+#daily-fact-poster .dfp-facts{list-style:none;margin:0;padding:0;display:grid;gap:5px;font-size:12px;color:var(--muted)}
+#daily-fact-poster .dfp-facts b{color:var(--text)}
+#daily-fact-poster .dfp-vid{position:relative}
+#daily-fact-poster .dfp-playbadge{position:absolute;inset:0;margin:auto;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--bg) 55%,transparent);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:11px;backdrop-filter:blur(4px)}
+#daily-fact-poster .dfp-caption{font-size:13.5px;line-height:1.55;margin:0 0 8px;color:var(--text)}
+#daily-fact-poster .dfp-hashtags{font-family:var(--mono);font-size:10.5px;line-height:1.6;color:var(--accent-2);margin:0}
+#daily-fact-poster .dfp-receipt{display:grid;gap:6px;font-size:12px}
+#daily-fact-poster .dfp-receipt p{display:grid;grid-template-columns:78px minmax(0,1fr);gap:10px;margin:0;align-items:baseline}
+#daily-fact-poster .dfp-receipt span{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+#daily-fact-poster .dfp-receipt code{font-size:10.5px;overflow-wrap:anywhere}
+#daily-fact-poster .dfp-receipt b{color:var(--ok);font-size:11.5px;letter-spacing:.04em}
+#daily-fact-poster .dfp-transport{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface2) 40%,transparent)}
+#daily-fact-poster .dfp-play{font:inherit;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:6px 12px;cursor:pointer;white-space:nowrap;transition:border-color .18s ease,color .18s ease}
+#daily-fact-poster .dfp-play:hover{border-color:color-mix(in srgb,var(--sec) 60%,var(--border));color:var(--sec)}
+#daily-fact-poster .dfp-play span{color:var(--sec);margin-right:3px}
+#daily-fact-poster #dfp-scrub{flex:1;min-width:0;accent-color:var(--sec);cursor:ew-resize;height:22px}
+#daily-fact-poster .dfp-total{font-family:var(--mono);font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ── carousel: phone stage, rail, spec overlay ─────────────────────────── */
+#daily-fact-poster .dfp-stage{display:grid;grid-template-columns:min(290px,70vw) minmax(0,1fr);gap:34px;align-items:center;max-width:820px;margin:0 auto}
+#daily-fact-poster .dfp-left{min-width:0;width:100%;max-width:290px;margin:0 auto}
+#daily-fact-poster .dfp-phone{position:relative;width:100%;aspect-ratio:9/16;margin:0 auto;border:1px solid var(--border);border-radius:22px;overflow:hidden;background:var(--code);box-shadow:var(--shadow)}
+#daily-fact-poster .dfp-phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease}
+#daily-fact-poster .dfp-phone img.on{opacity:1}
+#daily-fact-poster .dfp-dots{display:flex;gap:9px;justify-content:center;margin:14px 0 0}
+#daily-fact-poster .dfp-dots button{width:10px;height:10px;padding:0;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer}
+#daily-fact-poster .dfp-dots button.on{background:var(--accent);border-color:var(--accent)}
+#daily-fact-poster .dfp-status{text-align:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
+#daily-fact-poster .dfp-side{min-width:0}
+#daily-fact-poster .dfp-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+#daily-fact-poster .dfp-rail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+#daily-fact-poster .dfp-rail button{display:flex;gap:12px;align-items:baseline;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:10px;padding:8px 12px;font:inherit;color:var(--muted);cursor:pointer;transition:border-color .18s ease,color .18s ease,background .18s ease}
+#daily-fact-poster .dfp-rail button:hover{border-color:var(--border);color:var(--text)}
+#daily-fact-poster .dfp-rail button.on{border-color:var(--accent);color:var(--text);background:var(--surface)}
+#daily-fact-poster .dfp-rail .n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);flex:none}
+#daily-fact-poster .dfp-rail button.on .n{color:var(--accent)}
+#daily-fact-poster .dfp-rail .t{font-size:13.5px;line-height:1.5;min-width:0}
+#daily-fact-poster .dfp-meta{margin:12px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+#daily-fact-poster .dfp-specbtn{margin-top:12px;font:inherit;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:transparent;border:1px solid var(--border);border-radius:999px;padding:5px 11px;cursor:pointer;transition:border-color .18s ease,color .18s ease}
+#daily-fact-poster .dfp-specbtn:hover,#daily-fact-poster .dfp-specbtn[aria-pressed="true"]{border-color:color-mix(in srgb,var(--sec) 60%,var(--border));color:var(--sec)}
+
+/* measured guides: 72/1080 = 6.667% margins, 936/1080 = 86.667% column,
+   badge 288/1920 = 15%, dots 1800/1920 = 93.75%, footer 1862/1920 = 96.98% */
+#daily-fact-poster .dfp-spec{position:absolute;inset:0;z-index:3;opacity:0;pointer-events:none;transition:opacity .2s ease}
+#daily-fact-poster .dfp-phone.specs .dfp-spec{opacity:1}
+#daily-fact-poster .dfp-guide{position:absolute;background:color-mix(in srgb,var(--sec) 85%,transparent);box-shadow:0 0 4px color-mix(in srgb,var(--sec) 40%,transparent)}
+#daily-fact-poster .dfp-guide.gx1,#daily-fact-poster .dfp-guide.gx2{top:0;bottom:0;width:1px}
+#daily-fact-poster .dfp-guide.gx1{left:6.667%}
+#daily-fact-poster .dfp-guide.gx2{left:93.333%}
+#daily-fact-poster .dfp-guide.gy1,#daily-fact-poster .dfp-guide.gy2,#daily-fact-poster .dfp-guide.gy3{left:0;right:0;height:1px}
+#daily-fact-poster .dfp-guide.gy1{top:15%}
+#daily-fact-poster .dfp-guide.gy2{top:93.75%}
+#daily-fact-poster .dfp-guide.gy3{top:96.98%}
+#daily-fact-poster .dfp-slabel{position:absolute;font-family:var(--mono);font-size:7px;line-height:1.2;letter-spacing:.02em;color:#08090d;background:var(--sec);border-radius:3px;padding:1px 3px;white-space:nowrap}
+#daily-fact-poster .sl-badge{right:6.667%;top:15%;transform:translateY(-115%)}
+#daily-fact-poster .sl-col{left:50%;top:6%;transform:translateX(-50%)}
+#daily-fact-poster .sl-dots{left:6.667%;top:93.75%;transform:translateY(8%)}
+#daily-fact-poster .sl-foot{right:6.667%;bottom:0;transform:translateY(-12%)}
+#daily-fact-poster .sl-grad{right:6.667%;top:72%}
+
+/* ── gates + run-mode simulator ────────────────────────────────────────── */
+#daily-fact-poster .dfp-gates .card{display:flex;flex-direction:column}
+#daily-fact-poster .dfp-seg{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 10px}
+#daily-fact-poster .dfp-seg button{font:inherit;font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:5px 10px;cursor:pointer;transition:border-color .18s ease,color .18s ease,background .18s ease}
+#daily-fact-poster .dfp-seg button:hover{color:var(--text);border-color:color-mix(in srgb,var(--sec) 45%,var(--border))}
+#daily-fact-poster .dfp-seg button.on{color:var(--code);background:var(--sec);border-color:var(--sec);font-weight:600}
+#daily-fact-poster .dfp-cmdline{margin:0 0 10px}
+#daily-fact-poster .dfp-cmdline code{font-size:11.5px;padding:3px 7px}
+#daily-fact-poster .dfp-matrix{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+#daily-fact-poster .dfp-matrix li{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:12.5px;color:var(--muted);border-bottom:1px dashed color-mix(in srgb,var(--border) 75%,transparent);padding:3px 0}
+#daily-fact-poster .dfp-matrix b{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+#daily-fact-poster .dfp-matrix li.yes b{color:var(--ok)}
+#daily-fact-poster .dfp-matrix li.no b{color:var(--muted);opacity:.75}
+#daily-fact-poster .dfp-modenote{font-size:12px;line-height:1.5;color:var(--muted);margin:auto 0 0;padding-top:12px;min-height:54px}
+#daily-fact-poster .dfp-foot{margin:8px 0 0;padding-top:0;font-size:11.5px}
+
+@keyframes dfp-pulse{50%{opacity:.3}}
+@keyframes dfp-in{from{opacity:0;transform:translateY(4px)}}
+
+@media (max-width:760px){
+  #daily-fact-poster .dfp-desk-body{grid-template-columns:1fr}
+  #daily-fact-poster .dfp-steps{display:grid;grid-template-columns:1fr 1fr;border-right:0;border-bottom:1px solid var(--border);padding:8px}
+  #daily-fact-poster .dfp-steps-foot{grid-column:1/-1;margin-top:6px}
+  #daily-fact-poster .dfp-step{padding:7px 8px;gap:8px}
+  #daily-fact-poster .dfp-lbl{font-size:12px}
+  #daily-fact-poster .dfp-dur{display:none}
+  #daily-fact-poster .dfp-monitor{padding:12px}
+  #daily-fact-poster .dfp-panels{min-height:0}
+  #daily-fact-poster .dfp-stage{grid-template-columns:1fr;max-width:420px;gap:22px}
+}
+@media (max-width:420px){
+  #daily-fact-poster .dfp-steps{grid-template-columns:1fr}
+  #daily-fact-poster .dfp-imgrow{grid-template-columns:76px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion: reduce){
+  #daily-fact-poster .dfp-phone img{transition:none}
+  #daily-fact-poster .dfp-rail button,#daily-fact-poster .dfp-step,#daily-fact-poster .dfp-play,#daily-fact-poster .dfp-specbtn{transition:none}
+  #daily-fact-poster .dfp-rec i{animation:none}
+  #daily-fact-poster .dfp-panel.on{animation:none}
+}

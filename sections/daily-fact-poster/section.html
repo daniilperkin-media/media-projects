@@ -1,0 +1,243 @@
+<section class="project" id="daily-fact-poster">
+  <header class="p-head">
+    <p class="p-owner">@daily-fact-poster · section live</p>
+    <h2>Daily Fact Poster</h2>
+    <p class="p-lede">A daily fact, assembled end-to-end in one command: GPT-4o-mini writes the four-scene script, Flux 2 Pro renders one image per scene, PIL composes the 1080&times;1920 cards, FFmpeg cuts the 10-second 9:16 slideshow, and the TikTok Content Posting API uploads it &mdash; draft-to-inbox by default, Direct Post as the fallback. Every stage in between runs unattended.</p>
+    <p class="chips"><span class="chip">Python 3.10+ · uv</span><span class="chip">OpenRouter GPT-4o-mini</span><span class="chip">Flux 2 Pro</span><span class="chip">PIL · pixel-measured wrap</span><span class="chip">FFmpeg · H.264 9:16</span><span class="chip">TikTok Content Posting API</span><span class="chip">pytest · 3-leg CI</span></p>
+  </header>
+
+  <h3>The rundown — 55 seconds, start to posted</h3>
+  <div class="mount">
+    <div class="dfp-desk" id="dfp-rundown">
+      <div class="dfp-desk-top">
+        <span class="dfp-rec"><i aria-hidden="true"></i>RUN 2026-10-08 21:14:06</span>
+        <span class="dfp-mode">PRODUCTION</span>
+        <span class="dfp-clock" id="dfp-clock">00:00.0</span>
+      </div>
+
+      <div class="dfp-desk-body">
+        <div class="dfp-steps" role="group" aria-label="Pipeline stages — pick one to inspect its artifact">
+          <button type="button" class="dfp-step on" data-stage="history" data-at="0">
+            <span class="dfp-n">01</span><span class="dfp-lbl">History</span><span class="dfp-dur">0.0 s</span><i class="dfp-dot" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="dfp-step" data-stage="script" data-at="4">
+            <span class="dfp-n">02</span><span class="dfp-lbl">Script</span><span class="dfp-dur">4.0 s</span><i class="dfp-dot" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="dfp-step" data-stage="imagery" data-at="39">
+            <span class="dfp-n">03</span><span class="dfp-lbl">Imagery + cards</span><span class="dfp-dur">35.0 s</span><i class="dfp-dot" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="dfp-step" data-stage="video" data-at="40">
+            <span class="dfp-n">04</span><span class="dfp-lbl">Video</span><span class="dfp-dur">1.0 s</span><i class="dfp-dot" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="dfp-step" data-stage="caption" data-at="40">
+            <span class="dfp-n">05</span><span class="dfp-lbl">Caption</span><span class="dfp-dur">0.0 s</span><i class="dfp-dot" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="dfp-step" data-stage="publish" data-at="55">
+            <span class="dfp-n">06</span><span class="dfp-lbl">Publish</span><span class="dfp-dur">15.0 s</span><i class="dfp-dot" aria-hidden="true"></i>
+          </button>
+          <p class="dfp-steps-foot"><span>&Sigma; 55.0 s</span><span>6 steps &middot; 1 command</span></p>
+        </div>
+
+        <div class="dfp-monitor">
+          <div class="dfp-mon-head">
+            <span id="dfp-mon-kicker">STAGE 01 · HISTORY</span>
+            <span id="dfp-mon-meta">0.0 s · instant</span>
+          </div>
+
+          <div class="dfp-panels" id="dfp-panels">
+            <div class="dfp-panel on" data-panel="history">
+              <p class="dfp-big"><b>10</b><span>/ 2,000 topics in memory</span></p>
+              <div class="dfp-bar" aria-hidden="true"><i></i></div>
+              <p class="dfp-small">Every run reads the dedupe buffer first &mdash; a new fact must not already be in it. A successful post appends its own topic.</p>
+              <ul class="dfp-topics">
+                <li>Honey never spoils in Egyptian tombs</li>
+                <li>Bananas are naturally radioactive</li>
+                <li>Octopuses have three hearts</li>
+                <li>Jellyfish that reverses aging</li>
+                <li>Ancient honey discovery</li>
+                <li>Trees talk to each other</li>
+                <li>Plants can hear you</li>
+                <li>The secret of your gut</li>
+                <li>Galaxies collide constantly</li>
+                <li class="on">Bacteria can live in space</li>
+              </ul>
+            </div>
+
+            <div class="dfp-panel" data-panel="script">
+              <p class="dfp-tag">SCIENCE</p>
+              <p class="dfp-script-title">Bacteria Can Live in Space!</p>
+              <ol class="dfp-scenes">
+                <li><span>01</span>BACTERIA: MASTERS OF SURVIVAL!</li>
+                <li><span>02</span>These tiny organisms can endure extreme temperatures and radiation!</li>
+                <li><span>03</span>They&rsquo;ve even been found on the International Space Station!</li>
+                <li><span>04</span>FOLLOW FOR MORE DAILY FACTS!</li>
+              </ol>
+              <p class="dfp-small">GPT-4o-mini &middot; 4 slides &middot; retried with backoff &middot; 4.0 s</p>
+            </div>
+
+            <div class="dfp-panel" data-panel="imagery">
+              <div class="dfp-imgrow">
+                <img src="sections/daily-fact-poster/assets/raw_canvas_1.jpg" alt="Raw Flux 2 Pro render resized onto the 1080x1920 canvas — no text or overlays yet">
+                <ul class="dfp-facts">
+                  <li><b>4</b> renders &middot; 35.0 s</li>
+                  <li>9 s &middot; 8 s &middot; 10 s &middot; 8 s</li>
+                  <li>1,067 &middot; 1,282 &middot; 1,284 &middot; 826 KB</li>
+                  <li>Flux 2 Pro via OpenRouter</li>
+                </ul>
+              </div>
+              <p class="dfp-small">Each render lands on the canvas, then PIL composites the card in the same pass. A failed slide degrades to a dark-canvas card &mdash; the run never dies on one image.</p>
+            </div>
+
+            <div class="dfp-panel" data-panel="video">
+              <div class="dfp-imgrow">
+                <div class="dfp-vid">
+                  <img src="sections/daily-fact-poster/assets/card_slide_1.jpg" alt="The finished title card, used here as the video's poster frame">
+                  <span class="dfp-playbadge" aria-hidden="true">&#9654;</span>
+                </div>
+                <ul class="dfp-facts">
+                  <li><b>10.0 s</b> &middot; 1080&times;1920</li>
+                  <li>30 fps &middot; H.264 High</li>
+                  <li>4 &times; 2.5 s slides</li>
+                  <li>963,419 bytes uploaded</li>
+                </ul>
+              </div>
+              <p class="dfp-small">One FFmpeg slideshow pass, 1.0 s on this machine. The same file is what the uploader streams to TikTok &mdash; no re-encode after this point.</p>
+            </div>
+
+            <div class="dfp-panel" data-panel="caption">
+              <p class="dfp-tag dfp-tag-alt">CAPTION &middot; CLIPBOARD</p>
+              <p class="dfp-caption">Did you know that bacteria can withstand the vacuum of space and extreme radiation? &#128640;&#129440; This incredible discovery opens new doors to understanding life beyond Earth! &#127756;&#10024;</p>
+              <p class="dfp-hashtags">#SpaceLife #Microbiology #Astrobiology #ScienceFacts #ExploreTheUniverse</p>
+              <p class="dfp-small">Built from the same fact payload, then copied with an encoded PowerShell call &mdash; never spliced raw into a command line.</p>
+            </div>
+
+            <div class="dfp-panel" data-panel="publish">
+              <div class="dfp-receipt">
+                <p><span>publish_id</span><code>v_inbox_file~v2.7694376897077102599</code></p>
+                <p><span>status</span><b>SEND_TO_USER_INBOX</b></p>
+                <p><span>poll</span>0 s PROCESSING_UPLOAD &rarr; 5 s &rarr; 10 s inbox</p>
+                <p><span>result</span>Draft delivered &mdash; finish the post in the app</p>
+                <p><span>history</span>appended &middot; posted to ['TikTok']</p>
+              </div>
+              <p class="dfp-small">Inbox delivery is the default path. Direct Post is the fallback, and while the client is unaudited it only publishes to a private account.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dfp-transport">
+        <button type="button" class="dfp-play" id="dfp-play"><span aria-hidden="true">&#9654;</span> Play 8&times;</button>
+        <input type="range" id="dfp-scrub" min="0" max="55" step="0.1" value="0" aria-label="Run timeline, 0 to 55 seconds">
+        <span class="dfp-total" id="dfp-total">55.0 s</span>
+      </div>
+    </div>
+  </div>
+  <p class="caption">A replay of the verified 2026-10-08 run, timed from its own log: 21:14:06 &rarr; 21:15:01, 55.0 seconds. Pick a stage to inspect its artifact, or press play for an 8&times; pass. Zero-duration stages are instant steps, not skipped ones.</p>
+
+  <h3>The carousel, replayed</h3>
+  <div class="mount">
+    <div class="dfp-stage">
+      <div class="dfp-left">
+        <div class="dfp-phone" id="dfp-phone" role="img" aria-label="The four cards of the 2026-10-08 verified run, advancing at the export's 2.5-second cadence.">
+          <img class="on" src="sections/daily-fact-poster/assets/card_slide_1.jpg" alt='Slide 1 — title card, "BACTERIA: MASTERS OF SURVIVAL!", over the bacteria render'>
+          <img src="sections/daily-fact-poster/assets/card_slide_2.jpg" alt='Slide 2 — "These tiny organisms can endure extreme temperatures and radiation!", over a thermometer render' loading="lazy">
+          <img src="sections/daily-fact-poster/assets/card_slide_3.jpg" alt='Slide 3 — "They&#39;ve even been found on the International Space Station!", over an astronaut-at-the-window render' loading="lazy">
+          <img src="sections/daily-fact-poster/assets/card_slide_4.jpg" alt='Slide 4 — CTA card, "FOLLOW FOR MORE DAILY FACTS!", over a galaxy render' loading="lazy">
+          <div class="dfp-spec" aria-hidden="true">
+            <i class="dfp-guide gx1"></i><i class="dfp-guide gx2"></i>
+            <i class="dfp-guide gy1"></i><i class="dfp-guide gy2"></i><i class="dfp-guide gy3"></i>
+            <span class="dfp-slabel sl-badge">badge &middot; y 288</span>
+            <span class="dfp-slabel sl-col">936 px text column</span>
+            <span class="dfp-slabel sl-dots">dots &middot; y 1800</span>
+            <span class="dfp-slabel sl-foot">footer &middot; y 1862</span>
+            <span class="dfp-slabel sl-grad">gradient &rarr; &alpha;210</span>
+          </div>
+        </div>
+        <div class="dfp-dots" role="group" aria-label="Choose a slide">
+          <button type="button" class="on" aria-label="Show slide 1"></button>
+          <button type="button" aria-label="Show slide 2"></button>
+          <button type="button" aria-label="Show slide 3"></button>
+          <button type="button" aria-label="Show slide 4"></button>
+        </div>
+        <p class="dfp-status" id="dfp-status" aria-live="polite">Slide 1 of 4 &mdash; title card</p>
+      </div>
+      <div class="dfp-side">
+        <p class="dfp-kicker">The export, slide by slide</p>
+        <ol class="dfp-rail" aria-label="Slide rail">
+          <li><button type="button" class="on" aria-label="Show slide 1 — title card"><span class="n">01</span><span class="t">Title card — “BACTERIA: MASTERS OF SURVIVAL!”</span></button></li>
+          <li><button type="button" aria-label="Show slide 2 — fact slide, the extremes"><span class="n">02</span><span class="t">“These tiny organisms can endure extreme temperatures and radiation!”</span></button></li>
+          <li><button type="button" aria-label="Show slide 3 — fact slide, the ISS"><span class="n">03</span><span class="t">“They’ve even been found on the International Space Station!”</span></button></li>
+          <li><button type="button" aria-label="Show slide 4 — closing call to action"><span class="n">04</span><span class="t">CTA card — “FOLLOW FOR MORE DAILY FACTS!”</span></button></li>
+        </ol>
+        <p class="dfp-meta">4 slides &times; 2.5&nbsp;s &rarr; one 10.0-s export &middot; 1080&times;1920 &middot; 30&nbsp;fps</p>
+        <button type="button" class="dfp-specbtn" id="dfp-specbtn" aria-pressed="false">Show layout specs</button>
+      </div>
+    </div>
+  </div>
+  <p class="caption">The four real slides, advancing at the export's 2.5&nbsp;s cadence. Everything on them is baked in by the composite pass &mdash; gradient, pixel-measured headline, category badge, progress dots, <code>@dailyfacts</code> footer. The spec overlay is measured from the compositor: 72&nbsp;px margins, a 936&nbsp;px text column, badge at 15% height, dots and footer on the bottom furniture line.</p>
+
+  <h3>The composite pass</h3>
+  <div class="grid-2">
+    <div>
+      <div class="ba">
+        <img class="a" src="sections/daily-fact-poster/assets/raw_canvas_1.jpg" alt="The raw Flux render resized onto the 1080x1920 canvas — no text or overlays yet">
+        <img class="b" src="sections/daily-fact-poster/assets/card_slide_1.jpg" alt="The finished card — same scene with gradient, headline, badge and footer added">
+        <input type="range" value="50" aria-label="Canvas before overlays vs finished card">
+      </div>
+      <p class="caption">Drag: the raw Flux render resized onto the 1080&times;1920 canvas, then the same frame after the composite pass &mdash; gradient from a transparent top to a 210-alpha bottom, a headline wrapped by measured pixel width (a 936-px column, never character count), and the furniture: badge, progress dots, footer.</p>
+    </div>
+    <figure class="shot dfp-plate nopx">
+      <img src="sections/daily-fact-poster/assets/card_slide_2.jpg" alt='Slide 2 — "These tiny organisms can endure extreme temperatures and radiation!"'>
+      <figcaption>Slide 2 of the same run: body slides wrap at 48&nbsp;pt, title slides at 60&nbsp;pt uppercase. Category colour drives the badge and the active progress dot &mdash; <code>Science</code> is the teal seen here.</figcaption>
+    </figure>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><b>43</b><span>offline tests &mdash; network and clipboard mocked, real PIL + FFmpeg; the same suite gates every push</span></div>
+    <div class="kpi"><b>55.0 s</b><span>end-to-end for the verified run &mdash; one command, from an empty output folder to a TikTok draft</span></div>
+    <div class="kpi"><b>10.0 s</b><span>export, ffprobe-verified: 1080&times;1920 &middot; 30&nbsp;fps &middot; H.264 &middot; four 2.5-s slides</span></div>
+    <div class="kpi"><b>2026-10-08</b><span>first live end-to-end run &mdash; <code>PUBLISH_COMPLETE</code> ~12&nbsp;s after upload (Direct Post; draft-to-inbox is the default delivery)</span></div>
+  </div>
+
+  <h3>What it does</h3>
+  <ul>
+    <li><b>Writes the script</b> &mdash; GPT-4o-mini turns one fact into a four-scene script; retries with backoff wrap every network call. With no API key the run still completes on a sample fact with synthesised slides (only the imagery stage needs the key).</li>
+    <li><b>Renders the imagery</b> &mdash; Flux 2 Pro draws each scene via OpenRouter; a failed slide degrades to a dark-canvas card instead of killing the run.</li>
+    <li><b>Composes the cards</b> &mdash; PIL: resize onto the canvas, gradient, wrapped text, per-category badge, progress dots; Inter when bundled, system fonts otherwise.</li>
+    <li><b>Cuts the video</b> &mdash; FFmpeg slideshow, 2.5&nbsp;s per slide &rarr; one 10-second 1080&times;1920 H.264 mp4 at 30&nbsp;fps.</li>
+    <li><b>Posts &amp; remembers</b> &mdash; TikTok Content Posting API upload with automatic token refresh, and a 2,000-topic history file so a fact never repeats.</li>
+  </ul>
+
+  <h3>Gates, not vibes</h3>
+  <div class="grid-2 dfp-gates">
+    <div class="card">
+      <h3>Every change must pass</h3>
+      <ul>
+        <li><code>compileall</code> &rarr; <code>ruff</code> &rarr; <code>pytest</code> &mdash; the exact local trio, replayed in CI</li>
+        <li>43 offline tests &mdash; no keys, no credits, no network</li>
+        <li>an offline end-to-end smoke test: mocked script + imagery, real PIL cards, real FFmpeg mp4</li>
+        <li>CI on every push: Python 3.10 + 3.12 on Ubuntu, plus a Windows 3.12 leg mirroring the production machine</li>
+        <li>CI installs FFmpeg itself &mdash; GitHub runners no longer ship it, and the job fails loudly when it is missing</li>
+      </ul>
+    </div>
+    <div class="card dfp-modes" id="dfp-modes">
+      <h3>Run modes</h3>
+      <div class="dfp-seg" role="group" aria-label="Run mode">
+        <button type="button" class="on" data-mode="dry">--dry-run</button>
+        <button type="button" data-mode="local">--no-tiktok</button>
+        <button type="button" data-mode="post">default</button>
+      </div>
+      <p class="dfp-cmdline"><code id="dfp-cmd">python main.py --dry-run</code></p>
+      <ul class="dfp-matrix" id="dfp-matrix">
+        <li data-k="build"><span>Build script, imagery, cards, video</span><b>yes</b></li>
+        <li data-k="post"><span>Post to TikTok</span><b>no</b></li>
+        <li data-k="hist"><span>Record the topic in history</span><b>no</b></li>
+        <li data-k="clip"><span>Copy the caption to the clipboard</span><b>yes</b></li>
+      </ul>
+      <p class="dfp-modenote" id="dfp-modenote" aria-live="polite">Full pipeline, nothing posted &mdash; and the run returns before history is written, so the topic stays available for a real run.</p>
+      <p class="muted dfp-foot">Credentials live in a gitignored <code>.env</code>; the public repo holds none of them.</p>
+    </div>
+  </div>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/daily-fact-poster">github.com/daniilperkin-media/daily-fact-poster</a> (public) &middot; rules in <code>AGENTS.md</code> &middot; the TikTok legal pages ship from the same repo's Pages.</p>
+</section>
