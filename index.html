@@ -561,9 +561,14 @@ Done. All manifests consistent.</pre>
     </p>
   </header>
 
-  <h3>The round trip, replayed</h3>
-  <div class="mount" id="roundtrip-mount"></div>
-  <p class="caption">Stage by stage on the bundled demo book — four real runs, output verbatim (captured on Windows, hence the backslash paths). Click through the stages.</p>
+  <h3>The press, stage by stage</h3>
+  <div class="mount" id="press-mount"></div>
+  <p class="caption">Four real commands on the bundled public-domain demo book. Click a stage — or run the press — to watch the files land, read the exact terminal lines, and see the artifact each step produces. Every string below is verbatim from a live run; the file sizes are that run's own bytes.</p>
+
+  <figure class="shot receipt">
+    <img src="sections/novel-translation/assets/demo-run.png" alt="Terminal render of the demo run: prepare writes three batch files and 13 parts, verify reports no missing or empty chapters, and assemble rebuilds the book">
+    <figcaption>The same run as the repo's README renders it (<code>docs/demo.svg</code>, rasterized): prepare → verify → hand-off → assemble. The raw receipt for the interactive run above. Click to zoom.</figcaption>
+  </figure>
 
   <div class="kpis">
     <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real run this pipeline grew from, prepared end-to-end with it</span></div>
@@ -572,28 +577,44 @@ Done. All manifests consistent.</pre>
     <div class="kpi"><b>exit 2</b><span>on a missing or duplicated <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code> marker at assemble — nothing is lost silently</span></div>
   </div>
 
-  <figure class="shot">
-    <img src="sections/novel-translation/assets/demo-run.png" alt="Terminal demo of the pipeline: prepare writes 3 batch files and 13 parts, verify reports no missing or empty chapters, assemble rebuilds the book">
-    <figcaption>The repo's own README render (<code>docs/demo.svg</code>) — a real run, rasterized for this page: prepare → verify → (hand-off to <code>translated/</code>) → assemble, on the same demo book this section replays. Backslashes are Windows paths; the run itself is the same everywhere. Click to zoom.</figcaption>
-  </figure>
+  <h3>215 → 43, made literal</h3>
+  <div class="mount" id="shelf-mount"></div>
+  <p class="caption">Every spine is a chapter. Drag the batch size to regroup the shelf: the real English→Ukrainian run (215 chapters) and the demo (13 parts) respond to the same <code>--batch-size</code> flag, so the file count moves together. The real run used the default 5 — 43 files; the demo's last crate holds three. Hover or tap a crate for its file name and range.</p>
 
   <h3>Markers are the contract</h3>
   <div class="mount" id="marker-mount"></div>
-  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out.</p>
+  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out. Arm a fault and run the validator to see why.</p>
 
   <h3>Flags that earned their keep</h3>
-  <ul>
-    <li><code>--strip REGEX</code> — drops running headers a source EPUB repeats on every page (a regex, not a constant: the original run's banner was book-specific).</li>
-    <li><code>--insert FILE --insert-after N</code> — splices a recovered chapter back where the source books missed one; this pipeline's origin story.</li>
-    <li><code>--story-start</code> / <code>--heading-regex</code> — where the story begins and what counts as a part (<code>Chapter N</code> · <code>Side Story N</code> · <code>Epilogue</code> by default).</li>
-    <li><code>--batch-size N</code> — parts per batch file (default 5, the real run's setting).</li>
-    <li><code>verify --max-chapter N --strict</code> — continuity across a known full range, non-zero exit on issues.</li>
-  </ul>
+  <div class="flags">
+    <article class="flag">
+      <code>--strip REGEX</code>
+      <p>Drops running headers a source EPUB repeats on every page. A regex, not a constant: the original run's banner was book-specific.</p>
+    </article>
+    <article class="flag">
+      <code>--insert FILE --insert-after N</code>
+      <p>Splices a recovered chapter back where the source books missed one — this pipeline's origin story.</p>
+      <span class="flag-tag">origin story</span>
+    </article>
+    <article class="flag">
+      <code>--story-start</code> <code>--heading-regex</code>
+      <p>Where the story begins and what counts as a part (<code>Chapter N</code> · <code>Side Story N</code> · <code>Epilogue</code> by default).</p>
+    </article>
+    <article class="flag">
+      <code>--batch-size N</code>
+      <p>Parts per batch file (default 5, the real run's setting). The shelf above is this flag, drawn.</p>
+      <span class="flag-tag">try it above</span>
+    </article>
+    <article class="flag">
+      <code>verify --max-chapter N --strict</code>
+      <p>Continuity across a known full range, with a non-zero exit on any issue. The demo's 13-part run is clean.</p>
+    </article>
+  </div>
 
   <div class="grid-2">
     <div class="card">
       <h3>Every change must pass</h3>
-      <ul>
+      <ul class="gate-list">
         <li><code>ruff check .</code> + <code>compileall</code> — lint and syntax, one config in the repo</li>
         <li>15 unittest tests — synthetic EPUBs built at runtime; the API path runs on a fake transport</li>
         <li>CLI smoke — <code>novel-translate --help</code></li>
