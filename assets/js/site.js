@@ -214,6 +214,18 @@
   var pbi = document.querySelector('.progressbar i');
   var links = [].slice.call(document.querySelectorAll('.topnav a[href^="#"]'));
   var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var topBtn = document.getElementById('to-top');
+  var heroEl = document.querySelector('.hero');
+  var topHeading = document.querySelector('.hero h1');
+  if (topBtn) {
+    topBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      if (topHeading) {
+        topHeading.setAttribute('tabindex', '-1');
+        topHeading.focus({ preventScroll: true });
+      }
+    });
+  }
 
   /* section rail (CSS shows it at >=1400px; built from the nav links so it always
      mirrors the real section list) */
@@ -406,6 +418,10 @@
     var y = window.scrollY || h.scrollTop || 0;
     if (pbi) { pbi.style.width = (max > 0 ? Math.min(1, y / max) : 0) * 100 + '%'; }
     if (nav) { nav.classList.toggle('scrolled', y > 8); }
+    if (topBtn) {
+      var heroH = heroEl ? heroEl.offsetHeight : 600;
+      topBtn.classList.toggle('on', y > heroH);
+    }
     var marker = 96;
     var current = -1;
     for (var i = 0; i < sections.length; i++) {
@@ -424,7 +440,7 @@
     });
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
-  if (sections.length) {
+  if (sections.length || topBtn) {
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     frame();

@@ -8,13 +8,15 @@ const root = dirname(fileURLToPath(import.meta.url));
 const conf = JSON.parse(readFileSync(join(root, 'sections', 'sections.json'), 'utf8'));
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const nav = [], parts = [], styles = [], scripts = [];
+const nav = [], idx = [], parts = [], styles = [], scripts = [];
 let live = 0, num = 0;
 
 for (const p of conf.projects) {
   const n = String(++num).padStart(2, '0');
   const dir = join(root, 'sections', p.id);
-  if (existsSync(join(dir, 'section.html'))) {
+  const isLive = existsSync(join(dir, 'section.html'));
+  idx.push(`<a href="#${p.id}"${isLive ? '' : ' class="dim"'}><span class="ix-n">${n}</span><span class="ix-name">${esc(p.name)}</span></a>`);
+  if (isLive) {
     live++;
     parts.push(readFileSync(join(dir, 'section.html'), 'utf8').trim());
     nav.push(`<a href="#${p.id}" data-num="${n}" data-kind="${esc(p.kind)}">${esc(p.name)}</a>`);
@@ -42,6 +44,8 @@ const tickerSet = conf.projects.map(p => `<span class="tk-item"><b>${esc(p.name)
 
 let html = readFileSync(join(root, 'shell', 'template.html'), 'utf8');
 html = html.split('<!-- @NAV@ -->').join(nav.join('\n'));
+html = html.split('<!-- @INDEX@ -->').join(idx.join('\n'));
+html = html.split('<!-- @INDEX_COUNT@ -->').join(String(conf.projects.length).padStart(2, '0'));
 html = html.split('<!-- @SECTIONS@ -->').join(parts.join('\n'));
 html = html.split('<!-- @SECTION_STYLES@ -->').join(styles.join('\n'));
 html = html.split('<!-- @SECTION_SCRIPTS@ -->').join(scripts.join('\n'));

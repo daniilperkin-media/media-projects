@@ -83,6 +83,8 @@
 #novel-translation .art-big .u{font-size:11.5px;color:var(--muted);line-height:1.25}
 #novel-translation .art-big.ok .n{color:var(--ok)}
 #novel-translation .art-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:10.3px}
+#novel-translation .art-table th{padding:0 0 4px;border-bottom:1px solid color-mix(in srgb,var(--border) 55%,transparent);color:var(--muted);font-weight:600;font-size:9.3px;letter-spacing:.07em;text-transform:uppercase;text-align:left;vertical-align:bottom}
+#novel-translation .art-table th:last-child{text-align:right}
 #novel-translation .art-table td{padding:4px 0;border-bottom:1px solid color-mix(in srgb,var(--border) 55%,transparent);color:var(--muted);vertical-align:top}
 #novel-translation .art-table td:first-child{color:var(--text)}
 #novel-translation .art-table td:last-child{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}

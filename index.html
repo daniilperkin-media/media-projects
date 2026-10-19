@@ -5,9 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Daniil Perkin's media studio — five pipelines, one interactive site: clip tools, converters, posters and translation pipelines with real captures and verified gates.">
 <title>Media projects — Daniil Perkin</title>
-<link rel="icon" href="data:,">
+<link rel="canonical" href="https://daniilperkin-media.github.io/media-projects/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#08090d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f7fb" media="(prefers-color-scheme: light)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Media projects — Daniil Perkin">
+<meta property="og:title" content="Five media projects, one interactive site — Daniil Perkin">
+<meta property="og:description" content="A tour through five media pipelines — clip tools, converters, posters and translation — with real captures, verified gates and the story of each build.">
+<meta property="og:url" content="https://daniilperkin-media.github.io/media-projects/">
+<meta property="og:image" content="https://daniilperkin-media.github.io/media-projects/sections/openshorts/assets/crop-source.webp">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="OpenShorts source frame: a studio shot with the speaker centred and an inset facecam bottom-left">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Five media projects, one interactive site — Daniil Perkin">
+<meta name="twitter:description" content="A tour through five media pipelines — clip tools, converters, posters and translation — with real captures, verified gates and the story of each build.">
+<meta name="twitter:image" content="https://daniilperkin-media.github.io/media-projects/sections/openshorts/assets/crop-source.webp">
+<meta name="twitter:image:alt" content="OpenShorts source frame: a studio shot with the speaker centred and an inset facecam bottom-left">
 <script>(function(){try{var t=localStorage.getItem('mp-theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}else if(window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.dataset.theme='light'}}catch(e){}try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('mp-anim')}}catch(e){}})();</script>
 <link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="preload" href="assets/fonts/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/space-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/components.css">
@@ -45,6 +66,17 @@
 </span>
 </div></nav>
 <main class="wrap" id="main">
+<details class="sec-index" id="section-index" open>
+  <summary><span class="ix-t">Section index</span><span class="ix-count">05 sections</span><span class="ix-hint">jump to a project</span></summary>
+  <nav class="ix-grid" aria-label="Section index">
+<a href="#gta6-clipper"><span class="ix-n">01</span><span class="ix-name">GTA 6 Clipper</span></a>
+<a href="#openshorts"><span class="ix-n">02</span><span class="ix-name">OpenShorts</span></a>
+<a href="#daily-fact-poster"><span class="ix-n">03</span><span class="ix-name">Daily Fact Poster</span></a>
+<a href="#gothic-character-project"><span class="ix-n">04</span><span class="ix-name">Gothic Character Project</span></a>
+<a href="#novel-translation"><span class="ix-n">05</span><span class="ix-name">Novel Translation</span></a>
+  </nav>
+</details>
+<script>if(window.matchMedia('(max-width:700px)').matches){document.getElementById('section-index').removeAttribute('open')}</script>
 <section class="project" id="gta6-clipper">
   <header class="p-head">
     <p class="p-owner">@gta6-clipper · section live</p>
@@ -67,11 +99,11 @@
 
   <div class="strip">
     <figure class="shot nopx">
-      <img src="sections/gta6-clipper/assets/render-frame.png" alt="Frame of the vertical render: test gradient as facecam strip over a gameplay slice, subtitle 'THIS IS INSANE!' with IS in yellow">
+      <img src="sections/gta6-clipper/assets/render-frame.webp" alt="Frame of the vertical render: test gradient as facecam strip over a gameplay slice, subtitle 'THIS IS INSANE!' with IS in yellow" width="1080" height="1920" loading="eager" decoding="async">
       <figcaption>A frame from a real render through the production filtergraph: facecam strip (top 38%) over the centred gameplay slice, subtitles burned into the same encode. Synthetic gradient source — captures use probes while the Twitch monitor is unarmed.</figcaption>
     </figure>
     <figure class="shot nopx">
-      <img src="sections/gta6-clipper/assets/subtitle-check.png" alt="Black-frame verification render: 'THIS IS INSANE!' with IS in yellow on solid black">
+      <img src="sections/gta6-clipper/assets/subtitle-check.webp" alt="Black-frame verification render: 'THIS IS INSANE!' with IS in yellow on solid black" width="1080" height="1920" loading="eager" decoding="async">
       <figcaption>The pixel gate: the same .ass rendered over a solid black source. A script measures yellow-pixel x-ranges per timestamp — the highlight must move word-by-word. Never eyeballed: patterned sources contain a yellow stripe that fakes a highlight.</figcaption>
     </figure>
   </div>
@@ -144,8 +176,8 @@
 
   <h3>The burn, up close</h3>
   <div class="ba">
-    <img class="a" src="sections/openshorts/assets/captions-raw.png" alt="Render frame of clip 1 without captions">
-    <img class="b" src="sections/openshorts/assets/captions-burned.png" alt="The same frame after the karaoke ASS was piped through libass">
+    <img class="a" src="sections/openshorts/assets/captions-raw.webp" alt="Render frame of clip 1 without captions" width="606" height="1080" loading="lazy" decoding="async">
+    <img class="b" src="sections/openshorts/assets/captions-burned.webp" alt="The same frame after the karaoke ASS was piped through libass" width="606" height="1080" loading="lazy" decoding="async">
     <input type="range" value="50" aria-label="Raw render vs burned karaoke captions">
   </div>
   <p class="caption">Drag the handle: left is the clip as it lands out of the pipeline, right is the same frame after <code>/api/subtitle</code> pipes the karaoke ASS through libass &mdash; the exact production filter, bundled fonts and all. The active word (<b>USING</b>) recolours to <code>#FFE500</code> and pops 90&nbsp;→&nbsp;108&nbsp;% over 110&nbsp;ms; margin 43 at PlayResY 288 keeps the line ~15&nbsp;% clear of the bottom edge, where the platform UI lives.</p>
@@ -153,11 +185,11 @@
   <h3>Face-tracked framing</h3>
   <div class="strip framing-strip">
     <figure class="shot">
-      <img src="sections/openshorts/assets/crop-source.png" alt="Source frame at 1920×1080: a studio shot with the speaker centred, an inset facecam bottom-left and the video's own red text">
+      <img src="sections/openshorts/assets/crop-source.webp" alt="Source frame at 1920×1080: a studio shot with the speaker centred, an inset facecam bottom-left and the video's own red text" width="1200" height="675" loading="lazy" decoding="async">
       <figcaption>The source at 1080p: a studio shot &mdash; talker centre, an inset facecam bottom-left, and the video's own red text treatment.</figcaption>
     </figure>
     <figure class="shot">
-      <img src="sections/openshorts/assets/crop-clip.png" alt="Rendered clip frame at 606×1080: a tight vertical crop centred on the speaker's face">
+      <img src="sections/openshorts/assets/crop-clip.webp" alt="Rendered clip frame at 606×1080: a tight vertical crop centred on the speaker's face" width="606" height="1080" loading="lazy" decoding="async">
       <figcaption>The render: the cameraman followed the largest face and cropped 606&times;1080 &mdash; the inset facecam falls outside the window and the source's own lower-third is clipped at the edges. Centre moves are smoothed (3 px/frame, 15 when the skip is big, a 25&nbsp;% safe zone), so tracking reads as a camera, not a jitter.</figcaption>
     </figure>
   </div>
@@ -277,7 +309,7 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
 
             <div class="dfp-panel" data-panel="imagery">
               <div class="dfp-imgrow">
-                <img src="sections/daily-fact-poster/assets/raw_canvas_1.jpg" alt="Raw Flux 2 Pro render resized onto the 1080x1920 canvas — no text or overlays yet">
+                <img src="sections/daily-fact-poster/assets/raw_canvas_1.webp" alt="Raw Flux 2 Pro render resized onto the 1080x1920 canvas — no text or overlays yet" width="810" height="1440" loading="lazy" decoding="async">
                 <ul class="dfp-facts">
                   <li><b>4</b> renders &middot; 35.0 s</li>
                   <li>9 s &middot; 8 s &middot; 10 s &middot; 8 s</li>
@@ -291,7 +323,7 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
             <div class="dfp-panel" data-panel="video">
               <div class="dfp-imgrow">
                 <div class="dfp-vid">
-                  <img src="sections/daily-fact-poster/assets/card_slide_1.jpg" alt="The finished title card, used here as the video's poster frame">
+                  <img src="sections/daily-fact-poster/assets/card_slide_1.webp" alt="The finished title card, used here as the video's poster frame" width="810" height="1440" loading="lazy" decoding="async">
                   <span class="dfp-playbadge" aria-hidden="true">&#9654;</span>
                 </div>
                 <ul class="dfp-facts">
@@ -339,10 +371,10 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
     <div class="dfp-stage">
       <div class="dfp-left">
         <div class="dfp-phone" id="dfp-phone" role="img" aria-label="The four cards of the 2026-10-08 verified run, advancing at the export's 2.5-second cadence.">
-          <img class="on" src="sections/daily-fact-poster/assets/card_slide_1.jpg" alt='Slide 1 — title card, "BACTERIA: MASTERS OF SURVIVAL!", over the bacteria render'>
-          <img src="sections/daily-fact-poster/assets/card_slide_2.jpg" alt='Slide 2 — "These tiny organisms can endure extreme temperatures and radiation!", over a thermometer render' loading="lazy">
-          <img src="sections/daily-fact-poster/assets/card_slide_3.jpg" alt='Slide 3 — "They&#39;ve even been found on the International Space Station!", over an astronaut-at-the-window render' loading="lazy">
-          <img src="sections/daily-fact-poster/assets/card_slide_4.jpg" alt='Slide 4 — CTA card, "FOLLOW FOR MORE DAILY FACTS!", over a galaxy render' loading="lazy">
+          <img class="on" src="sections/daily-fact-poster/assets/card_slide_1.webp" alt='Slide 1 — title card, "BACTERIA: MASTERS OF SURVIVAL!", over the bacteria render' width="810" height="1440" loading="lazy" decoding="async">
+          <img src="sections/daily-fact-poster/assets/card_slide_2.webp" alt='Slide 2 — "These tiny organisms can endure extreme temperatures and radiation!", over a thermometer render' width="810" height="1440" loading="lazy" decoding="async">
+          <img src="sections/daily-fact-poster/assets/card_slide_3.webp" alt='Slide 3 — "They&#39;ve even been found on the International Space Station!", over an astronaut-at-the-window render' width="810" height="1440" loading="lazy" decoding="async">
+          <img src="sections/daily-fact-poster/assets/card_slide_4.webp" alt='Slide 4 — CTA card, "FOLLOW FOR MORE DAILY FACTS!", over a galaxy render' width="810" height="1440" loading="lazy" decoding="async">
           <div class="dfp-spec" aria-hidden="true">
             <i class="dfp-guide gx1"></i><i class="dfp-guide gx2"></i>
             <i class="dfp-guide gy1"></i><i class="dfp-guide gy2"></i><i class="dfp-guide gy3"></i>
@@ -380,14 +412,14 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
   <div class="grid-2">
     <div>
       <div class="ba">
-        <img class="a" src="sections/daily-fact-poster/assets/raw_canvas_1.jpg" alt="The raw Flux render resized onto the 1080x1920 canvas — no text or overlays yet">
-        <img class="b" src="sections/daily-fact-poster/assets/card_slide_1.jpg" alt="The finished card — same scene with gradient, headline, badge and footer added">
+        <img class="a" src="sections/daily-fact-poster/assets/raw_canvas_1.webp" alt="The raw Flux render resized onto the 1080x1920 canvas — no text or overlays yet" width="810" height="1440" loading="lazy" decoding="async">
+        <img class="b" src="sections/daily-fact-poster/assets/card_slide_1.webp" alt="The finished card — same scene with gradient, headline, badge and footer added" width="810" height="1440" loading="lazy" decoding="async">
         <input type="range" value="50" aria-label="Canvas before overlays vs finished card">
       </div>
       <p class="caption">Drag: the raw Flux render resized onto the 1080&times;1920 canvas, then the same frame after the composite pass &mdash; gradient from a transparent top to a 210-alpha bottom, a headline wrapped by measured pixel width (a 936-px column, never character count), and the furniture: badge, progress dots, footer.</p>
     </div>
     <figure class="shot dfp-plate nopx">
-      <img src="sections/daily-fact-poster/assets/card_slide_2.jpg" alt='Slide 2 — "These tiny organisms can endure extreme temperatures and radiation!"'>
+      <img src="sections/daily-fact-poster/assets/card_slide_2.webp" alt='Slide 2 — "These tiny organisms can endure extreme temperatures and radiation!"' width="810" height="1440" loading="lazy" decoding="async">
       <figcaption>Slide 2 of the same run: body slides wrap at 48&nbsp;pt, title slides at 60&nbsp;pt uppercase. Category colour drives the badge and the active progress dot &mdash; <code>Science</code> is the teal seen here.</figcaption>
     </figure>
   </div>
@@ -465,23 +497,23 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
   <p class="muted">Canon starts on the model sheets; scenes rebuild the same markers at story scale. Every capture is a downscaled copy of a tracked PNG — nothing re-rendered for the web. Both sets stay still — the library and the pose comparison — so every capture can be read side by side.</p>
   <div class="library-set library-strip">
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/dante-sheet.jpg" alt="Dante model sheet: full front and back views, two profiles, a portrait and the silver-chain detail">
+      <img src="sections/gothic-character-project/assets/dante-sheet.webp" alt="Dante model sheet: full front and back views, two profiles, a portrait and the silver-chain detail" width="710" height="396" loading="lazy" decoding="async">
       <figcaption>Dante's model sheet — full front and back, two profiles, a portrait and the chain detail on one grey canvas. Strict, stylized linework is the canon; the scenes resolve the same markers photoreal.</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/maeve-sheet.jpg" alt="Maeve model sheet: floor-length hair with white streaks on her right side only, violet-left and red-right eye split, lace corset, jewelry and botanical hand ink">
+      <img src="sections/gothic-character-project/assets/maeve-sheet.webp" alt="Maeve model sheet: floor-length hair with white streaks on her right side only, violet-left and red-right eye split, lace corset, jewelry and botanical hand ink" width="710" height="710" loading="lazy" decoding="async">
       <figcaption>Maeve's model sheet — the asymmetry is the story: white streaks on her right side only (our left when she faces us, our right in the back view — exactly as the bible pins it), the violet-left / red-right eye split, lace corset under heavy jewelry, botanical ink across the back of her hand.</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/scene1-gemini.jpg" alt="Scene 1, Gemini take: the pair standing in a ruined cathedral nave, mist on the flagstones, light through broken windows">
+      <img src="sections/gothic-character-project/assets/scene1-gemini.webp" alt="Scene 1, Gemini take: the pair standing in a ruined cathedral nave, mist on the flagstones, light through broken windows" width="710" height="396" loading="lazy" decoding="async">
       <figcaption>Scene 1, Gemini take — the ruined nave, mist on the flagstones, his red gaze and her white streak both holding canon at story scale; the sparkle watermark bottom-right is the generator's own, still in the frame.</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/scene1-hf.jpg" alt="Scene 1, HuggingFace take: near-identical staging to the Gemini version">
+      <img src="sections/gothic-character-project/assets/scene1-hf.webp" alt="Scene 1, HuggingFace take: near-identical staging to the Gemini version" width="710" height="396" loading="lazy" decoding="async">
       <figcaption>The same brief through a HuggingFace job — near-identical staging across two engines; the markers travel well. This file's entire recoverable history is a job ID (inspector below).</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/scene2.jpg" alt="Scene 2: full-length cathedral composition with the floor-length hair spreading across the rubble">
+      <img src="sections/gothic-character-project/assets/scene2.webp" alt="Scene 2: full-length cathedral composition with the floor-length hair spreading across the rubble" width="710" height="396" loading="lazy" decoding="async">
       <figcaption>Scene 2 — full-length: the composition the hair rule exists for. Floor-length is literal; the hem of her hair drags across the rubble.</figcaption>
     </figure>
   </div>
@@ -490,19 +522,19 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
   <p class="muted">The Demoness' signature pose, tested across six files and three engines until it held. The manifest records which takes keep the exact floor-sit and which drift from it — so the four stay side by side, one frame size, captions level.</p>
   <div class="pose-set pose-strip">
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-vertical.jpg" alt="The Demoness floor-sit by DALL-E (vertical): back view, wide wings, goat-head pentagram between them">
+      <img src="sections/gothic-character-project/assets/pose-dalle-vertical.webp" alt="The Demoness floor-sit by DALL-E (vertical): back view, wide wings, goat-head pentagram between them" width="933" height="1400" loading="lazy" decoding="async">
       <figcaption>DALL-E, vertical — one of the two takes the manifest certifies as keeping the exact floor-sit; the goat-head pentagram sits framed between the wings and the silk pools on the stone.</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/pose-gemini-perfected.jpg" alt="The Demoness floor-sit by Gemini, horizontal 'perfected' take: cross-legged on the floor, widest wingspan of the set">
+      <img src="sections/gothic-character-project/assets/pose-gemini-perfected.webp" alt="The Demoness floor-sit by Gemini, horizontal 'perfected' take: cross-legged on the floor, widest wingspan of the set" width="1086" height="606" loading="lazy" decoding="async">
       <figcaption>Gemini, 'perfected' horizontal — its own name claims it as the final of the horizontal runs; exact floor-sit kept, and the widest wingspan in the set.</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/pose-gemini-throne.jpg" alt="The Demoness by Gemini on a throne-like chair instead of the floor — the recorded drift">
+      <img src="sections/gothic-character-project/assets/pose-gemini-throne.webp" alt="The Demoness by Gemini on a throne-like chair instead of the floor — the recorded drift" width="768" height="1376" loading="lazy" decoding="async">
       <figcaption>The recorded miss — a throne-like chair instead of the floor. It stays in the library anyway; the manifest says so rather than quietly dropping the file.</figcaption>
     </figure>
     <figure class="shot">
-      <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-chatgpt.jpg" alt="The Demoness by DALL-E via web upload: seated on a carved stone ledge, legs crossed, strappy heels">
+      <img src="sections/gothic-character-project/assets/pose-dalle-chatgpt.webp" alt="The Demoness by DALL-E via web upload: seated on a carved stone ledge, legs crossed, strappy heels" width="933" height="1400" loading="lazy" decoding="async">
       <figcaption>DALL-E by web upload — German-locale default filename, since renamed and tracked; a carved ledge and strappy heels, another drift from the floor-sit brief.</figcaption>
     </figure>
   </div>
@@ -566,7 +598,7 @@ Done. All manifests consistent.</pre>
   <p class="caption">Four real commands on the bundled public-domain demo book. Click a stage — or run the press — to watch the files land, read the exact terminal lines, and see the artifact each step produces. Every string below is verbatim from a live run; the file sizes are that run's own bytes.</p>
 
   <figure class="shot receipt">
-    <img src="sections/novel-translation/assets/demo-run.png" alt="Terminal render of the demo run: prepare writes three batch files and 13 parts, verify reports no missing or empty chapters, and assemble rebuilds the book">
+    <img src="sections/novel-translation/assets/demo-run.webp" alt="Terminal render of the demo run: prepare writes three batch files and 13 parts, verify reports no missing or empty chapters, and assemble rebuilds the book" width="1280" height="687" loading="lazy" decoding="async">
     <figcaption>The same run as the repo's README renders it (<code>docs/demo.svg</code>, rasterized): prepare → verify → hand-off → assemble. The raw receipt for the interactive run above. Click to zoom.</figcaption>
   </figure>
 
@@ -635,6 +667,7 @@ Done. All manifests consistent.</pre>
   <p class="foot-fleet">Built by the project fleet — @gta6-clipper · @openshorts · @daily-fact-poster · @gothic-characters · @novel-translation</p>
   <p>Local build — regenerate with <code>node build.mjs</code>, serve with <code>node serve.mjs</code>. Sections © their project agents, <span id="year">2026</span>.</p>
 </div></footer>
+<button class="to-top" id="to-top" type="button" aria-label="Back to top"><span class="tt-arrow" aria-hidden="true">↑</span><span>Top</span></button>
 <script src="assets/js/site.js"></script>
 <script src="assets/js/studio.js"></script>
 <script defer src="sections/gta6-clipper/script.js"></script>

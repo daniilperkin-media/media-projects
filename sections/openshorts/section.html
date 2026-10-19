@@ -19,8 +19,8 @@
 
   <h3>The burn, up close</h3>
   <div class="ba">
-    <img class="a" src="sections/openshorts/assets/captions-raw.png" alt="Render frame of clip 1 without captions">
-    <img class="b" src="sections/openshorts/assets/captions-burned.png" alt="The same frame after the karaoke ASS was piped through libass">
+    <img class="a" src="sections/openshorts/assets/captions-raw.webp" alt="Render frame of clip 1 without captions" width="606" height="1080" loading="lazy" decoding="async">
+    <img class="b" src="sections/openshorts/assets/captions-burned.webp" alt="The same frame after the karaoke ASS was piped through libass" width="606" height="1080" loading="lazy" decoding="async">
     <input type="range" value="50" aria-label="Raw render vs burned karaoke captions">
   </div>
   <p class="caption">Drag the handle: left is the clip as it lands out of the pipeline, right is the same frame after <code>/api/subtitle</code> pipes the karaoke ASS through libass &mdash; the exact production filter, bundled fonts and all. The active word (<b>USING</b>) recolours to <code>#FFE500</code> and pops 90&nbsp;→&nbsp;108&nbsp;% over 110&nbsp;ms; margin 43 at PlayResY 288 keeps the line ~15&nbsp;% clear of the bottom edge, where the platform UI lives.</p>
@@ -28,11 +28,11 @@
   <h3>Face-tracked framing</h3>
   <div class="strip framing-strip">
     <figure class="shot">
-      <img src="sections/openshorts/assets/crop-source.png" alt="Source frame at 1920×1080: a studio shot with the speaker centred, an inset facecam bottom-left and the video's own red text">
+      <img src="sections/openshorts/assets/crop-source.webp" alt="Source frame at 1920×1080: a studio shot with the speaker centred, an inset facecam bottom-left and the video's own red text" width="1200" height="675" loading="lazy" decoding="async">
       <figcaption>The source at 1080p: a studio shot &mdash; talker centre, an inset facecam bottom-left, and the video's own red text treatment.</figcaption>
     </figure>
     <figure class="shot">
-      <img src="sections/openshorts/assets/crop-clip.png" alt="Rendered clip frame at 606×1080: a tight vertical crop centred on the speaker's face">
+      <img src="sections/openshorts/assets/crop-clip.webp" alt="Rendered clip frame at 606×1080: a tight vertical crop centred on the speaker's face" width="606" height="1080" loading="lazy" decoding="async">
       <figcaption>The render: the cameraman followed the largest face and cropped 606&times;1080 &mdash; the inset facecam falls outside the window and the source's own lower-third is clipped at the edges. Centre moves are smoothed (3 px/frame, 15 when the skip is big, a 25&nbsp;% safe zone), so tracking reads as a camera, not a jitter.</figcaption>
     </figure>
   </div>

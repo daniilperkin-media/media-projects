@@ -9,7 +9,9 @@ section contract and build — but with its own studio identity: bundled Space
 Grotesk + JetBrains Mono (OFL), per-project accent hues, scroll-reveal
 animations, KPI count-ups, a broadcast ticker, a section rail, a scroll
 progress bar, a `Ctrl/Cmd+K` command palette, a gallery lightbox and copy
-affordances. Deploys to GitHub
+affordances, plus a compact section index and a back-to-top button. Captures
+ship as WebP at 2x their display width with lazy loading below the fold.
+Deploys to GitHub
 Pages via Actions (`https://daniilperkin-media.github.io/media-projects/`
 once the repo is pushed and Pages is enabled).
 

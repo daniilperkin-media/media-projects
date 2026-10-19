@@ -5,9 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Daniil Perkin's media studio — five pipelines, one interactive site: clip tools, converters, posters and translation pipelines with real captures and verified gates.">
 <title>Media projects — Daniil Perkin</title>
-<link rel="icon" href="data:,">
+<link rel="canonical" href="https://daniilperkin-media.github.io/media-projects/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#08090d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f7fb" media="(prefers-color-scheme: light)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Media projects — Daniil Perkin">
+<meta property="og:title" content="Five media projects, one interactive site — Daniil Perkin">
+<meta property="og:description" content="A tour through five media pipelines — clip tools, converters, posters and translation — with real captures, verified gates and the story of each build.">
+<meta property="og:url" content="https://daniilperkin-media.github.io/media-projects/">
+<meta property="og:image" content="https://daniilperkin-media.github.io/media-projects/sections/openshorts/assets/crop-source.webp">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="OpenShorts source frame: a studio shot with the speaker centred and an inset facecam bottom-left">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Five media projects, one interactive site — Daniil Perkin">
+<meta name="twitter:description" content="A tour through five media pipelines — clip tools, converters, posters and translation — with real captures, verified gates and the story of each build.">
+<meta name="twitter:image" content="https://daniilperkin-media.github.io/media-projects/sections/openshorts/assets/crop-source.webp">
+<meta name="twitter:image:alt" content="OpenShorts source frame: a studio shot with the speaker centred and an inset facecam bottom-left">
 <script>(function(){try{var t=localStorage.getItem('mp-theme');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}else if(window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.dataset.theme='light'}}catch(e){}try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('mp-anim')}}catch(e){}})();</script>
 <link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="preload" href="assets/fonts/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/space-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/components.css">
@@ -37,12 +58,20 @@
 </span>
 </div></nav>
 <main class="wrap" id="main">
+<details class="sec-index" id="section-index" open>
+  <summary><span class="ix-t">Section index</span><span class="ix-count"><!-- @INDEX_COUNT@ --> sections</span><span class="ix-hint">jump to a project</span></summary>
+  <nav class="ix-grid" aria-label="Section index">
+<!-- @INDEX@ -->
+  </nav>
+</details>
+<script>if(window.matchMedia('(max-width:700px)').matches){document.getElementById('section-index').removeAttribute('open')}</script>
 <!-- @SECTIONS@ -->
 </main>
 <footer class="footer"><div class="wrap">
   <p class="foot-fleet">Built by the project fleet — @gta6-clipper · @openshorts · @daily-fact-poster · @gothic-characters · @novel-translation</p>
   <p>Local build — regenerate with <code>node build.mjs</code>, serve with <code>node serve.mjs</code>. Sections © their project agents, <span id="year">2026</span>.</p>
 </div></footer>
+<button class="to-top" id="to-top" type="button" aria-label="Back to top"><span class="tt-arrow" aria-hidden="true">↑</span><span>Top</span></button>
 <script src="assets/js/site.js"></script>
 <script src="assets/js/studio.js"></script>
 <!-- @SECTION_SCRIPTS@ -->

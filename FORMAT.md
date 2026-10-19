@@ -92,6 +92,27 @@ Additive; the section contract is unchanged.
 All new motion is gated by `prefers-reduced-motion`; the page remains
 self-contained with zero external requests.
 
+## Engine v4 — performance & navigation (2026-10-19)
+
+- **WebP captures** — section images ship as WebP (quality 82) at roughly 2x their
+  largest CSS display width; every `<img>` carries `width`/`height` plus
+  `decoding="async"`, and everything below the first viewport is `loading="lazy"`.
+  The first section's hero captures stay eager. When adding a capture: a 500 px
+  slot wants a ~1000 px file, not the 1920 px original.
+- **Section index** — the shell stamps a compact five-link index under the hero from
+  `sections.json`, reusing the nav labels. It collapses to a summary row at 700 px
+  and below (the shell's inline script drops `[open]` before first paint).
+- **Back to top** — a fixed button appears once the hero has scrolled away; it
+  returns to the top and focuses the `h1` for keyboard users.
+- **Social/SEO head** — canonical URL, Open Graph + Twitter card, theme-color for
+  both schemes and a real SVG favicon (`assets/favicon.svg`, plus a 180 px
+  `assets/apple-touch-icon.png`) live in `shell/template.html`. `og:image` points
+  at the OpenShorts source capture on the Pages URL (1200x675 WebP).
+- **Image sizing** — width/height attributes are presentational hints: any CSS rule
+  that sets `width` without `height` must also set `height:auto` (the `.ba`
+  before/after slider needed it), or the attribute height wins and stretches the
+  image.
+
 ## Rules
 
 - UTF-8, no BOM; self-contained; no external requests (works offline on localhost).

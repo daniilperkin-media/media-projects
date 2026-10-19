@@ -94,7 +94,11 @@
   stage.setAttribute('aria-label', 'Looping replay of one clip\'s captions self-restyling across the six presets, with play/pause and a scrub bar');
 
   var bg = el('img', 'caps-bg');
-  bg.src = 'sections/openshorts/assets/captions-raw.png';
+  bg.width = 606;
+  bg.height = 1080;
+  bg.loading = 'lazy';
+  bg.decoding = 'async';
+  bg.src = 'sections/openshorts/assets/captions-raw.webp';
   bg.alt = '';
   var scrim = el('div', 'caps-scrim');
   var capArea = el('div', 'caps-cap');

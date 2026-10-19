@@ -236,13 +236,25 @@
         big.appendChild(u);
         artCol.appendChild(big);
         var table = el('table', 'art-table');
+        table.setAttribute('aria-label', 'Batch files written by prepare');
+        var thead = el('thead');
+        var hrow = el('tr');
+        ['Batch file', 'Parts', 'Size'].forEach(function (label) {
+          var th = txt('th', '', label);
+          th.setAttribute('scope', 'col');
+          hrow.appendChild(th);
+        });
+        thead.appendChild(hrow);
+        table.appendChild(thead);
+        var tbody = el('tbody');
         [['batch_001_005.txt', '1\u20135', '1,449 B'],
          ['batch_006_010.txt', '6\u201310', '1,381 B'],
          ['batch_011_013.txt', '11\u201313', '1,043 B']].forEach(function (r) {
           var tr = el('tr');
           r.forEach(function (c) { tr.appendChild(txt('td', '', c)); });
-          table.appendChild(tr);
+          tbody.appendChild(tr);
         });
+        table.appendChild(tbody);
         artCol.appendChild(table);
         artCol.appendChild(txt('p', 'art-note', 'chapters: missing=none \u00b7 empty=none'));
       } else if (stage.id === 'verify') {
