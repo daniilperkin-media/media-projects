@@ -105,6 +105,27 @@
   stage.appendChild(capArea);
   stage.appendChild(prog);
 
+  /* transport: play/pause + scrub. User-driven motion stays available under
+     reduced motion; only the autoplay loop is disabled there. */
+  var scrub = el('div', 'caps-scrub');
+  var playBtn = el('button', 'caps-play');
+  playBtn.type = 'button';
+  playBtn.textContent = '\u275A\u275A';
+  playBtn.setAttribute('aria-label', 'Pause caption replay');
+  var range = el('input');
+  range.type = 'range';
+  range.min = '0';
+  range.max = CYCLE.toFixed(2);
+  range.step = '0.01';
+  range.value = '0';
+  range.setAttribute('aria-label', 'Scrub the 6.48 s caption replay');
+  var timeEl = el('span', 'caps-time');
+  timeEl.textContent = '0:00.00';
+  scrub.appendChild(playBtn);
+  scrub.appendChild(range);
+  scrub.appendChild(timeEl);
+  stage.appendChild(scrub);
+
   var side = el('div', 'caps-side');
   var list = el('div', 'caps-tabs');
   list.setAttribute('role', 'group');
@@ -130,11 +151,18 @@
     return b;
   });
   var facts = el('div', 'caps-facts');
-  var eventWrap = el('p', 'caps-event');
+  var eventWrap = el('div', 'caps-event');
+  var eventTop = el('div', 'caps-event-top');
   var eventLabel = el('span', 'caps-event-label');
   eventLabel.textContent = 'the event, as the engine generates it';
+  var copyBtn = el('button', 'caps-copy');
+  copyBtn.type = 'button';
+  copyBtn.textContent = 'copy';
+  copyBtn.setAttribute('aria-label', 'Copy the current ASS dialogue event');
+  eventTop.appendChild(eventLabel);
+  eventTop.appendChild(copyBtn);
   var eventCode = el('code', 'caps-code');
-  eventWrap.appendChild(eventLabel);
+  eventWrap.appendChild(eventTop);
   eventWrap.appendChild(eventCode);
   facts.appendChild(eventWrap);
   side.appendChild(list);
@@ -149,8 +177,28 @@
   var curBlock = null;
   var curActive = -2;
   var curT = 0;
+  var playing = !reduce;
+  var last = null;
 
   function stageScale() { return (stage.clientHeight || 462) / 288; } /* PlayResY 288 */
+
+  function fmtTime(t) {
+    t = Math.max(0, Math.min(CYCLE, t));
+    var m = Math.floor(t / 60), s = t - m * 60;
+    return m + ':' + (s < 10 ? '0' : '') + s.toFixed(2);
+  }
+  function syncScrub() {
+    range.value = curT.toFixed(2);
+    timeEl.textContent = fmtTime(curT);
+    range.setAttribute('aria-valuetext', fmtTime(curT) + ' of ' + fmtTime(CYCLE));
+  }
+  function seek(t) {
+    curT = Math.max(0, Math.min(CYCLE, t));
+    last = null;
+    prog.style.transform = 'scaleX(' + (curT / CYCLE).toFixed(4) + ')';
+    render(true);
+    syncScrub();
+  }
 
   function setPreset(id) {
     curId = id;
@@ -238,11 +286,13 @@
     if (!st) {
       line.style.visibility = 'hidden';
       eventCode.textContent = '\u2014';
+      copyBtn.disabled = true;
       curBlock = null;
       curActive = -2;
       return;
     }
     line.style.visibility = 'visible';
+    copyBtn.disabled = false;
     var p = PRESETS[curId];
     var blk = blocks[st.b];
     if (force || blk !== curBlock) {
@@ -266,25 +316,174 @@
     eventCode.textContent = assEvent(st, p);
   }
 
+  /* ---- cut list: 11 proposals across 3 real runs over one 387.374 s source ---- */
+  var cutMount = document.getElementById('cut-mount');
+  if (cutMount) {
+    var SRC = 387.374;
+    var RUNS = [
+      { id: 'rebuild_gemini', note: 'Gemini', picks: [
+        { s: 111, e: 146, t: 'Running AI locally (deliver pick)', file: 'local_video_clip_1.mp4' },
+        { s: 29, e: 58, t: 'Defines Claude Mods (deliver pick)', file: 'local_video_clip_2.mp4' },
+        { s: 80.5, e: 108.2 },
+        { s: 120, e: 159 }
+      ] },
+      { id: 'rebuild_or', note: 'OpenRouter', picks: [
+        { s: 164, e: 206, t: 'OR pick 1 (deliver)', file: 'local_video_clip_1.mp4' },
+        { s: 42, e: 72 },
+        { s: 73, e: 115, t: 'OR pick 3 (deliver)', file: 'local_video_clip_3.mp4' },
+        { s: 120, e: 159 }
+      ] },
+      { id: 'rebuild_job4', note: 'the rebuild', picks: [
+        { s: 210.2, e: 262.5, t: 'job4 pick 1', file: 'local_video_clip_1.mp4', caption: true },
+        { s: 112, e: 148, t: 'job4 pick 2', file: 'local_video_clip_2.mp4' },
+        { s: 264, e: 312, t: 'job4 pick 3', file: 'local_video_clip_3.mp4' }
+      ] }
+    ];
+    var proposals = 0, renders = 0, renderedSec = 0;
+    RUNS.forEach(function (run) {
+      run.picks.forEach(function (p) {
+        proposals++;
+        if (p.file) { renders++; renderedSec += p.e - p.s; }
+      });
+    });
+    function txt(tag, cls, text) { var n = el(tag, cls); n.textContent = text; return n; }
+    function clock(t) {
+      var m = Math.floor(t / 60), s = t - m * 60;
+      return m + ':' + (s < 10 ? '0' : '') + s.toFixed(1);
+    }
+
+    var card = el('div', 'cut-card');
+    var head = el('div', 'cut-head');
+    var headL = el('div');
+    headL.appendChild(txt('p', 'cut-title', 'the source \u00b7 387.374 s \u00b7 3 runs'));
+    headL.appendChild(txt('p', 'cut-sub', proposals + ' proposals \u00b7 ' + renders + ' renders \u00b7 ' + renderedSec.toFixed(1) + ' s of shorts'));
+    var legend = el('div', 'cut-legend');
+    var keyR = el('span', 'cut-key'); keyR.appendChild(el('i')); keyR.appendChild(document.createTextNode('rendered clip'));
+    var keyG = el('span', 'cut-key ghost'); keyG.appendChild(el('i')); keyG.appendChild(document.createTextNode('proposal, not rendered'));
+    legend.appendChild(keyR); legend.appendChild(keyG);
+    head.appendChild(headL); head.appendChild(legend);
+
+    var grid = el('div', 'cut-grid');
+    var ruler = el('div', 'cut-ruler');
+    ruler.appendChild(txt('span', 'cut-rlabel', 'run'));
+    var axis = el('div', 'cut-axis');
+    [0, 60, 120, 180, 240, 300, 360].forEach(function (t) {
+      var tick = txt('span', 'cut-tick', Math.floor(t / 60) + ':00');
+      if (t === 0) { tick.classList.add('start'); }
+      tick.style.left = (t / SRC * 100).toFixed(3) + '%';
+      axis.appendChild(tick);
+    });
+    ruler.appendChild(axis);
+    grid.appendChild(ruler);
+
+    var detail = el('div', 'cut-detail');
+    detail.setAttribute('aria-live', 'polite');
+    var dTitle = txt('p', 'cut-d-title', '');
+    var dMeta = txt('p', 'cut-d-meta', '');
+    var dFacts = txt('p', 'cut-d-facts', '');
+    detail.appendChild(dTitle); detail.appendChild(dMeta); detail.appendChild(dFacts);
+
+    var bars = [];
+    function select(run, p, bar) {
+      bars.forEach(function (b) { b.setAttribute('aria-pressed', b === bar ? 'true' : 'false'); });
+      var dur = p.e - p.s;
+      if (p.file) {
+        dTitle.textContent = p.t;
+        dMeta.textContent = clock(p.s) + ' \u2192 ' + clock(p.e) + '  (' + p.s.toFixed(1) + ' \u2192 ' + p.e.toFixed(1) + ' s) \u00b7 ' + dur.toFixed(1) + ' s \u00b7 ' + p.file;
+        dFacts.textContent = '606\u00d71080 \u00b7 H.264 High \u00b7 yuv420p \u00b7 bt709' + (p.caption ? ' \u00b7 the clip the caption replay above uses' : '');
+      } else {
+        dTitle.textContent = 'proposal \u00b7 not rendered';
+        dMeta.textContent = clock(p.s) + ' \u2192 ' + clock(p.e) + '  (' + p.s.toFixed(1) + ' \u2192 ' + p.e.toFixed(1) + ' s) \u00b7 ' + dur.toFixed(1) + ' s';
+        dFacts.textContent = 'in ' + run.id + '/local_video_metadata.json \u00b7 no clip on disk';
+      }
+    }
+
+    var defaultBar = null;
+    RUNS.forEach(function (run) {
+      var row = el('div', 'cut-row');
+      var label = el('div', 'cut-label');
+      label.appendChild(txt('b', null, run.id));
+      label.appendChild(txt('span', null, run.note + ' \u00b7 ' + run.picks.filter(function (p) { return p.file; }).length + '/' + run.picks.length + ' rendered'));
+      var track = el('div', 'cut-track');
+      run.picks.forEach(function (p) {
+        var bar = el('button', 'cut-bar' + (p.file ? '' : ' ghost'));
+        bar.type = 'button';
+        bar.style.left = (p.s / SRC * 100).toFixed(3) + '%';
+        bar.style.width = ((p.e - p.s) / SRC * 100).toFixed(3) + '%';
+        bar.setAttribute('aria-pressed', 'false');
+        bar.setAttribute('aria-label', (p.file ? p.t : 'proposal, not rendered') + ' \u2014 ' + (p.e - p.s).toFixed(1) + ' s from ' + clock(p.s));
+        bar.title = (p.file ? p.t : 'proposal, not rendered') + ' \u00b7 ' + clock(p.s) + '\u2013' + clock(p.e);
+        bar.addEventListener('click', function () { select(run, p, bar); });
+        bars.push(bar);
+        track.appendChild(bar);
+        if (p.caption) { defaultBar = { run: run, p: p, bar: bar }; }
+      });
+      row.appendChild(label); row.appendChild(track); grid.appendChild(row);
+    });
+
+    card.appendChild(head); card.appendChild(grid); card.appendChild(detail);
+    cutMount.appendChild(card);
+    if (defaultBar) { select(defaultBar.run, defaultBar.p, defaultBar.bar); }
+  }
+
   setPreset('default');
 
-  if (reduce) { /* static frame: "…sixth use case…" with sixth lit */
-    curT = 2.1;
-    render(true);
-    return;
-  }
-
-  window.addEventListener('resize', function () {
-    applyStage(PRESETS[curId]);
+  /* transport wiring */
+  playBtn.addEventListener('click', function () {
+    playing = !playing;
+    last = null;
+    playBtn.textContent = playing ? '\u275A\u275A' : '\u25B6';
+    playBtn.setAttribute('aria-label', playing ? 'Pause caption replay' : 'Play caption replay');
+  });
+  range.addEventListener('input', function () {
+    if (playing) {
+      playing = false;
+      playBtn.textContent = '\u25B6';
+      playBtn.setAttribute('aria-label', 'Play caption replay');
+    }
+    seek(parseFloat(range.value));
+  });
+  copyBtn.addEventListener('click', function () {
+    var text = eventCode.textContent;
+    var done = function () {
+      copyBtn.textContent = 'copied';
+      setTimeout(function () { copyBtn.textContent = 'copy'; }, 1200);
+    };
+    var fallback = function () {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      ta.remove();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
   });
 
-  var t0 = null;
-  function tick(now) {
-    if (t0 === null) { t0 = now; }
-    curT = ((now - t0) / 1000) % CYCLE;
-    prog.style.transform = 'scaleX(' + (curT / CYCLE).toFixed(4) + ')';
-    render(false);
+  window.addEventListener('resize', function () { applyStage(PRESETS[curId]); });
+
+  if (reduce) { /* static frame: "…sixth use case…" with sixth lit */
+    playing = false;
+    seek(2.1);
+  } else {
     requestAnimationFrame(tick);
   }
-  requestAnimationFrame(tick);
+
+  function tick(now) {
+    if (playing) {
+      if (last === null) { last = now; }
+      curT = (curT + (now - last) / 1000) % CYCLE;
+      last = now;
+      prog.style.transform = 'scaleX(' + (curT / CYCLE).toFixed(4) + ')';
+      render(false);
+      syncScrub();
+    } else {
+      last = now;
+    }
+    requestAnimationFrame(tick);
+  }
 })();

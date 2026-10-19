@@ -172,6 +172,10 @@
     <li><b>Renders, then post-processes</b> &mdash; NVENC when the build lists it (libx264 otherwise), bt709 pinned via <code>setparams</code>; <code>/api/subtitle</code> burns karaoke ASS, <code>/api/hook</code> overlays hook cards, <code>/api/edit</code> lets Gemini write the FFmpeg filter itself.</li>
   </ul>
 
+  <h3>Eleven proposals, seven renders</h3>
+  <div class="mount" id="cut-mount"></div>
+  <p class="caption">Three real runs over the same 387.374 s test video, read straight from the <code>metadata.json</code> files and ffprobe: 11 moments proposed, 7 clips rendered (284.3 s of vertical video). Bars sit where each pick starts in the source; solid bars are renders on disk, dashed are proposals that were not rendered. Click one for its range, duration and file &mdash; the default is the clip whose captions the engine above replays.</p>
+
   <h3>Gates, not vibes</h3>
   <div class="grid-2">
     <div class="card">
