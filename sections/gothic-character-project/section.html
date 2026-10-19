@@ -3,23 +3,24 @@
     <p class="p-owner">@gothic-characters · section live</p>
     <h2>Gothic Character Project</h2>
     <p class="p-lede">A gothic novel's visual, grown one generation at a time: AI-built character reference sheets, scene compositions and pose experiments — kept like an archive rather than a folder. A pure-stdlib toolchain recovers whatever text metadata the generators left behind, three manifests keep every PNG accounted for, and a five-step gate stands between a new file and the shelf. The prompting bible — visual markers, never names; diegetic sound only; no brands — is enforced, not aspirational.</p>
-    <p class="chips"><span class="chip">Python 3.12 · stdlib only</span><span class="chip">Gemini Imagen · DALL-E · HuggingFace</span><span class="chip">17 PNGs · 3 manifest folders</span><span class="chip">5 committed sidecars · LF-pinned</span><span class="chip">5-step CI gate</span><span class="chip">MIT tooling · CC BY assets</span></p>
+    <p class="chips"><span class="chip">Python 3.12 · stdlib only</span><span class="chip">Gemini Imagen · DALL-E · HuggingFace</span><span class="chip">17 library PNGs · 92.9 MB</span><span class="chip">5 committed sidecars · 0 drift</span><span class="chip">5-step CI gate</span><span class="chip">MIT tooling · CC BY assets</span></p>
   </header>
 
   <h3>The character bible, enforced</h3>
   <div class="mount" id="bible-mount"></div>
-  <p class="caption">Three canon characters, one rule for all of them: describe by visual markers, never by name. The chips are the canonical marker sets from <code>PROMPTS.md</code>; the sentence beside them is built from those markers alone. The linter runs the project's four prompt rules — names, brands, structure, audio — and the violating draft is there to show what a fail looks like.</p>
+  <p class="caption">Three canon characters, one rule for all of them: describe by visual markers, never by name. The chips are the canonical marker sets from <code>PROMPTS.md</code>; the prompt is editable, and the linter re-runs its four rules on every keystroke. Click a missing marker to append it, or load the violating draft to watch a fail.</p>
 
   <div class="kpis">
     <div class="kpi"><b>17</b><span>PNG library assets across three manifest folders — sheets, scenes, pose experiments</span></div>
     <div class="kpi"><b>5</b><span>committed sidecars, byte-identical — 0 drift, on this run and in CI</span></div>
     <div class="kpi"><b>5/5</b><span>gate steps green — corruption, drift or a stray sidecar fails the build</span></div>
     <div class="kpi"><b>0</b><span>prompts recoverable from generator output — what survived lives in the sidecars</span></div>
+    <div class="kpi"><b>93.9 MB</b><span>of PNGs walked — 17 library assets plus the three README previews, all accounted for</span></div>
   </div>
 
   <h3>The library, sheet to scene</h3>
-  <p class="muted">Canon starts on the model sheets; scenes rebuild the same markers at story scale. Every capture is a downscaled copy of a tracked PNG — nothing re-rendered for the web.</p>
-  <div class="strip library-strip">
+  <p class="muted">Canon starts on the model sheets; scenes rebuild the same markers at story scale. Every capture is a downscaled copy of a tracked PNG — nothing re-rendered for the web. Both sets stay still — the library and the pose comparison — so every capture can be read side by side.</p>
+  <div class="library-set library-strip">
     <figure class="shot">
       <img loading="lazy" src="sections/gothic-character-project/assets/dante-sheet.jpg" alt="Dante model sheet: full front and back views, two profiles, a portrait and the silver-chain detail">
       <figcaption>Dante's model sheet — full front and back, two profiles, a portrait and the chain detail on one grey canvas. Strict, stylized linework is the canon; the scenes resolve the same markers photoreal.</figcaption>
@@ -43,8 +44,8 @@
   </div>
 
   <h3>One pose, four takes</h3>
-  <p class="muted">The Demoness' signature pose, tested across six files and three engines until it held. The manifest records which takes keep the exact floor-sit and which drift from it.</p>
-  <div class="strip pose-strip">
+  <p class="muted">The Demoness' signature pose, tested across six files and three engines until it held. The manifest records which takes keep the exact floor-sit and which drift from it — so the four stay side by side, one frame size, captions level.</p>
+  <div class="pose-set pose-strip">
     <figure class="shot">
       <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-vertical.jpg" alt="The Demoness floor-sit by DALL-E (vertical): back view, wide wings, goat-head pentagram between them">
       <figcaption>DALL-E, vertical — one of the two takes the manifest certifies as keeping the exact floor-sit; the goat-head pentagram sits framed between the wings and the silk pools on the stone.</figcaption>
@@ -64,15 +65,16 @@
   </div>
 
   <h3>The gate — five checks, no exceptions</h3>
-  <div class="grid-2">
-    <div class="card code">
-      <h3>Every change must pass</h3>
-      <pre>python -m compileall -q .
-python extract_png_metadata.py --strict
-git diff --exit-code -- '*_metadata.txt'
-git ls-files --others -- '*_metadata.txt'
-python validate_manifests.py</pre>
-      <p class="muted">Corruption, a drifted sidecar, an uncommitted sidecar or a manifest mismatch fails the build — the same five steps run in CI on every push.</p>
+  <div class="grid-2 gate-grid">
+    <div class="card gate-card">
+      <div class="gate-top">
+        <h3>Every change must pass</h3>
+        <button type="button" class="gate-run" id="gate-run">Run the gate</button>
+      </div>
+      <ol class="gate-steps" id="gate-steps"></ol>
+      <p class="gate-verdict" id="gate-verdict" aria-live="polite">Idle — five checks, one verdict.</p>
+      <p class="muted gate-note">A replay of the recorded run, not a live CI call: each step prints the tail the tool actually produced.</p>
+      <p class="gate-ci">Same five steps in <code>.github/workflows/ci.yml</code> — on every push and PR.</p>
     </div>
     <div class="card code">
       <h3>This section's run</h3>
@@ -82,15 +84,22 @@ Reference_Sheets: 6 PNG, 2 sidecar(s), 8 refs - OK
 Scenes: 5 PNG, 3 sidecar(s), 10 refs - OK
 
 Done. All manifests consistent.</pre>
-      <p class="muted">Verbatim tail from the run that built this page: compileall clean, extractor strict-clean, 0 drift, 0 loose sidecars, all manifests consistent.</p>
+      <p class="muted">Verbatim tail from the recorded gate run: compileall clean, extractor strict-clean, 0 drift, 0 loose sidecars, all manifests consistent.</p>
+      <h4 class="gate-sub">If a check fails</h4>
+      <ul class="gate-fails">
+        <li><code>--strict</code><span>a truncated or corrupt PNG</span></li>
+        <li><code>git diff</code><span>a sidecar that drifted by one byte</span></li>
+        <li><code>ls-files --others</code><span>a sidecar never committed</span></li>
+        <li><code>validate_manifests</code><span>a file the manifest does not know</span></li>
+      </ul>
     </div>
   </div>
   <p class="muted">A new asset enters the same way every time: PNG into the right folder → extractor → <code>git add -f</code> any new sidecar → a manifest row → validator → commit.</p>
 
-  <h3>What the generators left behind</h3>
-  <p class="muted">Most AI generators ship PNGs scrubbed of their text chunks — empty extractor output is the norm here, and the manifests say so instead of guessing. Five files kept something: raw EXIF, and one job ID that outlived its prompt.</p>
+  <h3>The archive, file by file</h3>
+  <p class="muted">Every PNG the extractor walks: 17 library assets in three manifest folders, plus the three downscaled README previews. Five kept text metadata; the other fifteen are clean-stripped, and the manifests record the loss instead of guessing.</p>
   <div class="mount" id="sidecar-mount"></div>
-  <p class="caption">The inspector replays the extractor's real verdicts, file by file. The five recovered sidecars are committed, LF-pinned and byte-identical — the gate fails if any drifts by a single byte. Tool: <code>extract_png_metadata.py</code>.</p>
+  <p class="caption">The inspector replays the extractor's real verdicts, file by file — dimensions, bytes and sidecar status included. The five recovered sidecars are committed, LF-pinned and byte-identical; the gate fails if any drifts by a single byte. Tool: <code>extract_png_metadata.py</code>.</p>
 
   <p class="muted">Source: <a href="https://github.com/daniilperkin-media/gothic-character-project">github.com/daniilperkin-media/gothic-character-project</a> (private) · the bible is <code>PROMPTS.md</code>, the gate is <code>AGENTS.md</code>.</p>
 </section>
