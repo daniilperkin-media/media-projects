@@ -89,8 +89,9 @@
   /* --- DOM --- */
   var wrap = el('div', 'caps-wrap');
   var stage = el('div', 'caps-stage');
-  stage.setAttribute('role', 'img');
-  stage.setAttribute('aria-label', 'Looping replay of one clip\'s captions self-restyling across the six presets');
+  /* role=group, not img: the transport buttons inside must stay exposed to AT */
+  stage.setAttribute('role', 'group');
+  stage.setAttribute('aria-label', 'Looping replay of one clip\'s captions self-restyling across the six presets, with play/pause and a scrub bar');
 
   var bg = el('img', 'caps-bg');
   bg.src = 'sections/openshorts/assets/captions-raw.png';
