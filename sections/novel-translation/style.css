@@ -1,0 +1,38 @@
+/* Novel Translation — section styles */
+#novel-translation .p-owner{color:var(--accent-2);font-size:13px;margin:0 0 2px;font-weight:600;letter-spacing:.04em}
+#novel-translation .shot{max-width:660px;margin:0 auto}
+#novel-translation .shot img{display:block;width:100%;height:auto}
+
+/* 1. the round trip, replayed */
+#roundtrip-mount .rt{display:grid;grid-template-columns:minmax(210px,258px) 1fr;gap:18px;align-items:start;margin:18px 0 6px}
+@media(max-width:840px){#roundtrip-mount .rt{grid-template-columns:1fr}}
+#roundtrip-mount .rt-tabs{display:flex;flex-direction:column;gap:8px}
+#roundtrip-mount .rt-tab{display:flex;gap:10px;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;cursor:pointer;font:inherit;color:var(--muted);font-family:var(--mono);font-size:12.8px}
+#roundtrip-mount .rt-tab:hover{color:var(--text)}
+#roundtrip-mount .rt-tab .rt-n{color:var(--accent-2);font-size:12px}
+#roundtrip-mount .rt-tab.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface));color:var(--text)}
+#roundtrip-mount .rt-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);min-height:200px}
+#roundtrip-mount .rt-cmd{font-family:var(--mono);font-size:13px;color:var(--text);word-break:break-word;margin:2px 0 10px}
+#roundtrip-mount .rt-prompt{color:var(--accent-2);font-weight:600}
+#roundtrip-mount .rt-out{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:12px;margin:0 0 10px;font-size:12.8px;line-height:1.5;white-space:pre-wrap;word-break:break-word;overflow:auto;max-height:300px}
+#roundtrip-mount .rt-note{color:var(--muted);font-size:13.5px;margin:8px 0 2px}
+
+/* 2. marker inspector */
+#marker-mount .mi{margin:18px 0 6px}
+#marker-mount .mi-head{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin:0 0 10px}
+#marker-mount .mi-files{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
+@media(max-width:840px){#marker-mount .mi-files{grid-template-columns:1fr}}
+#marker-mount .mi-file{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px}
+#marker-mount .mi-file.on{border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+#marker-mount .mi-file h4{margin:0 0 8px;font-family:var(--mono);font-size:12px;color:var(--accent-2);font-weight:600}
+#marker-mount .mi-part{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:8px;padding:5px 8px;cursor:pointer;font:inherit;font-size:13px;color:var(--muted);font-family:var(--mono)}
+#marker-mount .mi-part:hover{color:var(--text)}
+#marker-mount .mi-part .mi-n{color:var(--accent-2);font-size:12px;min-width:1.4em;text-align:right}
+#marker-mount .mi-part.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface));color:var(--text)}
+#marker-mount .mi-detail{margin-top:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);position:relative}
+#marker-mount .mi-caret{position:absolute;top:-7px;left:0;width:12px;height:12px;background:var(--surface);border-left:1px solid color-mix(in srgb,var(--accent) 65%,var(--border));border-top:1px solid color-mix(in srgb,var(--accent) 65%,var(--border));transform:rotate(45deg);transition:left .18s ease}
+@media (prefers-reduced-motion:reduce){#marker-mount .mi-caret{transition:none}}
+#marker-mount .mi-marker{font-family:var(--mono);font-size:13px;color:var(--accent);margin:0 0 6px}
+#marker-mount .mi-title{margin:0;font-size:17px;font-weight:700}
+#marker-mount .mi-snip{color:var(--muted);font-size:14px;margin:6px 0}
+#marker-mount .mi-meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0}

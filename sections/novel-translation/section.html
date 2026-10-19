@@ -1,0 +1,63 @@
+<section class="project" id="novel-translation">
+  <header class="p-head">
+    <p class="p-owner">@novel-translation · section live</p>
+    <h2>Novel Translation</h2>
+    <p class="p-lede">A small Python pipeline that prepares any novel EPUB for LLM translation and reassembles the result: extract → clean → split into <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code>-marked batches → verify → translate (by hand in any chat UI, or via API) → assemble back into a book. It grew out of a real English→Ukrainian novel run — 215 chapters into 43 batch files — and ships a public-domain demo book so the whole round trip reproduces offline.</p>
+    <p class="chips">
+      <span class="chip">Python 3.10–3.13 · pyproject</span>
+      <span class="chip">ebooklib + BeautifulSoup</span>
+      <span class="chip">&lt;&lt;&lt;PART n&gt;&gt;&gt; markers + manifest.json</span>
+      <span class="chip">stdlib-only API client</span>
+      <span class="chip">MIT · v0.1.0</span>
+      <span class="chip">ruff + CI on push</span>
+    </p>
+  </header>
+
+  <h3>The round trip, replayed</h3>
+  <div class="mount" id="roundtrip-mount"></div>
+  <p class="caption">Stage by stage on the bundled demo book — four real runs, output verbatim (captured on Windows, hence the backslash paths). Click through the stages.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real run this pipeline grew from, prepared end-to-end with it</span></div>
+    <div class="kpi"><b data-static>13 → 3</b><span>parts → batch files on the public-domain demo; the full round trip runs in CI on every push</span></div>
+    <div class="kpi"><b>15</b><span>offline tests — synthetic EPUBs built at runtime, fake transport for the API path</span></div>
+    <div class="kpi"><b>exit 2</b><span>on a missing or duplicated <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code> marker at assemble — nothing is lost silently</span></div>
+  </div>
+
+  <figure class="shot">
+    <img src="sections/novel-translation/assets/demo-run.png" alt="Terminal demo of the pipeline: prepare writes 3 batch files and 13 parts, verify reports no missing or empty chapters, assemble rebuilds the book">
+    <figcaption>The repo's own README render (<code>docs/demo.svg</code>) — a real run, rasterized for this page: prepare → verify → (hand-off to <code>translated/</code>) → assemble, on the same demo book this section replays. Backslashes are Windows paths; the run itself is the same everywhere. Click to zoom.</figcaption>
+  </figure>
+
+  <h3>Markers are the contract</h3>
+  <div class="mount" id="marker-mount"></div>
+  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out.</p>
+
+  <h3>Flags that earned their keep</h3>
+  <ul>
+    <li><code>--strip REGEX</code> — drops running headers a source EPUB repeats on every page (a regex, not a constant: the original run's banner was book-specific).</li>
+    <li><code>--insert FILE --insert-after N</code> — splices a recovered chapter back where the source books missed one; this pipeline's origin story.</li>
+    <li><code>--story-start</code> / <code>--heading-regex</code> — where the story begins and what counts as a part (<code>Chapter N</code> · <code>Side Story N</code> · <code>Epilogue</code> by default).</li>
+    <li><code>--batch-size N</code> — parts per batch file (default 5, the real run's setting).</li>
+    <li><code>verify --max-chapter N --strict</code> — continuity across a known full range, non-zero exit on issues.</li>
+  </ul>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Every change must pass</h3>
+      <ul>
+        <li><code>ruff check .</code> + <code>compileall</code> — lint and syntax, one config in the repo</li>
+        <li>15 unittest tests — synthetic EPUBs built at runtime; the API path runs on a fake transport</li>
+        <li>CLI smoke — <code>novel-translate --help</code></li>
+        <li>demo round trip — prepare → verify <code>--strict</code> → assemble, on Python 3.10–3.13</li>
+      </ul>
+    </div>
+    <div class="card code">
+      <h3>Nothing drops silently</h3>
+      <pre>error: missing part(s) in the translated files: [3]</pre>
+      <p class="muted">A demo run with one <code>&lt;&lt;&lt;PART 3&gt;&gt;&gt;</code> line dropped from a translated batch: <code>assemble</code> refuses with exit 2 — a duplicated part fails the same way. <code>translate</code> counts markers per batch and warns when a model returns a different number than it sent.</p>
+    </div>
+  </div>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/novel-translation">github.com/daniilperkin-media/novel-translation</a> (private) · public-domain demo book in <code>examples/</code> · MIT.</p>
+</section>

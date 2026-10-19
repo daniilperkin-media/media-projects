@@ -1,0 +1,71 @@
+<section class="project" id="openshorts">
+  <header class="p-head">
+    <p class="p-owner">@openshorts · section live</p>
+    <h2>OpenShorts</h2>
+    <p class="p-lede">Long videos in, vertical shorts out. Paste a YouTube URL or drop in a file: OpenShorts transcribes it on the local GPU, proposes the cut-worthy moments with an LLM, reviews them with you in a React dashboard, then renders face-tracked, 1080-tall verticals &mdash; with karaoke captions you can restyle across six presets, one subtitle event per word.</p>
+    <p class="chips"><span class="chip">Python 3.12 · FastAPI</span><span class="chip">faster-whisper · CUDA</span><span class="chip">MediaPipe + YOLOv8m framing</span><span class="chip">FFmpeg NVENC</span><span class="chip">Gemini → OpenRouter → local LLM</span><span class="chip">React 18 / Vite dashboard</span><span class="chip">SQLite · WAL</span></p>
+  </header>
+
+  <h3>The caption engine, six looks</h3>
+  <div class="mount" id="caps-mount"></div>
+  <p class="caption">Replaying the pipeline's real subtitle data: the words are the opening of job4 clip 1 (verbatim from its transcript &mdash; whisper heard &ldquo;Claude Code&rdquo; as &ldquo;cod code&rdquo;), and every preset value comes straight from <code>CAPTION_PRESETS</code> in <code>subtitles.py</code>. Pick a look in the list &mdash; the stage and the generated event restyle live. The replay regroups the words into caption blocks with the engine's own rules (max chars per line, 1.4 s max). On disk, the default-preset burn of this clip is 170 dialogue events over 52.32 s &mdash; one event per word, so the highlight moves with the audio. Stage frame: the same clip, raw. Captions render in the repo's bundled OFL fonts (Anton, Montserrat ExtraBold).</p>
+
+  <div class="kpis">
+    <div class="kpi"><b>159 + 31</b><span>offline tests &mdash; pytest 159 via the uv CI mirror plus 31 dashboard vitest tests, re-run today; lint green at zero warnings, production build OK</span></div>
+    <div class="kpi"><b>170</b><span>subtitle events for one 52.32 s burn &mdash; one ASS dialogue event per word, so the highlight moves word-by-word</span></div>
+    <div class="kpi"><b>606×1080</b><span>every rendered clip &mdash; H.264 High · yuv420p · bt709 pinned; ffprobe-verified on all 7 clips in <code>output/</code>, never by eye</span></div>
+    <div class="kpi"><b>6</b><span>caption presets &mdash; default · hormozi · pill · lime · oneword · clean &mdash; plus hook cards and Gemini-written FFmpeg auto-edits</span></div>
+  </div>
+
+  <h3>The burn, up close</h3>
+  <div class="ba">
+    <img class="a" src="sections/openshorts/assets/captions-raw.png" alt="Render frame of clip 1 without captions">
+    <img class="b" src="sections/openshorts/assets/captions-burned.png" alt="The same frame after the karaoke ASS was piped through libass">
+    <input type="range" value="50" aria-label="Raw render vs burned karaoke captions">
+  </div>
+  <p class="caption">Drag the handle: left is the clip as it lands out of the pipeline, right is the same frame after <code>/api/subtitle</code> pipes the karaoke ASS through libass &mdash; the exact production filter, bundled fonts and all. The active word (<b>USING</b>) recolours to <code>#FFE500</code> and pops 90&nbsp;→&nbsp;108&nbsp;% over 110&nbsp;ms; margin 43 at PlayResY 288 keeps the line ~15&nbsp;% clear of the bottom edge, where the platform UI lives.</p>
+
+  <h3>Face-tracked framing</h3>
+  <div class="strip framing-strip">
+    <figure class="shot">
+      <img src="sections/openshorts/assets/crop-source.png" alt="Source frame at 1920×1080: a studio shot with the speaker centred, an inset facecam bottom-left and the video's own red text">
+      <figcaption>The source at 1080p: a studio shot &mdash; talker centre, an inset facecam bottom-left, and the video's own red text treatment.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="sections/openshorts/assets/crop-clip.png" alt="Rendered clip frame at 606×1080: a tight vertical crop centred on the speaker's face">
+      <figcaption>The render: the cameraman followed the largest face and cropped 606&times;1080 &mdash; the inset facecam falls outside the window and the source's own lower-third is clipped at the edges. Centre moves are smoothed (3 px/frame, 15 when the skip is big, a 25&nbsp;% safe zone), so tracking reads as a camera, not a jitter.</figcaption>
+    </figure>
+  </div>
+
+  <h3>What it does</h3>
+  <ul>
+    <li><b>Takes a URL or a file</b> &mdash; yt-dlp downloads (cookies ready when YouTube's bot wall bites) or a plain upload; the FastAPI job queue runs each job as an isolated <code>main.py</code> subprocess, two at a time by default, with state in SQLite (WAL) so a restart re-enqueues instead of losing work.</li>
+    <li><b>Transcribes on the local GPU</b> &mdash; faster-whisper with word timestamps on the RTX 4060 (test video: 387 s → 81 segments); the same words feed the highlight picker and the caption engine.</li>
+    <li><b>Proposes the shorts</b> &mdash; Gemini, OpenRouter or a local LM Studio model (picker per analysis) writes start/end + title picks into <code>metadata.json</code>; a heuristic fallback keeps the pipeline producing with zero API keys. The dashboard sends your selection to <code>/api/generate-selected</code>.</li>
+    <li><b>Reviews in a dashboard</b> &mdash; React 18 / Vite with react-query polling, a job stepper, a cutting-room review player with keyboard triage, and per-clip Subtitle / Hook modals; History and Settings pages on the side.</li>
+    <li><b>Frames the faces</b> &mdash; scene detection picks TRACK vs GENERAL per scene; TRACK follows the largest face with a smoothed cameraman; GENERAL gets a blurred-background letterbox; when faces hide, a lazily-loaded YOLOv8m person box takes over.</li>
+    <li><b>Renders, then post-processes</b> &mdash; NVENC when the build lists it (libx264 otherwise), bt709 pinned via <code>setparams</code>; <code>/api/subtitle</code> burns karaoke ASS, <code>/api/hook</code> overlays hook cards, <code>/api/edit</code> lets Gemini write the FFmpeg filter itself.</li>
+  </ul>
+
+  <h3>Gates, not vibes</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Every change must pass</h3>
+      <ul>
+        <li><code>pytest</code> &mdash; 159 offline tests via the uv CI mirror (no network, no CUDA, no keys; 11.7 s today)</li>
+        <li>dashboard gate &mdash; <code>npm run lint</code> (<code>--max-warnings 0</code>) → vitest 31 → production build; all green today</li>
+        <li><code>py_compile</code> on the six core modules; GitHub Actions runs both suites on every push and PR</li>
+        <li>encoding proof &mdash; ffprobe on every delivered clip: H.264 High · yuv420p · bt709/bt709 at 606×1080</li>
+      </ul>
+    </div>
+    <div class="card code">
+      <h3>One word, one dialogue event</h3>
+      <pre>Dialogue: 0,0:00:00.00,0:00:00.32,Default,,0,0,0,,{\c&amp;H00E5FF&amp;\fscx90\fscy90\t(0,110,\fscx108\fscy108)}USING{\r} COD CODE
+Dialogue: 0,0:00:00.32,0:00:00.60,Default,,0,0,0,,USING {\c&amp;H00E5FF&amp;\fscx90\fscy90\t(0,110,\fscx108\fscy108)}COD{\r} CODE
+Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;\fscx90\fscy90\t(0,110,\fscx108\fscy108)}CODE{\r}</pre>
+      <p class="muted">Verbatim from the 52.32 s burn of clip 1 (<code>anton_subtitles.ass</code>): 170 events, one per word. <code>00E5FF</code> in ASS is <code>#FFE500</code> &mdash; ASS colours are BGR. The active word recolours and pops from 90 to 108&nbsp;% over 110&nbsp;ms; the last word of a block holds until the block ends, so the highlight never flickers in a gap.</p>
+    </div>
+  </div>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/openshorts">github.com/daniilperkin-media/openshorts</a> (private) · pipeline rules in <code>AGENTS.md</code>.</p>
+</section>

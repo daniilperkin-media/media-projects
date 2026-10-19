@@ -1,0 +1,96 @@
+<section class="project" id="gothic-character-project">
+  <header class="p-head">
+    <p class="p-owner">@gothic-characters · section live</p>
+    <h2>Gothic Character Project</h2>
+    <p class="p-lede">A gothic novel's visual, grown one generation at a time: AI-built character reference sheets, scene compositions and pose experiments — kept like an archive rather than a folder. A pure-stdlib toolchain recovers whatever text metadata the generators left behind, three manifests keep every PNG accounted for, and a five-step gate stands between a new file and the shelf. The prompting bible — visual markers, never names; diegetic sound only; no brands — is enforced, not aspirational.</p>
+    <p class="chips"><span class="chip">Python 3.12 · stdlib only</span><span class="chip">Gemini Imagen · DALL-E · HuggingFace</span><span class="chip">17 PNGs · 3 manifest folders</span><span class="chip">5 committed sidecars · LF-pinned</span><span class="chip">5-step CI gate</span><span class="chip">MIT tooling · CC BY assets</span></p>
+  </header>
+
+  <h3>The character bible, enforced</h3>
+  <div class="mount" id="bible-mount"></div>
+  <p class="caption">Three canon characters, one rule for all of them: describe by visual markers, never by name. The chips are the canonical marker sets from <code>PROMPTS.md</code>; the sentence beside them is built from those markers alone. The linter runs the project's four prompt rules — names, brands, structure, audio — and the violating draft is there to show what a fail looks like.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b>17</b><span>PNG library assets across three manifest folders — sheets, scenes, pose experiments</span></div>
+    <div class="kpi"><b>5</b><span>committed sidecars, byte-identical — 0 drift, on this run and in CI</span></div>
+    <div class="kpi"><b>5/5</b><span>gate steps green — corruption, drift or a stray sidecar fails the build</span></div>
+    <div class="kpi"><b>0</b><span>prompts recoverable from generator output — what survived lives in the sidecars</span></div>
+  </div>
+
+  <h3>The library, sheet to scene</h3>
+  <p class="muted">Canon starts on the model sheets; scenes rebuild the same markers at story scale. Every capture is a downscaled copy of a tracked PNG — nothing re-rendered for the web.</p>
+  <div class="strip library-strip">
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/dante-sheet.jpg" alt="Dante model sheet: full front and back views, two profiles, a portrait and the silver-chain detail">
+      <figcaption>Dante's model sheet — full front and back, two profiles, a portrait and the chain detail on one grey canvas. Strict, stylized linework is the canon; the scenes resolve the same markers photoreal.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/maeve-sheet.jpg" alt="Maeve model sheet: floor-length hair with white streaks on her right side only, violet-left and red-right eye split, lace corset, jewelry and botanical hand ink">
+      <figcaption>Maeve's model sheet — the asymmetry is the story: white streaks on her right side only (our left when she faces us, our right in the back view — exactly as the bible pins it), the violet-left / red-right eye split, lace corset under heavy jewelry, botanical ink across the back of her hand.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/scene1-gemini.jpg" alt="Scene 1, Gemini take: the pair standing in a ruined cathedral nave, mist on the flagstones, light through broken windows">
+      <figcaption>Scene 1, Gemini take — the ruined nave, mist on the flagstones, his red gaze and her white streak both holding canon at story scale; the sparkle watermark bottom-right is the generator's own, still in the frame.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/scene1-hf.jpg" alt="Scene 1, HuggingFace take: near-identical staging to the Gemini version">
+      <figcaption>The same brief through a HuggingFace job — near-identical staging across two engines; the markers travel well. This file's entire recoverable history is a job ID (inspector below).</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/scene2.jpg" alt="Scene 2: full-length cathedral composition with the floor-length hair spreading across the rubble">
+      <figcaption>Scene 2 — full-length: the composition the hair rule exists for. Floor-length is literal; the hem of her hair drags across the rubble.</figcaption>
+    </figure>
+  </div>
+
+  <h3>One pose, four takes</h3>
+  <p class="muted">The Demoness' signature pose, tested across six files and three engines until it held. The manifest records which takes keep the exact floor-sit and which drift from it.</p>
+  <div class="strip pose-strip">
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-vertical.jpg" alt="The Demoness floor-sit by DALL-E (vertical): back view, wide wings, goat-head pentagram between them">
+      <figcaption>DALL-E, vertical — one of the two takes the manifest certifies as keeping the exact floor-sit; the goat-head pentagram sits framed between the wings and the silk pools on the stone.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-gemini-perfected.jpg" alt="The Demoness floor-sit by Gemini, horizontal 'perfected' take: cross-legged on the floor, widest wingspan of the set">
+      <figcaption>Gemini, 'perfected' horizontal — its own name claims it as the final of the horizontal runs; exact floor-sit kept, and the widest wingspan in the set.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-gemini-throne.jpg" alt="The Demoness by Gemini on a throne-like chair instead of the floor — the recorded drift">
+      <figcaption>The recorded miss — a throne-like chair instead of the floor. It stays in the library anyway; the manifest says so rather than quietly dropping the file.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-chatgpt.jpg" alt="The Demoness by DALL-E via web upload: seated on a carved stone ledge, legs crossed, strappy heels">
+      <figcaption>DALL-E by web upload — German-locale default filename, since renamed and tracked; a carved ledge and strappy heels, another drift from the floor-sit brief.</figcaption>
+    </figure>
+  </div>
+
+  <h3>The gate — five checks, no exceptions</h3>
+  <div class="grid-2">
+    <div class="card code">
+      <h3>Every change must pass</h3>
+      <pre>python -m compileall -q .
+python extract_png_metadata.py --strict
+git diff --exit-code -- '*_metadata.txt'
+git ls-files --others -- '*_metadata.txt'
+python validate_manifests.py</pre>
+      <p class="muted">Corruption, a drifted sidecar, an uncommitted sidecar or a manifest mismatch fails the build — the same five steps run in CI on every push.</p>
+    </div>
+    <div class="card code">
+      <h3>This section's run</h3>
+      <pre>Done. Extracted metadata from 5 file(s).
+Pose_Experiments: 6 PNG, 0 sidecar(s), 6 refs - OK
+Reference_Sheets: 6 PNG, 2 sidecar(s), 8 refs - OK
+Scenes: 5 PNG, 3 sidecar(s), 10 refs - OK
+
+Done. All manifests consistent.</pre>
+      <p class="muted">Verbatim tail from the run that built this page: compileall clean, extractor strict-clean, 0 drift, 0 loose sidecars, all manifests consistent.</p>
+    </div>
+  </div>
+  <p class="muted">A new asset enters the same way every time: PNG into the right folder → extractor → <code>git add -f</code> any new sidecar → a manifest row → validator → commit.</p>
+
+  <h3>What the generators left behind</h3>
+  <p class="muted">Most AI generators ship PNGs scrubbed of their text chunks — empty extractor output is the norm here, and the manifests say so instead of guessing. Five files kept something: raw EXIF, and one job ID that outlived its prompt.</p>
+  <div class="mount" id="sidecar-mount"></div>
+  <p class="caption">The inspector replays the extractor's real verdicts, file by file. The five recovered sidecars are committed, LF-pinned and byte-identical — the gate fails if any drifts by a single byte. Tool: <code>extract_png_metadata.py</code>.</p>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/gothic-character-project">github.com/daniilperkin-media/gothic-character-project</a> (private) · the bible is <code>PROMPTS.md</code>, the gate is <code>AGENTS.md</code>.</p>
+</section>

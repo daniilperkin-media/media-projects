@@ -14,7 +14,10 @@
 <link rel="stylesheet" href="assets/css/studio.css">
 <link rel="stylesheet" href="assets/css/ui.css">
 <link rel="stylesheet" href="sections/gta6-clipper/style.css">
+<link rel="stylesheet" href="sections/openshorts/style.css">
 <link rel="stylesheet" href="sections/daily-fact-poster/style.css">
+<link rel="stylesheet" href="sections/gothic-character-project/style.css">
+<link rel="stylesheet" href="sections/novel-translation/style.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,10 +35,10 @@
 <nav class="topnav"><div class="wrap" id="topnav">
 <span class="brand"><span class="brand-mark"></span><span class="brand-name">Media&nbsp;Projects</span></span>
 <span class="nav-links"><a href="#gta6-clipper" data-num="01" data-kind="Python · faster-whisper CUDA · FFmpeg NVENC">GTA 6 Clipper</a>
-<a class="dim" href="#openshorts" data-num="02" data-kind="Python · FastAPI · faster-whisper · React 18 / Vite">OpenShorts</a>
+<a href="#openshorts" data-num="02" data-kind="Python · FastAPI · faster-whisper · React 18 / Vite">OpenShorts</a>
 <a href="#daily-fact-poster" data-num="03" data-kind="Python · OpenRouter · PIL · FFmpeg">Daily Fact Poster</a>
-<a class="dim" href="#gothic-character-project" data-num="04" data-kind="Python (stdlib) · asset pipeline">Gothic Character Project</a>
-<a class="dim" href="#novel-translation" data-num="05" data-kind="Python · Gemini · EPUB pipeline">Novel Translation</a></span>
+<a href="#gothic-character-project" data-num="04" data-kind="Python (stdlib) · asset pipeline">Gothic Character Project</a>
+<a href="#novel-translation" data-num="05" data-kind="Python · Gemini · EPUB pipeline">Novel Translation</a></span>
 <span class="nav-actions">
 <button id="palette-open" class="palette-open" type="button" aria-label="Jump to a project (Ctrl+K)" aria-haspopup="dialog" aria-expanded="false"><span class="po-ico" aria-hidden="true">⌕</span><span class="po-kbd">Ctrl K</span></button>
 <button id="theme-toggle" type="button">Light theme</button>
@@ -120,13 +123,77 @@
 
   <p class="muted">Source: <a href="https://github.com/daniilperkin-media/gta6-clipper">github.com/daniilperkin-media/gta6-clipper</a> (private) · rules in <code>AGENTS.md</code>, knobs in <code>config.yaml</code>.</p>
 </section>
-<section class="project placeholder" id="openshorts"><div class="ph-card">
-  <p class="chips"><span class="chip">Python · FastAPI · faster-whisper · React 18 / Vite</span><span class="chip">owner @openshorts</span></p>
-  <h2>OpenShorts</h2>
-  <p>Long-to-short video converter: transcription, highlight selection and face-aware vertical framing, with a React dashboard on the side.</p>
-  <p class="ph-note">Section in progress — @openshorts is preparing the captures. It appears here once
-  <code>sections/openshorts/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
-</div></section>
+<section class="project" id="openshorts">
+  <header class="p-head">
+    <p class="p-owner">@openshorts · section live</p>
+    <h2>OpenShorts</h2>
+    <p class="p-lede">Long videos in, vertical shorts out. Paste a YouTube URL or drop in a file: OpenShorts transcribes it on the local GPU, proposes the cut-worthy moments with an LLM, reviews them with you in a React dashboard, then renders face-tracked, 1080-tall verticals &mdash; with karaoke captions you can restyle across six presets, one subtitle event per word.</p>
+    <p class="chips"><span class="chip">Python 3.12 · FastAPI</span><span class="chip">faster-whisper · CUDA</span><span class="chip">MediaPipe + YOLOv8m framing</span><span class="chip">FFmpeg NVENC</span><span class="chip">Gemini → OpenRouter → local LLM</span><span class="chip">React 18 / Vite dashboard</span><span class="chip">SQLite · WAL</span></p>
+  </header>
+
+  <h3>The caption engine, six looks</h3>
+  <div class="mount" id="caps-mount"></div>
+  <p class="caption">Replaying the pipeline's real subtitle data: the words are the opening of job4 clip 1 (verbatim from its transcript &mdash; whisper heard &ldquo;Claude Code&rdquo; as &ldquo;cod code&rdquo;), and every preset value comes straight from <code>CAPTION_PRESETS</code> in <code>subtitles.py</code>. Pick a look in the list &mdash; the stage and the generated event restyle live. The replay regroups the words into caption blocks with the engine's own rules (max chars per line, 1.4 s max). On disk, the default-preset burn of this clip is 170 dialogue events over 52.32 s &mdash; one event per word, so the highlight moves with the audio. Stage frame: the same clip, raw. Captions render in the repo's bundled OFL fonts (Anton, Montserrat ExtraBold).</p>
+
+  <div class="kpis">
+    <div class="kpi"><b>159 + 31</b><span>offline tests &mdash; pytest 159 via the uv CI mirror plus 31 dashboard vitest tests, re-run today; lint green at zero warnings, production build OK</span></div>
+    <div class="kpi"><b>170</b><span>subtitle events for one 52.32 s burn &mdash; one ASS dialogue event per word, so the highlight moves word-by-word</span></div>
+    <div class="kpi"><b>606×1080</b><span>every rendered clip &mdash; H.264 High · yuv420p · bt709 pinned; ffprobe-verified on all 7 clips in <code>output/</code>, never by eye</span></div>
+    <div class="kpi"><b>6</b><span>caption presets &mdash; default · hormozi · pill · lime · oneword · clean &mdash; plus hook cards and Gemini-written FFmpeg auto-edits</span></div>
+  </div>
+
+  <h3>The burn, up close</h3>
+  <div class="ba">
+    <img class="a" src="sections/openshorts/assets/captions-raw.png" alt="Render frame of clip 1 without captions">
+    <img class="b" src="sections/openshorts/assets/captions-burned.png" alt="The same frame after the karaoke ASS was piped through libass">
+    <input type="range" value="50" aria-label="Raw render vs burned karaoke captions">
+  </div>
+  <p class="caption">Drag the handle: left is the clip as it lands out of the pipeline, right is the same frame after <code>/api/subtitle</code> pipes the karaoke ASS through libass &mdash; the exact production filter, bundled fonts and all. The active word (<b>USING</b>) recolours to <code>#FFE500</code> and pops 90&nbsp;→&nbsp;108&nbsp;% over 110&nbsp;ms; margin 43 at PlayResY 288 keeps the line ~15&nbsp;% clear of the bottom edge, where the platform UI lives.</p>
+
+  <h3>Face-tracked framing</h3>
+  <div class="strip framing-strip">
+    <figure class="shot">
+      <img src="sections/openshorts/assets/crop-source.png" alt="Source frame at 1920×1080: a studio shot with the speaker centred, an inset facecam bottom-left and the video's own red text">
+      <figcaption>The source at 1080p: a studio shot &mdash; talker centre, an inset facecam bottom-left, and the video's own red text treatment.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="sections/openshorts/assets/crop-clip.png" alt="Rendered clip frame at 606×1080: a tight vertical crop centred on the speaker's face">
+      <figcaption>The render: the cameraman followed the largest face and cropped 606&times;1080 &mdash; the inset facecam falls outside the window and the source's own lower-third is clipped at the edges. Centre moves are smoothed (3 px/frame, 15 when the skip is big, a 25&nbsp;% safe zone), so tracking reads as a camera, not a jitter.</figcaption>
+    </figure>
+  </div>
+
+  <h3>What it does</h3>
+  <ul>
+    <li><b>Takes a URL or a file</b> &mdash; yt-dlp downloads (cookies ready when YouTube's bot wall bites) or a plain upload; the FastAPI job queue runs each job as an isolated <code>main.py</code> subprocess, two at a time by default, with state in SQLite (WAL) so a restart re-enqueues instead of losing work.</li>
+    <li><b>Transcribes on the local GPU</b> &mdash; faster-whisper with word timestamps on the RTX 4060 (test video: 387 s → 81 segments); the same words feed the highlight picker and the caption engine.</li>
+    <li><b>Proposes the shorts</b> &mdash; Gemini, OpenRouter or a local LM Studio model (picker per analysis) writes start/end + title picks into <code>metadata.json</code>; a heuristic fallback keeps the pipeline producing with zero API keys. The dashboard sends your selection to <code>/api/generate-selected</code>.</li>
+    <li><b>Reviews in a dashboard</b> &mdash; React 18 / Vite with react-query polling, a job stepper, a cutting-room review player with keyboard triage, and per-clip Subtitle / Hook modals; History and Settings pages on the side.</li>
+    <li><b>Frames the faces</b> &mdash; scene detection picks TRACK vs GENERAL per scene; TRACK follows the largest face with a smoothed cameraman; GENERAL gets a blurred-background letterbox; when faces hide, a lazily-loaded YOLOv8m person box takes over.</li>
+    <li><b>Renders, then post-processes</b> &mdash; NVENC when the build lists it (libx264 otherwise), bt709 pinned via <code>setparams</code>; <code>/api/subtitle</code> burns karaoke ASS, <code>/api/hook</code> overlays hook cards, <code>/api/edit</code> lets Gemini write the FFmpeg filter itself.</li>
+  </ul>
+
+  <h3>Gates, not vibes</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Every change must pass</h3>
+      <ul>
+        <li><code>pytest</code> &mdash; 159 offline tests via the uv CI mirror (no network, no CUDA, no keys; 11.7 s today)</li>
+        <li>dashboard gate &mdash; <code>npm run lint</code> (<code>--max-warnings 0</code>) → vitest 31 → production build; all green today</li>
+        <li><code>py_compile</code> on the six core modules; GitHub Actions runs both suites on every push and PR</li>
+        <li>encoding proof &mdash; ffprobe on every delivered clip: H.264 High · yuv420p · bt709/bt709 at 606×1080</li>
+      </ul>
+    </div>
+    <div class="card code">
+      <h3>One word, one dialogue event</h3>
+      <pre>Dialogue: 0,0:00:00.00,0:00:00.32,Default,,0,0,0,,{\c&amp;H00E5FF&amp;\fscx90\fscy90\t(0,110,\fscx108\fscy108)}USING{\r} COD CODE
+Dialogue: 0,0:00:00.32,0:00:00.60,Default,,0,0,0,,USING {\c&amp;H00E5FF&amp;\fscx90\fscy90\t(0,110,\fscx108\fscy108)}COD{\r} CODE
+Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;\fscx90\fscy90\t(0,110,\fscx108\fscy108)}CODE{\r}</pre>
+      <p class="muted">Verbatim from the 52.32 s burn of clip 1 (<code>anton_subtitles.ass</code>): 170 events, one per word. <code>00E5FF</code> in ASS is <code>#FFE500</code> &mdash; ASS colours are BGR. The active word recolours and pops from 90 to 108&nbsp;% over 110&nbsp;ms; the last word of a block holds until the block ends, so the highlight never flickers in a gap.</p>
+    </div>
+  </div>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/openshorts">github.com/daniilperkin-media/openshorts</a> (private) · pipeline rules in <code>AGENTS.md</code>.</p>
+</section>
 <section class="project" id="daily-fact-poster">
   <header class="p-head">
     <p class="p-owner">@daily-fact-poster · section live</p>
@@ -370,20 +437,165 @@
 
   <p class="muted">Source: <a href="https://github.com/daniilperkin-media/daily-fact-poster">github.com/daniilperkin-media/daily-fact-poster</a> (public) &middot; rules in <code>AGENTS.md</code> &middot; the TikTok legal pages ship from the same repo's Pages.</p>
 </section>
-<section class="project placeholder" id="gothic-character-project"><div class="ph-card">
-  <p class="chips"><span class="chip">Python (stdlib) · asset pipeline</span><span class="chip">owner @gothic-characters</span></p>
-  <h2>Gothic Character Project</h2>
-  <p>AI-generated gothic character reference sheets, scene compositions and pose experiments — manifests, sidecars and a stdlib CI pipeline keep the asset library verifiable.</p>
-  <p class="ph-note">Section in progress — @gothic-characters is preparing the captures. It appears here once
-  <code>sections/gothic-character-project/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
-</div></section>
-<section class="project placeholder" id="novel-translation"><div class="ph-card">
-  <p class="chips"><span class="chip">Python · Gemini · EPUB pipeline</span><span class="chip">owner @novel-translation</span></p>
-  <h2>Novel Translation</h2>
-  <p>Prepare any novel EPUB for LLM translation — extract, clean, batch, verify, assemble; optional OpenAI-compatible API mode.</p>
-  <p class="ph-note">Section in progress — @novel-translation is preparing the captures. It appears here once
-  <code>sections/novel-translation/section.html</code> is contributed and <code>node build.mjs</code> is re-run.</p>
-</div></section>
+<section class="project" id="gothic-character-project">
+  <header class="p-head">
+    <p class="p-owner">@gothic-characters · section live</p>
+    <h2>Gothic Character Project</h2>
+    <p class="p-lede">A gothic novel's visual, grown one generation at a time: AI-built character reference sheets, scene compositions and pose experiments — kept like an archive rather than a folder. A pure-stdlib toolchain recovers whatever text metadata the generators left behind, three manifests keep every PNG accounted for, and a five-step gate stands between a new file and the shelf. The prompting bible — visual markers, never names; diegetic sound only; no brands — is enforced, not aspirational.</p>
+    <p class="chips"><span class="chip">Python 3.12 · stdlib only</span><span class="chip">Gemini Imagen · DALL-E · HuggingFace</span><span class="chip">17 PNGs · 3 manifest folders</span><span class="chip">5 committed sidecars · LF-pinned</span><span class="chip">5-step CI gate</span><span class="chip">MIT tooling · CC BY assets</span></p>
+  </header>
+
+  <h3>The character bible, enforced</h3>
+  <div class="mount" id="bible-mount"></div>
+  <p class="caption">Three canon characters, one rule for all of them: describe by visual markers, never by name. The chips are the canonical marker sets from <code>PROMPTS.md</code>; the sentence beside them is built from those markers alone. The linter runs the project's four prompt rules — names, brands, structure, audio — and the violating draft is there to show what a fail looks like.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b>17</b><span>PNG library assets across three manifest folders — sheets, scenes, pose experiments</span></div>
+    <div class="kpi"><b>5</b><span>committed sidecars, byte-identical — 0 drift, on this run and in CI</span></div>
+    <div class="kpi"><b>5/5</b><span>gate steps green — corruption, drift or a stray sidecar fails the build</span></div>
+    <div class="kpi"><b>0</b><span>prompts recoverable from generator output — what survived lives in the sidecars</span></div>
+  </div>
+
+  <h3>The library, sheet to scene</h3>
+  <p class="muted">Canon starts on the model sheets; scenes rebuild the same markers at story scale. Every capture is a downscaled copy of a tracked PNG — nothing re-rendered for the web.</p>
+  <div class="strip library-strip">
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/dante-sheet.jpg" alt="Dante model sheet: full front and back views, two profiles, a portrait and the silver-chain detail">
+      <figcaption>Dante's model sheet — full front and back, two profiles, a portrait and the chain detail on one grey canvas. Strict, stylized linework is the canon; the scenes resolve the same markers photoreal.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/maeve-sheet.jpg" alt="Maeve model sheet: floor-length hair with white streaks on her right side only, violet-left and red-right eye split, lace corset, jewelry and botanical hand ink">
+      <figcaption>Maeve's model sheet — the asymmetry is the story: white streaks on her right side only (our left when she faces us, our right in the back view — exactly as the bible pins it), the violet-left / red-right eye split, lace corset under heavy jewelry, botanical ink across the back of her hand.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/scene1-gemini.jpg" alt="Scene 1, Gemini take: the pair standing in a ruined cathedral nave, mist on the flagstones, light through broken windows">
+      <figcaption>Scene 1, Gemini take — the ruined nave, mist on the flagstones, his red gaze and her white streak both holding canon at story scale; the sparkle watermark bottom-right is the generator's own, still in the frame.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/scene1-hf.jpg" alt="Scene 1, HuggingFace take: near-identical staging to the Gemini version">
+      <figcaption>The same brief through a HuggingFace job — near-identical staging across two engines; the markers travel well. This file's entire recoverable history is a job ID (inspector below).</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/scene2.jpg" alt="Scene 2: full-length cathedral composition with the floor-length hair spreading across the rubble">
+      <figcaption>Scene 2 — full-length: the composition the hair rule exists for. Floor-length is literal; the hem of her hair drags across the rubble.</figcaption>
+    </figure>
+  </div>
+
+  <h3>One pose, four takes</h3>
+  <p class="muted">The Demoness' signature pose, tested across six files and three engines until it held. The manifest records which takes keep the exact floor-sit and which drift from it.</p>
+  <div class="strip pose-strip">
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-vertical.jpg" alt="The Demoness floor-sit by DALL-E (vertical): back view, wide wings, goat-head pentagram between them">
+      <figcaption>DALL-E, vertical — one of the two takes the manifest certifies as keeping the exact floor-sit; the goat-head pentagram sits framed between the wings and the silk pools on the stone.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-gemini-perfected.jpg" alt="The Demoness floor-sit by Gemini, horizontal 'perfected' take: cross-legged on the floor, widest wingspan of the set">
+      <figcaption>Gemini, 'perfected' horizontal — its own name claims it as the final of the horizontal runs; exact floor-sit kept, and the widest wingspan in the set.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-gemini-throne.jpg" alt="The Demoness by Gemini on a throne-like chair instead of the floor — the recorded drift">
+      <figcaption>The recorded miss — a throne-like chair instead of the floor. It stays in the library anyway; the manifest says so rather than quietly dropping the file.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img loading="lazy" src="sections/gothic-character-project/assets/pose-dalle-chatgpt.jpg" alt="The Demoness by DALL-E via web upload: seated on a carved stone ledge, legs crossed, strappy heels">
+      <figcaption>DALL-E by web upload — German-locale default filename, since renamed and tracked; a carved ledge and strappy heels, another drift from the floor-sit brief.</figcaption>
+    </figure>
+  </div>
+
+  <h3>The gate — five checks, no exceptions</h3>
+  <div class="grid-2">
+    <div class="card code">
+      <h3>Every change must pass</h3>
+      <pre>python -m compileall -q .
+python extract_png_metadata.py --strict
+git diff --exit-code -- '*_metadata.txt'
+git ls-files --others -- '*_metadata.txt'
+python validate_manifests.py</pre>
+      <p class="muted">Corruption, a drifted sidecar, an uncommitted sidecar or a manifest mismatch fails the build — the same five steps run in CI on every push.</p>
+    </div>
+    <div class="card code">
+      <h3>This section's run</h3>
+      <pre>Done. Extracted metadata from 5 file(s).
+Pose_Experiments: 6 PNG, 0 sidecar(s), 6 refs - OK
+Reference_Sheets: 6 PNG, 2 sidecar(s), 8 refs - OK
+Scenes: 5 PNG, 3 sidecar(s), 10 refs - OK
+
+Done. All manifests consistent.</pre>
+      <p class="muted">Verbatim tail from the run that built this page: compileall clean, extractor strict-clean, 0 drift, 0 loose sidecars, all manifests consistent.</p>
+    </div>
+  </div>
+  <p class="muted">A new asset enters the same way every time: PNG into the right folder → extractor → <code>git add -f</code> any new sidecar → a manifest row → validator → commit.</p>
+
+  <h3>What the generators left behind</h3>
+  <p class="muted">Most AI generators ship PNGs scrubbed of their text chunks — empty extractor output is the norm here, and the manifests say so instead of guessing. Five files kept something: raw EXIF, and one job ID that outlived its prompt.</p>
+  <div class="mount" id="sidecar-mount"></div>
+  <p class="caption">The inspector replays the extractor's real verdicts, file by file. The five recovered sidecars are committed, LF-pinned and byte-identical — the gate fails if any drifts by a single byte. Tool: <code>extract_png_metadata.py</code>.</p>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/gothic-character-project">github.com/daniilperkin-media/gothic-character-project</a> (private) · the bible is <code>PROMPTS.md</code>, the gate is <code>AGENTS.md</code>.</p>
+</section>
+<section class="project" id="novel-translation">
+  <header class="p-head">
+    <p class="p-owner">@novel-translation · section live</p>
+    <h2>Novel Translation</h2>
+    <p class="p-lede">A small Python pipeline that prepares any novel EPUB for LLM translation and reassembles the result: extract → clean → split into <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code>-marked batches → verify → translate (by hand in any chat UI, or via API) → assemble back into a book. It grew out of a real English→Ukrainian novel run — 215 chapters into 43 batch files — and ships a public-domain demo book so the whole round trip reproduces offline.</p>
+    <p class="chips">
+      <span class="chip">Python 3.10–3.13 · pyproject</span>
+      <span class="chip">ebooklib + BeautifulSoup</span>
+      <span class="chip">&lt;&lt;&lt;PART n&gt;&gt;&gt; markers + manifest.json</span>
+      <span class="chip">stdlib-only API client</span>
+      <span class="chip">MIT · v0.1.0</span>
+      <span class="chip">ruff + CI on push</span>
+    </p>
+  </header>
+
+  <h3>The round trip, replayed</h3>
+  <div class="mount" id="roundtrip-mount"></div>
+  <p class="caption">Stage by stage on the bundled demo book — four real runs, output verbatim (captured on Windows, hence the backslash paths). Click through the stages.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real run this pipeline grew from, prepared end-to-end with it</span></div>
+    <div class="kpi"><b data-static>13 → 3</b><span>parts → batch files on the public-domain demo; the full round trip runs in CI on every push</span></div>
+    <div class="kpi"><b>15</b><span>offline tests — synthetic EPUBs built at runtime, fake transport for the API path</span></div>
+    <div class="kpi"><b>exit 2</b><span>on a missing or duplicated <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code> marker at assemble — nothing is lost silently</span></div>
+  </div>
+
+  <figure class="shot">
+    <img src="sections/novel-translation/assets/demo-run.png" alt="Terminal demo of the pipeline: prepare writes 3 batch files and 13 parts, verify reports no missing or empty chapters, assemble rebuilds the book">
+    <figcaption>The repo's own README render (<code>docs/demo.svg</code>) — a real run, rasterized for this page: prepare → verify → (hand-off to <code>translated/</code>) → assemble, on the same demo book this section replays. Backslashes are Windows paths; the run itself is the same everywhere. Click to zoom.</figcaption>
+  </figure>
+
+  <h3>Markers are the contract</h3>
+  <div class="mount" id="marker-mount"></div>
+  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out.</p>
+
+  <h3>Flags that earned their keep</h3>
+  <ul>
+    <li><code>--strip REGEX</code> — drops running headers a source EPUB repeats on every page (a regex, not a constant: the original run's banner was book-specific).</li>
+    <li><code>--insert FILE --insert-after N</code> — splices a recovered chapter back where the source books missed one; this pipeline's origin story.</li>
+    <li><code>--story-start</code> / <code>--heading-regex</code> — where the story begins and what counts as a part (<code>Chapter N</code> · <code>Side Story N</code> · <code>Epilogue</code> by default).</li>
+    <li><code>--batch-size N</code> — parts per batch file (default 5, the real run's setting).</li>
+    <li><code>verify --max-chapter N --strict</code> — continuity across a known full range, non-zero exit on issues.</li>
+  </ul>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Every change must pass</h3>
+      <ul>
+        <li><code>ruff check .</code> + <code>compileall</code> — lint and syntax, one config in the repo</li>
+        <li>15 unittest tests — synthetic EPUBs built at runtime; the API path runs on a fake transport</li>
+        <li>CLI smoke — <code>novel-translate --help</code></li>
+        <li>demo round trip — prepare → verify <code>--strict</code> → assemble, on Python 3.10–3.13</li>
+      </ul>
+    </div>
+    <div class="card code">
+      <h3>Nothing drops silently</h3>
+      <pre>error: missing part(s) in the translated files: [3]</pre>
+      <p class="muted">A demo run with one <code>&lt;&lt;&lt;PART 3&gt;&gt;&gt;</code> line dropped from a translated batch: <code>assemble</code> refuses with exit 2 — a duplicated part fails the same way. <code>translate</code> counts markers per batch and warns when a model returns a different number than it sent.</p>
+    </div>
+  </div>
+
+  <p class="muted">Source: <a href="https://github.com/daniilperkin-media/novel-translation">github.com/daniilperkin-media/novel-translation</a> (private) · public-domain demo book in <code>examples/</code> · MIT.</p>
+</section>
 </main>
 <footer class="footer"><div class="wrap">
   <p class="foot-fleet">Built by the project fleet — @gta6-clipper · @openshorts · @daily-fact-poster · @gothic-characters · @novel-translation</p>
@@ -392,6 +604,9 @@
 <script src="assets/js/site.js"></script>
 <script src="assets/js/studio.js"></script>
 <script defer src="sections/gta6-clipper/script.js"></script>
+<script defer src="sections/openshorts/script.js"></script>
 <script defer src="sections/daily-fact-poster/script.js"></script>
+<script defer src="sections/gothic-character-project/script.js"></script>
+<script defer src="sections/novel-translation/script.js"></script>
 </body>
 </html>
