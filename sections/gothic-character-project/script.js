@@ -213,6 +213,7 @@
         var b = el('button', 'm');
         b.type = 'button';
         b.dataset.on = on ? 'true' : 'false';
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
         b.textContent = m.label;
         b.title = on ? 'In the prompt — click to find it' : 'Missing — click to append it';
         b.addEventListener('click', function () {
