@@ -19,6 +19,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
+      - name: Rebuild the page from its section sources
+        run: node build.mjs
+      - name: Fail when the committed page is stale
+        run: git diff --exit-code -- index.html
       - name: Stage the site (index + assets + sections, as served locally)
         run: |
           mkdir _site

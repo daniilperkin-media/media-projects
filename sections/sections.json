@@ -3,35 +3,35 @@
     {
       "id": "gta6-clipper",
       "name": "GTA 6 Clipper",
-      "owner": "@gta6-clipper",
+      "owner": "@media-video",
       "kind": "Python · faster-whisper CUDA · FFmpeg NVENC",
       "blurb": "Twitch GTA VI clip pipeline: monitor → download → transcribe → AI virality eval → 1080x1920 NVENC render with per-word subtitles → ready_to_post + Telegram. Posting stays manual."
     },
     {
       "id": "openshorts",
       "name": "OpenShorts",
-      "owner": "@openshorts",
+      "owner": "@media-video",
       "kind": "Python · FastAPI · faster-whisper · React 18 / Vite",
       "blurb": "Long-to-short video converter: transcription, highlight selection and face-aware vertical framing, with a React dashboard on the side."
     },
     {
       "id": "daily-fact-poster",
       "name": "Daily Fact Poster",
-      "owner": "@daily-fact-poster",
+      "owner": "@media-video",
       "kind": "Python · OpenRouter · PIL · FFmpeg",
       "blurb": "Automated daily fact generator: GPT-4o-mini copy plus Flux 2 Pro imagery assembled into carousels and videos, posted via the TikTok Content Posting API."
     },
     {
       "id": "gothic-character-project",
       "name": "Gothic Character Project",
-      "owner": "@gothic-characters",
+      "owner": "@media-creative",
       "kind": "Python (stdlib) · asset pipeline",
       "blurb": "AI-generated gothic character reference sheets, scene compositions and pose experiments — manifests, sidecars and a stdlib CI pipeline keep the asset library verifiable."
     },
     {
       "id": "novel-translation",
       "name": "Novel Translation",
-      "owner": "@novel-translation",
+      "owner": "@media-creative",
       "kind": "Python · Gemini · EPUB pipeline",
       "blurb": "Prepare any novel EPUB for LLM translation — extract, clean, batch, verify, assemble; optional OpenAI-compatible API mode."
     }

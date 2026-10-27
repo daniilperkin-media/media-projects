@@ -3,7 +3,8 @@
       incoming/_black_render.ass (the script the black-frame pixel gate renders);
       the stage mirrors the 1080x1920 canvas: facecam 38%, subtitles at 25% from
       the bottom. 2) The judge chain: Gemini -> OpenRouter -> heuristic, with
-      key-loss scenarios. */
+      key-loss scenarios. 3) The clip journey: six stage buttons, each showing
+      the artefact that stage actually produced. */
 (function () {
   'use strict';
 
@@ -233,5 +234,27 @@
       setScore(s.score);
     }
     setScenario(cur);
+  }
+
+  /* ---------- 3. the clip journey stepper ---------- */
+  var desk = document.getElementById('g6-journey');
+  if (desk) {
+    var steps = [].slice.call(desk.querySelectorAll('.g6-step'));
+    var panels = [].slice.call(desk.querySelectorAll('.g6-panel'));
+    function setStage(id) {
+      var i, j;
+      for (i = 0; i < steps.length; i++) {
+        var on = steps[i].getAttribute('data-stage') === id;
+        steps[i].classList.toggle('on', on);
+        steps[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
+      for (j = 0; j < panels.length; j++) {
+        panels[j].hidden = panels[j].getAttribute('data-panel') !== id;
+      }
+    }
+    steps.forEach(function (btn) {
+      btn.addEventListener('click', function () { setStage(btn.getAttribute('data-stage')); });
+    });
+    setStage('monitor');
   }
 })();

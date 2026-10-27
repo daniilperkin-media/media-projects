@@ -1,43 +1,111 @@
 <section class="project" id="gta6-clipper">
   <header class="p-head">
-    <p class="p-owner">@gta6-clipper · section live</p>
+    <p class="p-owner">@media-video · section live</p>
     <h2>GTA 6 Clipper</h2>
     <p class="p-lede">A hands-off pipeline that turns a Twitch GTA VI clip into a ready-to-post vertical export: watch the category, download a rising clip, transcribe it on the RTX 4060, let an LLM chain pick the hook, then burn the whole 1080&times;1920 facecam-over-gameplay render with per-word yellow subtitles in a single NVENC pass &mdash; delivered to <code>ready_to_post/</code> and Telegram. Posting stays manual, forever.</p>
     <p class="chips"><span class="chip">Python 3.12 · uv</span><span class="chip">faster-whisper turbo · CUDA</span><span class="chip">MediaPipe 0.10.21</span><span class="chip">FFmpeg NVENC</span><span class="chip">Gemini → OpenRouter → heuristic</span><span class="chip">SQLite</span><span class="chip">pytest CI on push</span></p>
   </header>
 
+  <h3>One clip, six stages</h3>
+  <div class="mount">
+    <div class="g6-desk" id="g6-journey">
+      <div class="g6-steps" role="group" aria-label="Pipeline stages — pick one to inspect what it produced">
+        <button type="button" class="g6-step on" data-stage="monitor" aria-pressed="true"><span class="g6-n">01</span><span class="g6-lbl">Monitor</span><span class="g6-sub">Helix · SQLite</span></button>
+        <button type="button" class="g6-step" data-stage="download" aria-pressed="false"><span class="g6-n">02</span><span class="g6-lbl">Download</span><span class="g6-sub">Helix URL · yt-dlp</span></button>
+        <button type="button" class="g6-step" data-stage="transcribe" aria-pressed="false"><span class="g6-n">03</span><span class="g6-lbl">Transcribe</span><span class="g6-sub">turbo · CUDA</span></button>
+        <button type="button" class="g6-step" data-stage="judge" aria-pressed="false"><span class="g6-n">04</span><span class="g6-lbl">Judge</span><span class="g6-sub">LLM chain</span></button>
+        <button type="button" class="g6-step" data-stage="render" aria-pressed="false"><span class="g6-n">05</span><span class="g6-lbl">Render</span><span class="g6-sub">one NVENC pass</span></button>
+        <button type="button" class="g6-step" data-stage="deliver" aria-pressed="false"><span class="g6-n">06</span><span class="g6-lbl">Deliver</span><span class="g6-sub">folder + Telegram</span></button>
+      </div>
+      <div class="g6-panels">
+        <div class="g6-panel on" data-panel="monitor">
+          <div class="g6-head"><span class="g6-kicker">STAGE 01 · MONITOR</span><span class="g6-meta">config.yaml · every 4 min</span></div>
+          <ul class="g6-facts">
+            <li><b>“Grand Theft Auto VI”</b> — the Twitch category; the game id resolves at runtime through Helix <code>/games</code>.</li>
+            <li><b>15-minute clip window</b>, <b>≥200 views</b> to even be considered, <b>300 views / 15 min</b> as the velocity bar.</li>
+            <li>Every sweep writes a view sample into SQLite; a clip is promoted when the measured rate clears the bar — a brand-new clip qualifies on its first sample and is confirmed on the next.</li>
+          </ul>
+          <p class="g6-small">The monitor needs Twitch client credentials. Unarmed, the same pipeline runs on manual URLs — the captures on this page come from local probe runs through the production filtergraph.</p>
+        </div>
+        <div class="g6-panel" data-panel="download">
+          <div class="g6-head"><span class="g6-kicker">STAGE 02 · DOWNLOAD</span><span class="g6-meta">incoming/ · 37 files, 105 MB on disk</span></div>
+          <ul class="g6-facts">
+            <li>Twitch clips come down over Helix's <i>Get Clips Download</i> direct URL; Kick, YouTube and anything else fall back to yt-dlp — one downloader, two paths.</li>
+            <li>Files land in <code>incoming/</code> as <code>&lt;platform&gt;_&lt;id&gt;.mp4</code>. Unknown sites get a stable id from the URL hash, e.g. <code>example.com_9f2c1a77be10.mp4</code>.</li>
+            <li>Probe media is never auto-deleted (the workspace rule), so the render intermediates this section is built from are still on disk.</li>
+          </ul>
+        </div>
+        <div class="g6-panel" data-panel="transcribe">
+          <div class="g6-head"><span class="g6-kicker">STAGE 03 · TRANSCRIBE</span><span class="g6-meta">faster-whisper turbo · RTX 4060</span></div>
+          <ul class="g6-facts">
+            <li>faster-whisper <code>turbo</code> on CUDA (float16) with word-level timestamps; the CPU fallback is wired, and the selftest loads the model on CUDA in <b>~2 s</b>.</li>
+            <li>Word timestamps are what the subtitle engine needs: one ASS <code>Dialogue</code> event per word, the active word recoloured — never a karaoke timer.</li>
+          </ul>
+          <pre>Dialogue: 0,0:00:00.50,0:00:01.00,Pop,,0,0,0,,{\c&amp;H0000EEFF&amp;}THIS{\c} IS INSANE!
+Dialogue: 0,0:00:01.00,0:00:01.50,Pop,,0,0,0,,THIS {\c&amp;H0000EEFF&amp;}IS{\c} INSANE!</pre>
+          <p class="g6-small">Verbatim from <code>incoming/_black_render.ass</code> — the script the pixel gate renders over black.</p>
+        </div>
+        <div class="g6-panel" data-panel="judge">
+          <div class="g6-head"><span class="g6-kicker">STAGE 04 · JUDGE</span><span class="g6-meta">Gemini → OpenRouter → heuristic</span></div>
+          <ul class="g6-facts">
+            <li>Gemini 2.5 Flash picks the hook and writes the copy; OpenRouter <code>gpt-4o-mini</code> takes over when the primary fails; the local heuristic is the zero-key floor.</li>
+            <li>Transient failures retry once (429/5xx, 5 s backoff) and deterministic errors fail fast to the next judge; every provider's output is normalised — timestamps clamped and snapped to word boundaries, caption and hashtag limits enforced.</li>
+          </ul>
+          <pre>GTA 6 MOMENT
+You will not believe this GTA 6 clip 😭
+#gta6 #gta6clips #streamer #fyp
+🎥 incoming/probe_fmt2.mp4</pre>
+          <p class="g6-small">A real caption file from the 2026-10-08 run — heuristic output, because no API keys were armed. With keys, the same shape is written by Gemini.</p>
+        </div>
+        <div class="g6-panel" data-panel="render">
+          <div class="g6-head"><span class="g6-kicker">STAGE 05 · RENDER</span><span class="g6-meta">one NVENC pass · 1080×1920</span></div>
+          <div class="ba">
+            <img class="a" src="sections/gta6-clipper/assets/ba-split.webp" alt="Split render: a facecam strip on top (38%), a divider line, and the gameplay slice below" width="720" height="1280" loading="lazy" decoding="async">
+            <img class="b" src="sections/gta6-clipper/assets/ba-single.webp" alt="Single-slice render: the gameplay fills the full 9:16 height, with no facecam strip" width="720" height="1280" loading="lazy" decoding="async">
+            <input type="range" value="50" aria-label="Facecam split vs full-height single slice">
+          </div>
+          <ul class="g6-facts">
+            <li><b>Split</b> — facecam strip (top 38%, preset box or MediaPipe-detected) stacked over the gameplay slice; the divider is drawn in the same pass.</li>
+            <li><b>Single slice</b> — no facecam found, so the gameplay crop fills the full height. Same command, same encode.</li>
+            <li>ffprobe on the latest render: <code>h264 · High · yuv420p · bt709/tv · 1080×1920</code> — pinned in the filtergraph and the encoder args, never left to chance.</li>
+          </ul>
+        </div>
+        <div class="g6-panel" data-panel="deliver">
+          <div class="g6-head"><span class="g6-kicker">STAGE 06 · DELIVER</span><span class="g6-meta">ready_to_post/ · 5 exports, 4 sessions</span></div>
+          <div class="g6-covers">
+            <figure class="shot"><img src="sections/gta6-clipper/assets/cover-2026-09-20.webp" alt="Cover thumbnail from the 2026-09-20 export" width="360" height="640" loading="lazy" decoding="async"><figcaption>2026-09-20</figcaption></figure>
+            <figure class="shot"><img src="sections/gta6-clipper/assets/cover-2026-09-27.webp" alt="Cover thumbnail from the 2026-09-27 export" width="360" height="640" loading="lazy" decoding="async"><figcaption>2026-09-27</figcaption></figure>
+            <figure class="shot"><img src="sections/gta6-clipper/assets/cover-2026-10-03.webp" alt="Cover thumbnail from the 2026-10-03 export" width="360" height="640" loading="lazy" decoding="async"><figcaption>2026-10-03</figcaption></figure>
+            <figure class="shot"><img src="sections/gta6-clipper/assets/cover-2026-10-08.webp" alt="Cover thumbnail from the 2026-10-08 export" width="360" height="640" loading="lazy" decoding="async"><figcaption>2026-10-08</figcaption></figure>
+          </div>
+          <ul class="g6-facts">
+            <li>Each export writes mp4 + caption + cover into <code>ready_to_post/YYYY-MM-DD/</code> and marks the clip <code>processed</code> in <code>clips.db</code>.</li>
+            <li>Telegram takes the file when it fits the Bot API caps (≤45 MB video, ≤50 MB document; larger stays local) — and a delivery failure never aborts the run.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="caption">Six stages, real artefacts at every step: config values and SQLite state from the repo, the caption file and covers from actual exports, the framing pair and gate frames from the production filtergraph. The four cover thumbnails are the first-frame picks that landed in <code>ready_to_post/</code> across four sessions.</p>
+  <h3>The pixel gate, four timestamps</h3>
+  <div class="strip g6-gate">
+    <figure class="shot"><img src="sections/gta6-clipper/assets/gate-0.7.webp" alt="Black-frame gate at 0.70 s: THIS IS INSANE! with THIS highlighted yellow" width="360" height="640" loading="lazy" decoding="async"><figcaption>0.70 s — <b>THIS</b> lit</figcaption></figure>
+    <figure class="shot"><img src="sections/gta6-clipper/assets/gate-1.2.webp" alt="Black-frame gate at 1.20 s: THIS IS INSANE! with IS highlighted yellow" width="360" height="640" loading="lazy" decoding="async"><figcaption>1.20 s — <b>IS</b> lit</figcaption></figure>
+    <figure class="shot"><img src="sections/gta6-clipper/assets/gate-1.7.webp" alt="Black-frame gate at 1.70 s: THIS IS INSANE! with INSANE! highlighted yellow" width="360" height="640" loading="lazy" decoding="async"><figcaption>1.70 s — <b>INSANE!</b> lit</figcaption></figure>
+    <figure class="shot"><img src="sections/gta6-clipper/assets/gate-2.4.webp" alt="Black-frame gate at 2.40 s: NO WAY! with NO highlighted yellow" width="360" height="640" loading="lazy" decoding="async"><figcaption>2.40 s — <b>NO</b> lit</figcaption></figure>
+  </div>
+  <p class="caption">The same <code>.ass</code> over a solid black source at four timestamps, straight out of <code>incoming/</code>. A script measures the yellow-pixel x-range per frame — the highlight must move word by word. Never eyeballed: patterned sources contain a yellow stripe that fakes a highlight.</p>
   <h3>The subtitle engine, replayed</h3>
   <div class="mount" id="subs-mount"></div>
-  <p class="caption">Interactive replay of the renderer's per-word subtitles &mdash; the five <code>Dialogue</code> events are verbatim from <code>incoming/_black_render.ass</code>, the script the pixel gate renders over a black source. The stage mirrors the real 1080&times;1920 canvas: facecam strip at 38%, gameplay slice below, subtitle baseline at 25% from the bottom. Toggle <b>safe area</b> to see the guide the renderer keeps clear.</p>
+  <p class="caption">Interactive replay of the renderer's per-word subtitles — the five <code>Dialogue</code> events are verbatim from <code>incoming/_black_render.ass</code>. The stage mirrors the real 1080&times;1920 canvas: facecam strip at 38%, gameplay slice below, subtitle baseline at 25% from the bottom. Toggle <b>safe area</b> to see the guide the renderer keeps clear.</p>
 
   <div class="kpis">
     <div class="kpi"><b>56</b><span>offline tests — no network, no CUDA, no keys; the same suite runs in CI on push</span></div>
     <div class="kpi"><b>1</b><span>NVENC pass per clip — compose, burn subtitles, encode in one go</span></div>
     <div class="kpi"><b>1080×1920</b><span>H.264 High · yuv420p · bt709 pinned — ffprobe-verified, never by eye</span></div>
-    <div class="kpi"><b>5</b><span>exports in <code>ready_to_post/</code> — five sessions, <span class="nw">2026-09-20 → 2026-10-08</span></span></div>
+    <div class="kpi"><b>5</b><span>exports in <code>ready_to_post/</code> — four sessions, <span class="nw">2026-09-20 → 2026-10-08</span></span></div>
     <div class="kpi"><b>0</b><span>API keys required — the judge chain falls back to a local heuristic and still ships</span></div>
   </div>
-
-  <div class="strip">
-    <figure class="shot nopx">
-      <img src="sections/gta6-clipper/assets/render-frame.webp" alt="Frame of the vertical render: test gradient as facecam strip over a gameplay slice, subtitle 'THIS IS INSANE!' with IS in yellow" width="1080" height="1920" loading="eager" decoding="async">
-      <figcaption>A frame from a real render through the production filtergraph: facecam strip (top 38%) over the centred gameplay slice, subtitles burned into the same encode. Synthetic gradient source — captures use probes while the Twitch monitor is unarmed.</figcaption>
-    </figure>
-    <figure class="shot nopx">
-      <img src="sections/gta6-clipper/assets/subtitle-check.webp" alt="Black-frame verification render: 'THIS IS INSANE!' with IS in yellow on solid black" width="1080" height="1920" loading="eager" decoding="async">
-      <figcaption>The pixel gate: the same .ass rendered over a solid black source. A script measures yellow-pixel x-ranges per timestamp — the highlight must move word-by-word. Never eyeballed: patterned sources contain a yellow stripe that fakes a highlight.</figcaption>
-    </figure>
-  </div>
-
-  <h3>What it does</h3>
-  <ul>
-    <li><b>Monitors the category</b> — Helix <code>/clips</code> for “Grand Theft Auto VI” with a view floor and a velocity window; sampled clips are scored and promoted in SQLite.</li>
-    <li><b>Transcribes on the local GPU</b> — faster-whisper <code>turbo</code> with word timestamps on CUDA (RTX 4060), CPU fallback; the selftest loads it in ~3 s.</li>
-    <li><b>Scores virality in a 3-step chain</b> — Gemini 2.5 Flash → OpenRouter <code>gpt-4o-mini</code> → heuristic; the pipeline still produces output with zero API keys.</li>
-    <li><b>Renders once</b> — NVENC: facecam (preset or MediaPipe-detected) stacked over a gameplay slice, per-word ASS subtitles burned in, High profile + bt709/tv pinned so players never mis-render it.</li>
-    <li><b>Delivers, then stops</b> — <code>ready_to_post/YYYY-MM-DD/</code> gets mp4 + caption + cover; Telegram takes the file when it fits the Bot API caps (≤45 MB video). Posting is manual, by design.</li>
-  </ul>
-
   <h3>The judge chain, under pressure</h3>
   <div class="mount" id="judge-mount"></div>
   <p class="caption">Sample scores through the real three-step chain — Gemini 2.5 Flash, then OpenRouter <code>gpt-4o-mini</code>, then the local heuristic. Switch a key off and the chain degrades without blocking; the export still lands.</p>
@@ -60,7 +128,6 @@
       <p class="muted">Frames carry the tags; codec-level flags alone left primaries/transfer “unknown” in this ffmpeg build. Untagged or non-4:2:0 H.264 is the green-cast class — decodes fine, mis-renders in players.</p>
     </div>
   </div>
-
   <h3>One command, one pass</h3>
   <div class="card code receipt">
     <h3>The run, end to end</h3>
@@ -68,7 +135,7 @@
 [whisper] large-v3-turbo · CUDA · word timestamps
 [judge]   Gemini 2.5 Flash → OpenRouter → heuristic
 [render]  h264_nvenc · 1080×1920 · bt709/tv · 1 pass
-[gate]    ffprobe: h264 · yuv420p · 1080×1920
+[gate]    ffprobe: h264 High · yuv420p · bt709 · 1080×1920
 [deliver] ready_to_post/2026-10-08/clip.mp4
           _caption.txt · _cover.jpg · clips.db → processed</pre>
     <p class="muted">The shape of a run: one command, one encode, one delivery row. A missing key or a missing facecam changes the path, not the deliverable.</p>

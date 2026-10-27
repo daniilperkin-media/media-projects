@@ -68,3 +68,33 @@ html[data-theme="light"] .subs-events .ev.on .w{color:#7a6700}
 .judge-verdict .jv-note{font-size:12px;color:var(--muted);line-height:1.35}
 .judge-foot{font-size:12.5px;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.subs-rec i,.subs-game::after{animation:none}.judge-card{transition:none}}
+
+/* ---------- the clip journey ---------- */
+#gta6-clipper .g6-desk{display:grid;gap:14px;margin:18px 0 6px}
+.g6-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+@media(max-width:840px){.g6-steps{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.g6-steps{grid-template-columns:repeat(2,1fr)}}
+.g6-step{display:flex;flex-direction:column;gap:2px;text-align:left;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:9px 11px;font:inherit;color:var(--muted);cursor:pointer;transition:border-color .18s ease,color .18s ease,background .18s ease}
+.g6-step:hover{color:var(--text);border-color:color-mix(in srgb,var(--sec) 45%,var(--border))}
+.g6-step.on{color:var(--text);border-color:var(--sec);background:color-mix(in srgb,var(--sec) 10%,var(--surface2));box-shadow:0 0 0 1px color-mix(in srgb,var(--sec) 30%,transparent)}
+.g6-n{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--muted)}
+.g6-lbl{font-weight:600;font-size:13.5px;line-height:1.2}
+.g6-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:var(--muted)}
+.g6-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.g6-panel[hidden]{display:none}
+.g6-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.g6-kicker{color:var(--sec)}
+.g6-meta{color:var(--muted)}
+.g6-facts{margin:0 0 8px;padding-left:18px;font-size:13.5px;line-height:1.5}
+.g6-facts li{margin:0 0 6px}
+.g6-panel pre{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:10px 12px;overflow:auto;font-size:12px;line-height:1.5;margin:8px 0}
+.g6-small{font-size:12px;color:var(--muted);line-height:1.45;margin:8px 0 0}
+.g6-panel .ba{margin:4px 0 12px;max-width:320px}
+.g6-covers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 12px}
+@media(max-width:560px){.g6-covers{grid-template-columns:repeat(2,1fr)}}
+.g6-covers .shot figcaption{padding:6px 8px;font-size:11px}
+.g6-gate{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.g6-gate .shot figcaption{font-size:12px}
+#gta6-clipper .ba::before{content:"SPLIT · FACECAM"}
+#gta6-clipper .ba::after{content:"SINGLE SLICE"}
+.nw{white-space:nowrap}
