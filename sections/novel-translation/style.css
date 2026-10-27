@@ -176,7 +176,29 @@
 #novel-translation .lab-result .res-exit.bad{border-color:color-mix(in srgb,var(--warn) 60%,var(--border));color:var(--warn)}
 #novel-translation .lab-note{font-size:11.5px;color:var(--muted);margin:8px 0 0;line-height:1.45}
 
-/* ============================ 4. flags + gates ============================ */
+/* ============================ 4. the verify bench ============================ */
+#novel-translation .checks{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:9px}
+#novel-translation .checks li{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:baseline;border-left:2px solid color-mix(in srgb,var(--sec) 45%,var(--border));padding:2px 0 2px 12px}
+#novel-translation .checks b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--sec);font-weight:600}
+#novel-translation .checks span{color:var(--muted);font-size:13.2px;line-height:1.5}
+@media(max-width:620px){#novel-translation .checks li{grid-template-columns:1fr;gap:1px}}
+
+#novel-translation .vb{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:12px 14px;box-shadow:var(--shadow)}
+#novel-translation .vb-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}
+#novel-translation .vb-tabs button{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:5px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;cursor:pointer;transition:border-color .15s ease,color .15s ease,background .15s ease}
+#novel-translation .vb-tabs button:hover{color:var(--text);border-color:color-mix(in srgb,var(--sec) 50%,var(--border))}
+#novel-translation .vb-tabs button[aria-pressed="true"]{color:var(--text);border-color:var(--sec);background:color-mix(in srgb,var(--sec) 11%,var(--surface2))}
+#novel-translation .vb-out{min-height:74px;margin-top:0}
+#novel-translation .vb-why{color:var(--muted);font-size:12.5px;margin:10px 0 0;line-height:1.55}
+
+/* the refusal pair: translate warns, assemble refuses */
+#novel-translation .refusals{margin:16px 0 4px}
+#novel-translation .refusals .card{padding:14px 15px}
+#novel-translation .refusals .card h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:var(--muted);margin:0 0 7px}
+#novel-translation .refusals .card pre{font-size:11.4px;line-height:1.5;white-space:pre-wrap;word-break:break-word;margin:0 0 7px}
+#novel-translation .refusals .card p{margin:0}
+
+/* ============================ 5. flags + gates ============================ */
 #novel-translation .flags{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0}
 #novel-translation .flag{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 14px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
 #novel-translation .flag:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--sec) 45%,var(--border));box-shadow:var(--shadow)}

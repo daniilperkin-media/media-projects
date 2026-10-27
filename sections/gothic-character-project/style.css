@@ -83,10 +83,6 @@ html[data-theme="light"] #bible-mount .bible .lint .fail{color:#c0392b}
 #gothic-character-project .gate-verdict{margin:12px 0 0;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--muted);min-height:1.4em}
 #gothic-character-project .gate-verdict.ok{color:var(--ok)}
 #gothic-character-project .gate-note{font-size:12.5px;margin-top:6px}
-#gothic-character-project .gate-sub{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:16px 0 6px}
-#gothic-character-project .gate-fails{list-style:none;margin:0;padding:0;display:grid;gap:5px;font-size:12.5px;color:var(--muted)}
-#gothic-character-project .gate-fails li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:baseline}
-#gothic-character-project .gate-fails code{font-size:11px;background:var(--surface2);border:1px solid var(--border);padding:1px 6px}
 #gothic-character-project .gate-ci{font-size:12px;color:var(--muted);margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--border)}
 
 /* ---------- the archive — file browser ---------- */
@@ -135,4 +131,35 @@ html[data-theme="light"] #bible-mount .bible .lint .fail{color:#c0392b}
   .arch-body{grid-template-columns:1fr}
   .arch-list{max-height:300px}
   .arch-facts{grid-template-columns:1fr 1fr}
+}
+
+/* ---------- evidence: the manifest row, the sidecar, the extractor line ---------- */
+#gothic-character-project .evidence{margin:14px 0 6px;align-items:start}
+#gothic-character-project .evidence .card{padding:13px 14px}
+#gothic-character-project .evidence .card h3{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.02em;margin:0 0 6px}
+#gothic-character-project .evidence .card pre{font-size:11.4px;line-height:1.5;margin:0 0 6px;white-space:pre-wrap;word-break:break-word}
+#gothic-character-project .evidence .card p{margin:0}
+#gothic-character-project .manifest pre{white-space:pre-wrap;word-break:break-word;font-size:11.4px;line-height:1.55}
+
+/* ---------- the failure bench: one fault, one real run ---------- */
+#gothic-character-project .bench{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:14px 16px;margin:18px 0}
+#gothic-character-project .bench-head h4{margin:0;font-size:15px}
+#gothic-character-project .bench-note{color:var(--muted);font-size:12.5px;margin:3px 0 11px}
+#gothic-character-project .bench-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+#gothic-character-project .bench-tabs button{background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:5px 11px;font:inherit;font-family:var(--mono);font-size:11px;cursor:pointer;transition:border-color .18s ease,color .18s ease,background .18s ease}
+#gothic-character-project .bench-tabs button:hover{color:var(--text);border-color:color-mix(in srgb,var(--warn) 45%,var(--border))}
+#gothic-character-project .bench-tabs button[aria-pressed="true"]{color:var(--warn);border-color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,var(--surface2))}
+#gothic-character-project .bench-panel{background:var(--code);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+#gothic-character-project .bench-cmd{font-family:var(--mono);font-size:11.5px;color:var(--text);word-break:break-all;margin-bottom:7px;line-height:1.5}
+#gothic-character-project .bench-cmd code{background:none;border:0;padding:0;font-size:11.5px;color:var(--text)}
+#gothic-character-project .bench-cmd .prompt{color:var(--accent-2)}
+#gothic-character-project .bench-pre{margin:0;font-family:var(--mono);font-size:11.6px;line-height:1.5;white-space:pre-wrap;word-break:break-word;color:var(--muted);max-height:300px;overflow:auto}
+#gothic-character-project .bench-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:9px;padding-top:8px;border-top:1px dashed var(--border)}
+#gothic-character-project .bench-step{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+#gothic-character-project .bench-exit{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--border);border-radius:999px;padding:1px 8px;color:var(--muted)}
+#gothic-character-project .bench-exit.bad{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 60%,var(--border))}
+#gothic-character-project .bench-exit.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 55%,var(--border))}
+#gothic-character-project .bench-why{color:var(--muted);font-size:12.5px;margin:10px 0 0;line-height:1.55}
+@media (prefers-reduced-motion: reduce){
+  #gothic-character-project .bench-tabs button{transition:none}
 }

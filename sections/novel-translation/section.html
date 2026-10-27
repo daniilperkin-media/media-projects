@@ -22,12 +22,34 @@
     <figcaption>The same run as the repo's README renders it (<code>docs/demo.svg</code>, rasterized): prepare → verify → hand-off → assemble. The raw receipt for the interactive run above. Click to zoom.</figcaption>
   </figure>
 
+  <h3>What a batch file actually looks like</h3>
+  <p class="muted">One file, opened. Every part is a marker line, the chapter heading, a blank line, the fable's title and the body; parts are separated by two blank lines. The model translates the heading and the body — the marker line is the only thing that has to come back unchanged.</p>
+  <div class="card code">
+    <h3>demo_work/batches/batch_006_010.txt — the first part, 5 of 33 lines</h3>
+    <pre>&lt;&lt;&lt;PART 6&gt;&gt;&gt;
+Chapter 5
+
+The Crow and the Pitcher
+A thirsty crow found a pitcher with a little water at the bottom, out of reach of her beak. She dropped pebbles into the pitcher, one by one, until the water rose high enough to drink. Little by little does the trick.</pre>
+    <p class="muted">1,381 bytes for five parts; the other two files are 1,449 and 1,043. The <code>manifest.json</code> beside them lists all 13 parts and the file each one lives in — that manifest is what <code>assemble</code> checks the translated files against.</p>
+  </div>
+
   <div class="kpis">
-    <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real run this pipeline grew from, prepared end-to-end with it</span></div>
+    <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real English→Ukrainian run this pipeline was generalized from</span></div>
     <div class="kpi"><b data-static>13 → 3</b><span>parts → batch files on the public-domain demo; the full round trip runs in CI on every push</span></div>
     <div class="kpi"><b>15</b><span>offline tests — synthetic EPUBs built at runtime, fake transport for the API path</span></div>
     <div class="kpi"><b>exit 2</b><span>on a missing or duplicated <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code> marker at assemble — nothing is lost silently</span></div>
   </div>
+
+  <h3>What verify actually checks</h3>
+  <p class="muted">Three rules, read off <code>verify.py</code>, run against the cleaned text before a single word is translated:</p>
+  <ol class="checks">
+    <li><b>missing</b><span>every chapter number from <code>--min-chapter</code> up to the highest one found — or up to <code>--max-chapter</code> when the full range is known — must appear as a heading.</span></li>
+    <li><b>empty</b><span>the text between a heading and the next one, with whitespace and decoration stripped, must reach 50 characters.</span></li>
+    <li><b>toc-aware</b><span>a run of two or more consecutive bare <code>Chapter N</code> lines is a table of contents and is ignored, so a TOC can never pass for the chapters themselves.</span></li>
+  </ol>
+  <div class="mount" id="verify-mount"></div>
+  <p class="caption">Four states of the same workspace, each produced by editing <code>cleaned.txt</code> and running <code>verify</code> for real — the report and the exit code are the tool's own. <code>--strict</code> is what turns a finding into a failed run.</p>
 
   <h3>215 → 43, made literal</h3>
   <div class="mount" id="shelf-mount"></div>
@@ -35,7 +57,24 @@
 
   <h3>Markers are the contract</h3>
   <div class="mount" id="marker-mount"></div>
-  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out. Arm a fault and run the validator to see why.</p>
+  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out. Arm a fault and run assemble to see why.</p>
+
+  <h3>Warn, then refuse</h3>
+  <div class="grid-2 refusals">
+    <div class="card code">
+      <h3>translate — warns, keeps going</h3>
+      <pre>WARNING: batch_001_005.txt: 4 of 5 &lt;&lt;&lt;PART n&gt;&gt;&gt; markers kept - the model may have mangled the structure; check before assembling
+translated batch_001_005.txt (1449 -> 1436 chars)
+…
+done: 3 translated, 0 skipped, 3 warning(s)</pre>
+      <p class="muted">A local OpenAI-compatible stub returned each batch with its last marker dropped. The client counts markers in and out, prints both numbers, and still exits 0 — a translation that needs a human look should not be thrown away by the tool that fetched it.</p>
+    </div>
+    <div class="card code">
+      <h3>assemble — refuses</h3>
+      <pre>error: missing part(s) in the translated files: [5, 10, 13]</pre>
+      <p class="muted">exit 2. The same workspace, one step later: the three parts the stub mangled are exactly the three the assembler will not invent. A batch that comes back with no markers at all fails the same way — <code>error: batch_011_013.txt: no &lt;&lt;&lt;PART n&gt;&gt;&gt; markers found - the markers must be kept while translating</code>.</p>
+    </div>
+  </div>
 
   <h3>Flags that earned their keep</h3>
   <div class="flags">

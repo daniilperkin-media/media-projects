@@ -558,7 +558,7 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
   <header class="p-head">
     <p class="p-owner">@gothic-characters · section live</p>
     <h2>Gothic Character Project</h2>
-    <p class="p-lede">A gothic novel's visual, grown one generation at a time: AI-built character reference sheets, scene compositions and pose experiments — kept like an archive rather than a folder. A pure-stdlib toolchain recovers whatever text metadata the generators left behind, three manifests keep every PNG accounted for, and a five-step gate stands between a new file and the shelf. The prompting bible — visual markers, never names; diegetic sound only; no brands — is enforced, not aspirational.</p>
+    <p class="p-lede">A gothic novel's visual, grown one generation at a time: AI-built character reference sheets, scene compositions and pose experiments — kept like an archive rather than a folder. A pure-stdlib toolchain recovers whatever text metadata the generators left behind, three manifests keep every library PNG accounted for, and a five-step gate stands between a new file and the shelf. The prompting bible — visual markers, never names; diegetic sound only; no brands — is enforced, not aspirational.</p>
     <p class="chips"><span class="chip">Python 3.12 · stdlib only</span><span class="chip">Gemini Imagen · DALL-E · HuggingFace</span><span class="chip">17 library PNGs · 92.9 MB</span><span class="chip">5 committed sidecars · 0 drift</span><span class="chip">5-step CI gate</span><span class="chip">MIT tooling · CC BY assets</span></p>
   </header>
 
@@ -570,7 +570,7 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
     <div class="kpi"><b>17</b><span>PNG library assets across three manifest folders — sheets, scenes, pose experiments</span></div>
     <div class="kpi"><b>5</b><span>committed sidecars, byte-identical — 0 drift, on this run and in CI</span></div>
     <div class="kpi"><b>5/5</b><span>gate steps green — corruption, drift or a stray sidecar fails the build</span></div>
-    <div class="kpi"><b>0</b><span>prompts recoverable from generator output — what survived lives in the sidecars</span></div>
+    <div class="kpi"><b>0</b><span>prompts recovered from 20 PNGs — five carry a text chunk, and none of the five is a prompt</span></div>
     <div class="kpi"><b>93.9 MB</b><span>of PNGs walked — 17 library assets plus the three README previews, all accounted for</span></div>
   </div>
 
@@ -591,13 +591,29 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
     </figure>
     <figure class="shot">
       <img src="sections/gothic-character-project/assets/scene1-hf.webp" alt="Scene 1, HuggingFace take: near-identical staging to the Gemini version" width="710" height="396" loading="lazy" decoding="async">
-      <figcaption>The same brief through a HuggingFace job — near-identical staging across two engines; the markers travel well. This file's entire recoverable history is a job ID (inspector below).</figcaption>
+      <figcaption>The same brief through a HuggingFace job — near-identical staging across two engines; the markers travel well. This file's entire recoverable history is a job ID (the block below shows all of it).</figcaption>
     </figure>
     <figure class="shot">
       <img src="sections/gothic-character-project/assets/scene2.webp" alt="Scene 2: full-length cathedral composition with the floor-length hair spreading across the rubble" width="710" height="396" loading="lazy" decoding="async">
       <figcaption>Scene 2 — full-length: the composition the hair rule exists for. Floor-length is literal; the hem of her hair drags across the rubble.</figcaption>
     </figure>
   </div>
+
+  <h3>A 9 MB render and the 56 bytes that survived</h3>
+  <p class="muted">The HuggingFace take in the strip above is the largest file in the library, 9,009,075 bytes. Its entire recoverable history is a job ID. Three places record that, and all three are copied from the repo rather than summarised: the manifest row, the sidecar the extractor wrote, and the line the extractor printed.</p>
+  <div class="grid-2 evidence">
+    <div class="card code">
+      <h3>Scenes/MANIFEST.md — one row</h3>
+      <pre>| `hf_20260522_215451_44faac83-9d51-4422-8c07-a726976a7c89.png` | Dante + Maeve | HuggingFace | Lost (only job ID recoverable) | See `hf_20260522_215451_44faac83-9d51-4422-8c07-a726976a7c89_metadata.txt` — job ID: `44faac83-9d51-4422-8c07-a726976a7c89`, generated 2026-05-22 21:54:51 |</pre>
+    </div>
+    <div class="card code">
+      <h3>hf_…_metadata.txt — the whole file</h3>
+      <pre>=== hf-job-id ===
+44faac83-9d51-4422-8c07-a726976a7c89</pre>
+      <p class="muted">56 bytes, 3 lines — the third is the blank line the extractor writes after every text chunk. LF-pinned, tracked with <code>git add -f</code>. No prompt, no model, no seed: the generator never wrote them, so nothing invented them afterwards.</p>
+    </div>
+  </div>
+  <p class="caption">Extractor output for that file, verbatim: <code>Processing: hf_20260522_215451_44faac83-9d51-4422-8c07-a726976a7c89.png</code> · <code>&nbsp;&nbsp;Wrote: hf_20260522_215451_44faac83-9d51-4422-8c07-a726976a7c89_metadata.txt</code>. The other four sidecars are an EXIF blob and nothing else — <code>Dante_Reference_metadata.txt</code> is 12,731 bytes of Picasa EXIF. Twenty PNGs in, five sidecars out, zero prompts recovered: the manifests record the loss instead of guessing.</p>
 
   <h3>One pose, four takes</h3>
   <p class="muted">The Demoness' signature pose, tested across six files and three engines until it held. The manifest records which takes keep the exact floor-sit and which drift from it — so the four stay side by side, one frame size, captions level.</p>
@@ -620,6 +636,21 @@ Dialogue: 0,0:00:00.60,0:00:00.94,Default,,0,0,0,,USING COD {\c&amp;H00E5FF&amp;
     </figure>
   </div>
 
+  <h3>The inventory is a file, not a memory</h3>
+  <p class="muted">This is <code>Pose_Experiments/MANIFEST.md</code> as it stands: one row per file, with the generator, the prompt status and the note a human left. The whole folder, not a sample.</p>
+  <div class="card code manifest">
+    <h3>Pose_Experiments/MANIFEST.md — the table</h3>
+    <pre>| Filename | Generator | Prompt | Notes |
+|---|---|---|---|
+| `demoness_chatgpt_20260604.png` | DALL-E (ChatGPT) | Lost (no embedded metadata) | Renamed from `ChatGPT Image 4. Juni 2026, 17_00_44.png` (German default filename) |
+| `dalle_horizontal_floor_sit.png` | DALL-E (ChatGPT) | Lost (no embedded metadata) | Horizontal composition; manually renamed |
+| `dalle_vertical_floor_sit.png` | DALL-E (ChatGPT) | Lost (no embedded metadata) | Vertical composition; manually renamed |
+| `demoness_gemini_a29mwq.png` | Google Gemini | Lost (no embedded metadata) | Renamed from `Gemini_Generated_Image_a29mwqa29mwqa29m.png` (default Gemini filename) |
+| `gemini_horizontal_perfected.png` | Google Gemini | Lost (no embedded metadata) | Horizontal; manually renamed "perfected" |
+| `gemini_vertical_floor_sit.png` | Google Gemini | Lost (no embedded metadata) | Vertical composition; manually renamed |</pre>
+    <p class="muted">Six rows, six PNGs, zero sidecars — the validator prints <code>6 PNG, 0 sidecar(s), 6 refs - OK</code> for this folder, because none of the six ever carried a text chunk. The other two manifests hold the five that did.</p>
+  </div>
+
   <h3>The gate — five checks, no exceptions</h3>
   <div class="grid-2 gate-grid">
     <div class="card gate-card">
@@ -640,16 +671,11 @@ Reference_Sheets: 6 PNG, 2 sidecar(s), 8 refs - OK
 Scenes: 5 PNG, 3 sidecar(s), 10 refs - OK
 
 Done. All manifests consistent.</pre>
-      <p class="muted">Verbatim tail from the recorded gate run: compileall clean, extractor strict-clean, 0 drift, 0 loose sidecars, all manifests consistent.</p>
-      <h4 class="gate-sub">If a check fails</h4>
-      <ul class="gate-fails">
-        <li><code>--strict</code><span>a truncated or corrupt PNG</span></li>
-        <li><code>git diff</code><span>a sidecar that drifted by one byte</span></li>
-        <li><code>ls-files --others</code><span>a sidecar never committed</span></li>
-        <li><code>validate_manifests</code><span>a file the manifest does not know</span></li>
-      </ul>
+      <p class="muted">Verbatim tail from a run of the gate on this repo: compileall clean, extractor strict-clean, 0 drift, 0 loose sidecars, all manifests consistent.</p>
     </div>
   </div>
+  <div class="mount" id="bench-mount"></div>
+  <p class="caption">Each button breaks exactly one thing in a scratch copy of the repo, runs the step that owns it, and prints what the tool printed — output and exit code copied verbatim, nothing simulated. The clean run above is what happens when none of them is broken.</p>
   <p class="muted">A new asset enters the same way every time: PNG into the right folder → extractor → <code>git add -f</code> any new sidecar → a manifest row → validator → commit.</p>
 
   <h3>The archive, file by file</h3>
@@ -683,12 +709,34 @@ Done. All manifests consistent.</pre>
     <figcaption>The same run as the repo's README renders it (<code>docs/demo.svg</code>, rasterized): prepare → verify → hand-off → assemble. The raw receipt for the interactive run above. Click to zoom.</figcaption>
   </figure>
 
+  <h3>What a batch file actually looks like</h3>
+  <p class="muted">One file, opened. Every part is a marker line, the chapter heading, a blank line, the fable's title and the body; parts are separated by two blank lines. The model translates the heading and the body — the marker line is the only thing that has to come back unchanged.</p>
+  <div class="card code">
+    <h3>demo_work/batches/batch_006_010.txt — the first part, 5 of 33 lines</h3>
+    <pre>&lt;&lt;&lt;PART 6&gt;&gt;&gt;
+Chapter 5
+
+The Crow and the Pitcher
+A thirsty crow found a pitcher with a little water at the bottom, out of reach of her beak. She dropped pebbles into the pitcher, one by one, until the water rose high enough to drink. Little by little does the trick.</pre>
+    <p class="muted">1,381 bytes for five parts; the other two files are 1,449 and 1,043. The <code>manifest.json</code> beside them lists all 13 parts and the file each one lives in — that manifest is what <code>assemble</code> checks the translated files against.</p>
+  </div>
+
   <div class="kpis">
-    <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real run this pipeline grew from, prepared end-to-end with it</span></div>
+    <div class="kpi"><b data-static>215 → 43</b><span>chapters → batch files in the real English→Ukrainian run this pipeline was generalized from</span></div>
     <div class="kpi"><b data-static>13 → 3</b><span>parts → batch files on the public-domain demo; the full round trip runs in CI on every push</span></div>
     <div class="kpi"><b>15</b><span>offline tests — synthetic EPUBs built at runtime, fake transport for the API path</span></div>
     <div class="kpi"><b>exit 2</b><span>on a missing or duplicated <code>&lt;&lt;&lt;PART n&gt;&gt;&gt;</code> marker at assemble — nothing is lost silently</span></div>
   </div>
+
+  <h3>What verify actually checks</h3>
+  <p class="muted">Three rules, read off <code>verify.py</code>, run against the cleaned text before a single word is translated:</p>
+  <ol class="checks">
+    <li><b>missing</b><span>every chapter number from <code>--min-chapter</code> up to the highest one found — or up to <code>--max-chapter</code> when the full range is known — must appear as a heading.</span></li>
+    <li><b>empty</b><span>the text between a heading and the next one, with whitespace and decoration stripped, must reach 50 characters.</span></li>
+    <li><b>toc-aware</b><span>a run of two or more consecutive bare <code>Chapter N</code> lines is a table of contents and is ignored, so a TOC can never pass for the chapters themselves.</span></li>
+  </ol>
+  <div class="mount" id="verify-mount"></div>
+  <p class="caption">Four states of the same workspace, each produced by editing <code>cleaned.txt</code> and running <code>verify</code> for real — the report and the exit code are the tool's own. <code>--strict</code> is what turns a finding into a failed run.</p>
 
   <h3>215 → 43, made literal</h3>
   <div class="mount" id="shelf-mount"></div>
@@ -696,7 +744,24 @@ Done. All manifests consistent.</pre>
 
   <h3>Markers are the contract</h3>
   <div class="mount" id="marker-mount"></div>
-  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out. Arm a fault and run the validator to see why.</p>
+  <p class="caption">The demo run's three batch files, part by part — straight from <code>manifest.json</code> and the batch files themselves. The headings get translated by the model; the marker lines are the only reliable link between a translated block and its chapter, so they must come back exactly as they went out. Arm a fault and run assemble to see why.</p>
+
+  <h3>Warn, then refuse</h3>
+  <div class="grid-2 refusals">
+    <div class="card code">
+      <h3>translate — warns, keeps going</h3>
+      <pre>WARNING: batch_001_005.txt: 4 of 5 &lt;&lt;&lt;PART n&gt;&gt;&gt; markers kept - the model may have mangled the structure; check before assembling
+translated batch_001_005.txt (1449 -> 1436 chars)
+…
+done: 3 translated, 0 skipped, 3 warning(s)</pre>
+      <p class="muted">A local OpenAI-compatible stub returned each batch with its last marker dropped. The client counts markers in and out, prints both numbers, and still exits 0 — a translation that needs a human look should not be thrown away by the tool that fetched it.</p>
+    </div>
+    <div class="card code">
+      <h3>assemble — refuses</h3>
+      <pre>error: missing part(s) in the translated files: [5, 10, 13]</pre>
+      <p class="muted">exit 2. The same workspace, one step later: the three parts the stub mangled are exactly the three the assembler will not invent. A batch that comes back with no markers at all fails the same way — <code>error: batch_011_013.txt: no &lt;&lt;&lt;PART n&gt;&gt;&gt; markers found - the markers must be kept while translating</code>.</p>
+    </div>
+  </div>
 
   <h3>Flags that earned their keep</h3>
   <div class="flags">

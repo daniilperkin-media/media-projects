@@ -72,7 +72,7 @@
     { name: 'batch_001_005.txt', size: '1,449 B', stage: 2, depth: 2 },
     { name: 'batch_006_010.txt', size: '1,381 B', stage: 2, depth: 2 },
     { name: 'batch_011_013.txt', size: '1,043 B', stage: 2, depth: 2 },
-    { name: 'demo.uk.epub', size: '8,523 B', stage: 3, depth: 1 },
+    { name: 'demo.uk.epub', size: '8.5 KB', stage: 3, depth: 1 },
     { name: 'translated_full.txt', size: '3,704 B', stage: 3, depth: 1 }
   ];
 
@@ -294,7 +294,7 @@
         big3.appendChild(u3);
         artCol.appendChild(big3);
         var spec = el('dl', 'art-spec');
-        [['file', '8,523 B'], ['language', 'uk'], ['documents', '14 (nav + 13)'], ['translated_full.txt', '3,704 B']].forEach(function (r) {
+        [['title', 'demo_book'], ['language', 'uk'], ['documents', '14 (nav + 13)'], ['combined text', '3,704 B']].forEach(function (r) {
           var d = el('div');
           d.appendChild(txt('dt', '', r[0])); d.appendChild(txt('dd', '', r[1]));
           spec.appendChild(d);
@@ -714,5 +714,87 @@
     window.addEventListener('resize', function () { positionCaret(currentPart); });
 
     select(1);
+  }
+
+  /* ================================================================
+     4. THE VERIFY BENCH — what the continuity report sees
+     Each case was produced by editing demo_work/cleaned.txt and running
+     `novel-translate verify` for real (2026-10-27); the lines and exit
+     codes are the tool's own output.
+     ================================================================ */
+  var VERIFY_CASES = [
+    {
+      label: 'Clean workspace',
+      cmd: 'novel-translate verify -w demo_work --strict',
+      out: ['Missing chapters: None', 'Empty/Suspicious chapters: None'],
+      exit: 0,
+      why: 'Thirteen parts, none missing, none shorter than 50 characters once whitespace and decoration are stripped. --strict has nothing to escalate.'
+    },
+    {
+      label: 'Chapter 5 heading renamed',
+      cmd: 'novel-translate verify -w demo_work --strict',
+      out: ['Missing chapters: [5]', 'Empty/Suspicious chapters: None'],
+      exit: 1,
+      why: 'Chapter 5 became "Chapter five" in cleaned.txt. The verifier counts headings, so the number between 4 and 6 is reported missing — and --strict turns that finding into exit 1.'
+    },
+    {
+      label: 'Chapter 7 emptied',
+      cmd: 'novel-translate verify -w demo_work --strict',
+      out: ['Missing chapters: None', 'Empty/Suspicious chapters: [7]'],
+      exit: 1,
+      why: 'Chapter 7 keeps its heading and loses its body: under 50 characters remain after stripping, so it is reported as suspicious instead of quietly accepted.'
+    },
+    {
+      label: 'Range checked to chapter 20',
+      cmd: 'novel-translate verify -w demo_work --max-chapter 20 --strict',
+      out: ['Missing chapters: [13, 14, 15, 16, 17, 18, 19, 20]', 'Empty/Suspicious chapters: None'],
+      exit: 1,
+      why: 'The demo stops at Chapter 12. Asking for a known range up to 20 reports the eight numbers that should exist — the flag exists so a run with a known chapter count never has to trust the maximum it happens to find.'
+    }
+  ];
+
+  var verifyMount = document.getElementById('verify-mount');
+  if (verifyMount) {
+    var vb = el('div', 'vb');
+    var vbTabs = el('div', 'vb-tabs');
+    vbTabs.setAttribute('role', 'group');
+    vbTabs.setAttribute('aria-label', 'Choose a workspace state');
+    var vbOut = el('div', 'lab-result vb-out');
+    vbOut.setAttribute('aria-live', 'polite');
+    var vbWhy = el('p', 'vb-why');
+    vb.appendChild(vbTabs); vb.appendChild(vbOut); vb.appendChild(vbWhy);
+    verifyMount.appendChild(vb);
+
+    var vbBtns = [];
+    function showCase(i) {
+      var c = VERIFY_CASES[i];
+      vbBtns.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+      vbOut.textContent = '';
+      var cmd = el('div', 'res-cmd');
+      cmd.appendChild(txt('span', 'prompt', '$ '));
+      cmd.appendChild(document.createTextNode(c.cmd));
+      vbOut.appendChild(cmd);
+      c.out.forEach(function (line) {
+        var row = el('div', 'res-line');
+        row.appendChild(txt('span', 'res-out' + (c.exit ? ' bad' : ''), line));
+        vbOut.appendChild(row);
+      });
+      var exitRow = el('div', 'res-line');
+      exitRow.appendChild(txt('span', 'res-exit' + (c.exit ? ' bad' : ''), 'exit ' + c.exit));
+      vbOut.appendChild(exitRow);
+      vbWhy.textContent = c.why;
+    }
+
+    VERIFY_CASES.forEach(function (c, i) {
+      var b = el('button');
+      b.type = 'button';
+      b.textContent = c.label;
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { showCase(i); });
+      vbTabs.appendChild(b);
+      vbBtns.push(b);
+    });
+
+    showCase(0);
   }
 })();

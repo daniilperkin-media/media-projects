@@ -618,4 +618,153 @@
       + fmtBytes(libBytes) + ' library / ' + fmtBytes(allBytes) + ' total';
     renderList();
   }
+
+  /* ---------- 4. the failure bench — what the gate rejects, verbatim ----------
+     Every line below was produced by running the real tool on a scratch copy of
+     this repo with exactly one fault applied (2026-10-27). Nothing is simulated:
+     the strings are the tools' own output and the exit codes are their own. */
+  var benchMount = document.getElementById('bench-mount');
+  if (benchMount) {
+    var HF = 'hf_20260522_215451_44faac83-9d51-4422-8c07-a726976a7c89';
+    var FAULTS = [
+      {
+        label: 'Truncate a PNG',
+        step: 'step 2 of 5 \u00b7 extractor --strict',
+        cmd: 'python extract_png_metadata.py --strict Scenes/Scene1/' + HF + '.png',
+        exit: 1,
+        out: [
+          'Processing: ' + HF + '.png',
+          '  Warning: Scenes/Scene1/' + HF + '.png: chunk \'IDAT\' declares 8192 bytes but only 7064 remain \u2014 file is truncated; remaining data ignored.',
+          '  Wrote: ' + HF + '_metadata.txt',
+          '',
+          'Strict mode: 1 warning(s) found; exiting non-zero.'
+        ],
+        why: 'The IDAT header promises 8,192 bytes and the file ends 1,128 short. The extractor reports the truncation instead of handing a partial chunk back as if it were whole, and --strict turns that warning into exit 1 \u2014 a corrupt file never reaches the shelf.'
+      },
+      {
+        label: 'Delete a sidecar',
+        step: 'step 5 of 5 \u00b7 validate_manifests.py',
+        cmd: 'python validate_manifests.py',
+        exit: 1,
+        out: [
+          'Pose_Experiments: 6 PNG, 0 sidecar(s), 6 refs - OK',
+          'Reference_Sheets: 6 PNG, 2 sidecar(s), 8 refs - OK',
+          'Scenes: 5 PNG, 2 sidecar(s), 10 refs - 2 issue(s)',
+          '  - referenced but missing: ' + HF + '_metadata.txt',
+          '  - embedded metadata without sidecar: Scenes/Scene1/' + HF + '.png (run extract_png_metadata.py, commit with git add -f)',
+          '',
+          'Done. 2 issue(s) found.'
+        ],
+        why: 'One deletion trips two rules at once: the manifest still names the sidecar, and the PNG still carries the text chunk that produced it. Neither side can be quietly forgotten.'
+      },
+      {
+        label: 'Invent a sidecar',
+        step: 'step 5 of 5 \u00b7 validate_manifests.py',
+        cmd: 'python validate_manifests.py',
+        exit: 1,
+        out: [
+          'Pose_Experiments: 6 PNG, 1 sidecar(s), 6 refs - 2 issue(s)',
+          '  - not referenced in any manifest row: dalle_horizontal_floor_sit_metadata.txt',
+          '  - sidecar without embedded metadata: Pose_Experiments/dalle_horizontal_floor_sit_metadata.txt',
+          'Reference_Sheets: 6 PNG, 2 sidecar(s), 8 refs - OK',
+          'Scenes: 5 PNG, 3 sidecar(s), 10 refs - OK',
+          '',
+          'Done. 2 issue(s) found.'
+        ],
+        why: 'A hand-written sidecar for a clean-stripped PNG fails twice: no manifest row claims it, and the PNG it names carries no text chunk to justify it. Provenance has to come out of the file, not out of a hopeful note.'
+      },
+      {
+        label: 'Add a row for a missing file',
+        step: 'step 5 of 5 \u00b7 validate_manifests.py',
+        cmd: 'python validate_manifests.py',
+        exit: 1,
+        out: [
+          'Pose_Experiments: 6 PNG, 0 sidecar(s), 6 refs - OK',
+          'Reference_Sheets: 6 PNG, 2 sidecar(s), 9 refs - 1 issue(s)',
+          '  - referenced but missing: Ghost_Sheet.png',
+          'Scenes: 5 PNG, 3 sidecar(s), 10 refs - OK',
+          '',
+          'Done. 1 issue(s) found.'
+        ],
+        why: 'A manifest row is a claim, and the validator checks claims against the disk. A row for a file that does not exist fails as loudly as a file that has no row.'
+      },
+      {
+        label: 'Change one byte',
+        step: 'step 3 of 5 \u00b7 git diff',
+        cmd: "git diff --exit-code -- '*_metadata.txt'",
+        exit: 1,
+        out: [
+          'diff --git a/Scenes/Scene1/' + HF + '_metadata.txt b/Scenes/Scene1/' + HF + '_metadata.txt',
+          'index 79b84a5..fb17ed0 100644',
+          '--- a/Scenes/Scene1/' + HF + '_metadata.txt',
+          '+++ b/Scenes/Scene1/' + HF + '_metadata.txt',
+          '@@ -1,3 +1,4 @@',
+          ' === hf-job-id ===',
+          ' 44faac83-9d51-4422-8c07-a726976a7c89',
+          ' ',
+          '+extra'
+        ],
+        why: 'Appending one line to a committed sidecar is enough. git diff --exit-code prints the hunk and exits 1, so a sidecar that drifted by a byte fails the gate exactly like a corrupt PNG does.'
+      },
+      {
+        label: 'Leave a sidecar uncommitted',
+        step: 'step 4 of 5 \u00b7 git ls-files --others',
+        cmd: "git ls-files --others -- '*_metadata.txt'",
+        exit: 0,
+        out: ['Scenes/Scene1/recovered_metadata.txt'],
+        why: 'The command exits 0 \u2014 it is a listing, not a check. The workflow wraps it in a shell test and fails the step on any non-empty answer, which is the only reason a new sidecar cannot hide: *_metadata.txt is gitignored, so git status would never mention it.'
+      }
+    ];
+
+    function mk(tag, cls, text) { var n = el(tag, cls); if (text !== undefined) { n.textContent = text; } return n; }
+
+    var bench = el('div', 'bench');
+    var head = el('div', 'bench-head');
+    head.appendChild(mk('h4', '', 'Break it and the gate stops'));
+    head.appendChild(mk('p', 'bench-note', 'Six faults, each applied to a scratch copy of this repo and run through the step that owns it. Pick one.'));
+
+    var tabs = el('div', 'bench-tabs');
+    tabs.setAttribute('role', 'group');
+    tabs.setAttribute('aria-label', 'Choose a fault to inject');
+
+    var panel = el('div', 'bench-panel');
+    var cmdRow = el('div', 'bench-cmd');
+    cmdRow.appendChild(mk('span', 'prompt', '$ '));
+    var cmdText = el('code');
+    cmdRow.appendChild(cmdText);
+    var pre = el('pre', 'bench-pre');
+    var metaRow = el('div', 'bench-meta');
+    var stepEl = el('span', 'bench-step');
+    var exitEl = el('span', 'bench-exit');
+    metaRow.appendChild(stepEl); metaRow.appendChild(exitEl);
+    var why = el('p', 'bench-why');
+    panel.appendChild(cmdRow); panel.appendChild(pre); panel.appendChild(metaRow); panel.appendChild(why);
+
+    bench.appendChild(head); bench.appendChild(tabs); bench.appendChild(panel);
+    benchMount.appendChild(bench);
+
+    var tabsBtns = [];
+    function showFault(i) {
+      var f = FAULTS[i];
+      tabsBtns.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+      cmdText.textContent = f.cmd;
+      pre.textContent = f.out.join('\n');
+      stepEl.textContent = f.step;
+      exitEl.textContent = 'exit ' + f.exit;
+      exitEl.className = 'bench-exit ' + (f.exit === 0 ? 'ok' : 'bad');
+      why.textContent = f.why;
+    }
+
+    FAULTS.forEach(function (f, i) {
+      var b = el('button');
+      b.type = 'button';
+      b.textContent = f.label;
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { showFault(i); });
+      tabs.appendChild(b);
+      tabsBtns.push(b);
+    });
+
+    showFault(0);
+  }
 })();
