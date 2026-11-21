@@ -193,7 +193,7 @@
   </div>
 
   <div class="kpis">
-    <div class="kpi"><b>43</b><span>offline tests &mdash; network and clipboard mocked, real PIL + FFmpeg; the same suite gates every push</span></div>
+    <div class="kpi"><b>47</b><span>offline tests &mdash; network and clipboard mocked, real PIL + FFmpeg; the same suite gates every push</span></div>
     <div class="kpi"><b>55.0 s</b><span>end-to-end for the verified run &mdash; one command, from an empty output folder to a TikTok draft</span></div>
     <div class="kpi"><b>10.0 s</b><span>export, ffprobe-verified: 1080&times;1920 &middot; 30&nbsp;fps &middot; H.264 &middot; four 2.5-s slides</span></div>
     <div class="kpi"><b>2026-10-08</b><span>first live end-to-end run &mdash; <code>PUBLISH_COMPLETE</code> ~12&nbsp;s after upload (Direct Post; draft-to-inbox is the default delivery)</span></div>
@@ -214,7 +214,7 @@
       <h3>Every change must pass</h3>
       <ul>
         <li><code>compileall</code> &rarr; <code>ruff</code> &rarr; <code>pytest</code> &mdash; the exact local trio, replayed in CI</li>
-        <li>43 offline tests &mdash; no keys, no credits, no network</li>
+        <li>47 offline tests &mdash; no keys, no credits, no network</li>
         <li>an offline end-to-end smoke test: mocked script + imagery, real PIL cards, real FFmpeg mp4</li>
         <li>CI on every push: Python 3.10 + 3.12 on Ubuntu, plus a Windows 3.12 leg mirroring the production machine</li>
         <li>CI installs FFmpeg itself &mdash; GitHub runners no longer ship it, and the job fails loudly when it is missing</li>
